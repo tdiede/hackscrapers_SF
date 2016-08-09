@@ -1,6 +1,6 @@
 """Utility file to seed buildings database from data in skyscraper data."""
 
-from model_buildings import Building
+from model_buildings import Building, City
 
 from model_buildings import connect_to_db, db
 from server_tmd import app
@@ -41,8 +41,60 @@ def load_buildings():
 
         # We need to add to the session or it won't ever be stored
         db.session.add(bldg)
-        print bldg
-        db.session.commit()
+
+    # Once we're done, we should commit our work
+    db.session.commit()
+
+
+def load_cities():
+    """Load cities from GLBcities into database."""
+
+    print "Cities"
+
+    # Delete all rows in table, so if we need to run this a second time,
+    # we won't be trying to add duplicate users
+    City.query.delete()
+
+    # Read data file and insert data
+    for row in open("seed_data/GLBcities.csv"):
+        row = row.rstrip()
+        city_id, rank, city, country, bldg_count = row.split(",")
+
+        city = City(city_id=city_id,
+                    rank=rank,
+                    city=city,
+                    country=country,
+                    bldg_count=bldg_count)
+
+        # We need to add to the session or it won't ever be stored
+        db.session.add(city)
+
+    # Once we're done, we should commit our work
+    db.session.commit()
+
+
+def load_companies():
+    """Load companies into database."""
+
+    print "Companies"
+
+    # Delete all rows in table, so if we need to run this a second time,
+    # we won't be trying to add duplicate users
+    Company.query.delete()
+
+    # Read data file and insert data
+    for row in open("seed_data/GLBcities.csv"):
+        row = row.rstrip()
+        city_id, rank, city, country, bldg_count = row.split(",")
+
+        company = Company(company_id=company_id,
+                            rank=rank,
+                            city=city,
+                            country=country,
+                            bldg_count=bldg_count)
+
+        # We need to add to the session or it won't ever be stored
+        db.session.add(company)
 
     # Once we're done, we should commit our work
     db.session.commit()
@@ -56,3 +108,5 @@ if __name__ == "__main__":
 
     # Import different types of data
     load_buildings()
+    load_cities()
+    load_companies()

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}
+
+    <title>BUILDINGS LIST</title>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="site-wrapper">
+    <div class="site-wrapper-inner">
+
+        <h1>Therese's project.</h1>
+
+        <h2 class="lead">BUILDINGS</h2>
+
+        {% for bldg in bldgs %}
+            {{ bldg.building_name }} --- {{ bldg.height_ft }} --- {{ bldg.floors }} --- {{ bldg.material }} --- {{ bldg.use }} <br>
+        {% endfor %}
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}
+
+    <title>CITIES LIST</title>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="site-wrapper">
+    <div class="site-wrapper-inner">
+
+        <h1>Therese's project.</h1>
+
+        <h2 class="lead">CITIES</h2>
+
+        {% for city in cities %}
+            {{ city.rank }} --- {{ city.city }} --- {{ city.country }} --- {{ city.bldg_count }} buildings <br>
+        {% endfor %}
+
+    </div>
+</div>
+
+{% endblock %}

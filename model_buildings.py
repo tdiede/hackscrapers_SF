@@ -27,12 +27,31 @@ class Building(db.Model):
     status = db.Column(db.String(64), nullable=True)
     building_name = db.Column(db.String(128))
     city = db.Column(db.String(64))
+    # lat = db.Column(db.Numeric)
+    # lng = db.Column(db.Numeric)
     height_m = db.Column(db.String, nullable=True)
     height_ft = db.Column(db.String, nullable=True)
     floors = db.Column(db.Integer, nullable=True)
     completed_yr = db.Column(db.String, nullable=True)
     material = db.Column(db.String(64), nullable=True)
     use = db.Column(db.String(64), nullable=True)
+
+
+class City(db.Model):
+    """Cities in the world with tall buildings."""
+
+    __tablename__ = "cities"
+
+    def __repr__(self):
+        """Show info about the city."""
+
+        return "<City city_id=%s city=%s bldg_count=%d>" % (self.city_id, self.city, self.bldg_count)
+
+    city_id = db.Column(db.Integer, primary_key=True)
+    rank = db.Column(db.Integer)
+    city = db.Column(db.String(64))
+    country = db.Column(db.String(64))
+    bldg_count = db.Column(db.Integer)
 
 
 ##############################################################################
