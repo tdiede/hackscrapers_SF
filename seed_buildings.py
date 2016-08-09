@@ -1,12 +1,20 @@
 """Utility file to seed buildings database from data in skyscraper data."""
 
 from model_buildings import Building
+
 from model_buildings import connect_to_db, db
 from server_tmd import app
 
+import os
+
+os.system("dropdb buildings")
+print "dropdb buildings"
+os.system("createdb buildings")
+print "createdb buildings"
+
 
 def load_buildings():
-    """Load buildings from skyscrapers_SF into database."""
+    """Load buildings from SFbldgs into database."""
 
     print "Buildings"
 
@@ -17,11 +25,10 @@ def load_buildings():
     # Read data file and insert data
     for row in open("seed_data/SFbldgs.csv"):
         row = row.rstrip()
-        bldg_id, status, building_name, city, height_m, height_ft, floors, completed_yr, material, use = row.split(",")
-
-        print bldg_id + "***"
+        bldg_id, rank, status, building_name, city, height_m, height_ft, floors, completed_yr, material, use = row.split(",")
 
         bldg = Building(bldg_id=bldg_id,
+                        rank=rank,
                         status=status,
                         building_name=building_name,
                         city=city,
@@ -34,6 +41,8 @@ def load_buildings():
 
         # We need to add to the session or it won't ever be stored
         db.session.add(bldg)
+        print bldg
+        db.session.commit()
 
     # Once we're done, we should commit our work
     db.session.commit()

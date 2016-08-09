@@ -23,15 +23,17 @@ class Building(db.Model):
         return "<Building bldg_id=%s building_name=%s>" % (self.bldg_id, self.building_name)
 
     bldg_id = db.Column(db.Integer, primary_key=True)
-    status = db.Column(db.String(64))
-    building_name = db.Column(db.String(128), unique=True)
+    rank = db.Column(db.Integer)
+    status = db.Column(db.String(64), nullable=True)
+    building_name = db.Column(db.String(128))
     city = db.Column(db.String(64))
-    height_m = db.Column(db.Numeric, nullable=True)
-    height_ft = db.Column(db.Numeric, nullable=True)
-    floors = db.Column(db.Numeric, nullable=True)
-    completed_yr = db.Column(db.Numeric, nullable=True)
+    height_m = db.Column(db.String, nullable=True)
+    height_ft = db.Column(db.String, nullable=True)
+    floors = db.Column(db.Integer, nullable=True)
+    completed_yr = db.Column(db.String, nullable=True)
     material = db.Column(db.String(64), nullable=True)
     use = db.Column(db.String(64), nullable=True)
+
 
 ##############################################################################
 # Helper functions
