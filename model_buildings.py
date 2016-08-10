@@ -23,12 +23,13 @@ class Building(db.Model):
         return "<Building bldg_id=%s building_name=%s>" % (self.bldg_id, self.building_name)
 
     bldg_id = db.Column(db.Integer, primary_key=True)
+    place_id = db.Column(db.String(64))
     rank = db.Column(db.Integer)
     status = db.Column(db.String(64), nullable=True)
     building_name = db.Column(db.String(128))
     city = db.Column(db.String(64))
-    # lat = db.Column(db.Numeric)
-    # lng = db.Column(db.Numeric)
+    lat = db.Column(db.Numeric)
+    lng = db.Column(db.Numeric)
     height_m = db.Column(db.String, nullable=True)
     height_ft = db.Column(db.String, nullable=True)
     floors = db.Column(db.Integer, nullable=True)
@@ -52,6 +53,21 @@ class City(db.Model):
     city = db.Column(db.String(64))
     country = db.Column(db.String(64))
     bldg_count = db.Column(db.Integer)
+
+
+class Tenant(db.Model):
+    """Tenants in San Francisco tall buildings."""
+
+    __tablename__ = "tenants"
+
+    def __repr__(self):
+        """Show a list of all tenants found by Google Places API."""
+
+        return "<Tenant tenant_id=%d tenant=%s>" % (self.tenant_id, self.tenant)
+
+    tenant_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    tenant = db.Column(db.String(128))
+    place_id = db.Column(db.String(64))
 
 
 ##############################################################################

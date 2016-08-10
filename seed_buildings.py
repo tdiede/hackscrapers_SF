@@ -1,12 +1,21 @@
 """Utility file to seed buildings database from data in skyscraper data."""
 
-from model_buildings import Building, City
+from google_places import (get_google_places, extract_geo, extract_names)  # my google places api file
+
+from model_buildings import (Building, City, Tenant)  # my model file
 
 from model_buildings import connect_to_db, db
 from server_tmd import app
 
+
+import sys
+
+reload(sys)  # Reload does the trick!
+sys.setdefaultencoding('UTF8')
+
 import os
 
+# Whenever seeding, drop existing database and create a new database.
 os.system("dropdb buildings")
 print "dropdb buildings"
 os.system("createdb buildings")
@@ -21,16 +30,38 @@ def load_buildings():
     # Delete all rows in table, so if we need to run this a second time,
     # we won't be trying to add duplicate users
     Building.query.delete()
+    Tenant.query.delete()
+
+    bldg_count = 0
 
     # Read data file and insert data
     for row in open("seed_data/SFbldgs.csv"):
         row = row.rstrip()
         bldg_id, rank, status, building_name, city, height_m, height_ft, floors, completed_yr, material, use = row.split(",")
 
+        bldg_count += 1
+
+        # Make Google Places API request!
+        places = get_google_places(building_name)
+
+        if places:
+            place_id, lat, lng = extract_geo(places)
+
+            # Also seed "tenants" table.
+            load_tenants(places, bldg_count)
+
+        else:
+            place_id = 0
+            lat = 0
+            lng = 0
+
         bldg = Building(bldg_id=bldg_id,
+                        place_id=place_id,
                         rank=rank,
                         status=status,
                         building_name=building_name,
+                        lat=lat,
+                        lng=lng,
                         city=city,
                         height_m=height_m,
                         height_ft=height_ft,
@@ -39,11 +70,51 @@ def load_buildings():
                         material=material,
                         use=use)
 
+        print bldg
+
         # We need to add to the session or it won't ever be stored
         db.session.add(bldg)
 
     # Once we're done, we should commit our work
     db.session.commit()
+
+
+def load_tenants(places, bldg_count):
+    """Load tenants from Google Places API request into database."""
+
+    print "Tenants"
+
+    place_id, place_names = extract_names(places)
+
+    # tenant_count = 1
+
+    for place in place_names:
+
+        # tenant_id = str(bldg_count) + "|" + str(tenant_count)
+        # print tenant_id
+
+        tenant = Tenant(tenant=place,
+                        place_id=place_id)
+
+        # tenant_count += 1
+
+        print place
+
+        # We need to add to the session or it won't ever be stored
+        db.session.add(tenant)
+
+    # Once we're done, we should commit our work
+    db.session.commit()
+
+
+# Manual entry for buildings not found by Google Places API.
+# Actually I entered into Google Maps and they updated the data within 24 hours!
+# def load_manual():
+#     hd_bldg = Building.query.filter_by(building_name="Hunter-Dulin Building").one()
+#     atct_bldg.Building.query.filter_by(building_name="San Francisco International Airport FAA Airport Traffic Control Tower (ATCT)").one()
+#     db.session.add(hd_bldg)
+#     db.session.add(atct_bldg)
+#     db.session.commit()
 
 
 def load_cities():
@@ -73,31 +144,8 @@ def load_cities():
     db.session.commit()
 
 
-def load_companies():
-    """Load companies into database."""
-
-    print "Companies"
-
-    # Delete all rows in table, so if we need to run this a second time,
-    # we won't be trying to add duplicate users
-    Company.query.delete()
-
-    # Read data file and insert data
-    for row in open("seed_data/GLBcities.csv"):
-        row = row.rstrip()
-        city_id, rank, city, country, bldg_count = row.split(",")
-
-        company = Company(company_id=company_id,
-                            rank=rank,
-                            city=city,
-                            country=country,
-                            bldg_count=bldg_count)
-
-        # We need to add to the session or it won't ever be stored
-        db.session.add(company)
-
-    # Once we're done, we should commit our work
-    db.session.commit()
+##############################################################################
+# Helper functions
 
 
 if __name__ == "__main__":
@@ -109,4 +157,3 @@ if __name__ == "__main__":
     # Import different types of data
     load_buildings()
     load_cities()
-    load_companies()
