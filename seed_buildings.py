@@ -2,7 +2,7 @@
 
 from google_places import (get_google_places, extract_geo, extract_names)  # my google places api file
 
-from model_buildings import (Building, City, Tenant)  # my model file
+from model_buildings import (Building, City, Tenant, User)  # my model file for buildings
 
 from model_buildings import connect_to_db, db
 from server_tmd import app
@@ -86,17 +86,10 @@ def load_tenants(places, bldg_count):
 
     place_id, place_names = extract_names(places)
 
-    # tenant_count = 1
-
     for place in place_names:
-
-        # tenant_id = str(bldg_count) + "|" + str(tenant_count)
-        # print tenant_id
 
         tenant = Tenant(tenant=place,
                         place_id=place_id)
-
-        # tenant_count += 1
 
         print place
 
@@ -152,6 +145,7 @@ if __name__ == "__main__":
     connect_to_db(app)
 
     # In case tables haven't been created, create them
+    db.drop_all()
     db.create_all()
 
     # Import different types of data

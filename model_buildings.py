@@ -20,7 +20,7 @@ class Building(db.Model):
     def __repr__(self):
         """Show info about the building."""
 
-        return "<Building bldg_id=%s building_name=%s>" % (self.bldg_id, self.building_name)
+        return "<Building bldg_id=%d building_name=%s>" % (self.bldg_id, self.building_name)
 
     bldg_id = db.Column(db.Integer, primary_key=True)
     place_id = db.Column(db.String(64))
@@ -71,8 +71,25 @@ class Tenant(db.Model):
 
 
 ##############################################################################
-# Helper functions
+# Model definition
 
+class User(db.Model):
+    """Users of web app in database."""
+
+    __tablename__ = "users"
+
+    def __repr__(self):
+        """Show info about user."""
+
+        return "<User user_id=%d username=%s password=%s>" % (self.user_id, self.username, self.password)
+
+    user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    username = db.Column(db.String(64))
+    password = db.Column(db.String(64))
+
+
+##############################################################################
+# Helper functions
 
 def connect_to_db(app):
     """Connect the database to our Flask app."""

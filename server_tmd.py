@@ -7,11 +7,13 @@ Author: Therese Diede
 
 from jinja2 import StrictUndefined
 
-from flask import (Flask, render_template)
+from flask import (Flask, render_template, redirect, request, session, flash, jsonify)
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model_buildings import connect_to_db
-from model_buildings import Building, City
+from model_buildings import Building, City, User
+
+from database_functions import add_user
 
 
 app = Flask(__name__)
@@ -44,6 +46,80 @@ def cities_list():
     cities = City.query.all()
 
     return render_template("cities_list.html", cities=cities)
+
+
+@app.route('/register')
+def user_register():
+    """User register form."""
+
+    return render_template("register.html")
+
+
+@app.route('/register', methods=['POST'])
+def handle_register():
+    """Action for register form; user entered into database."""
+
+    current_username = request.form['username']
+    current_password = request.form['password']
+
+    if User.query.filter_by(username=current_username).first():  # Checks to see if user is registered.
+        flash("You're already registered. Please login.")
+        return redirect('/login')
+    else:
+        add_user(current_username, current_password)
+        flash("Welcome. You are now a registered user, %s! Please make yourself at home." % (current_username))
+        return redirect('/')
+
+
+@app.route('/login')
+def user_login():
+    """User login form."""
+
+    return render_template("login.html")
+
+
+@app.route('/login', methods=['POST'])
+def handle_login():
+    """Action for login form; user login to be completed."""
+
+    current_username = request.form['username']
+    current_password = request.form['password']
+
+    user = User.query.filter_by(username=current_username).one()
+    user_username = user.username
+    user_password = user.password
+
+    if user_username:  # Checks to see if user is registered.
+        if current_password == user_password:  # Checks to see if user password is correct.
+            session['current_user'] = current_username
+            flash("Logged in as %s" % (current_username))
+            return redirect('/')
+        else:
+            flash("Wrong password. Try again!")
+            return redirect('/login')
+    else:
+        flash("Please register.")
+        return redirect('/register')
+
+
+@app.route('/map')
+def display_map():
+    """Page where user can see map and map data."""
+
+    return render_template("mapbox.html")
+
+
+@app.route('/bldg_info.json')
+def bldg_info():
+    """Return info about building as JSON."""
+
+    bldg_info = {"bldg_id": "34",
+            "building_name": "Transamerica Pyramid",
+            "lat": 37.775,
+            "lng": -124.255,
+            }
+
+    return jsonify(bldg_info)
 
 
 if __name__ == "__main__":

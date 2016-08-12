@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}
+
+    <title>SKYSCRAPERS HOME</title>
+
+{% endblock %}
+
+{% block content %}
+
+<form action='/register' method='POST'>
+    <input type="text" name="username" value="username"></input>
+    <input type="text" name="password" value="password"></input>
+    <input type="submit" value="Register"></input>
+</form>
+
+{% endblock %}
