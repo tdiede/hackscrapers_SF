@@ -20,22 +20,27 @@ class Building(db.Model):
     def __repr__(self):
         """Show info about the building."""
 
-        return "<Building bldg_id=%d building_name=%s>" % (self.bldg_id, self.building_name)
+        return "<Building rank={} building_name={}>".format(self.rank, self.building_name)
 
-    bldg_id = db.Column(db.Integer, primary_key=True)
+    bldg_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     place_id = db.Column(db.String(64))
     rank = db.Column(db.Integer)
     status = db.Column(db.String(64), nullable=True)
     building_name = db.Column(db.String(128))
-    city = db.Column(db.String(64))
-    lat = db.Column(db.Numeric)
-    lng = db.Column(db.Numeric)
+    city_id = db.Column(db.Integer, db.ForeignKey('cities.city_id'), nullable=False)
+    lat = db.Column(db.Float)
+    lng = db.Column(db.Float)
     height_m = db.Column(db.String, nullable=True)
     height_ft = db.Column(db.String, nullable=True)
     floors = db.Column(db.Integer, nullable=True)
     completed_yr = db.Column(db.String, nullable=True)
     material = db.Column(db.String(64), nullable=True)
     use = db.Column(db.String(64), nullable=True)
+
+    # Define relationship to city.
+    city = db.relationship("City",
+                           backref=db.backref("buildings",
+                                              order_by=bldg_id))
 
 
 class City(db.Model):
@@ -46,9 +51,9 @@ class City(db.Model):
     def __repr__(self):
         """Show info about the city."""
 
-        return "<City city_id=%s city=%s bldg_count=%d>" % (self.city_id, self.city, self.bldg_count)
+        return "<City rank=%d city=%s bldg_count=%d>" % (self.rank, self.city, self.bldg_count)
 
-    city_id = db.Column(db.Integer, primary_key=True)
+    city_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     rank = db.Column(db.Integer)
     city = db.Column(db.String(64))
     country = db.Column(db.String(64))
@@ -68,6 +73,12 @@ class Tenant(db.Model):
     tenant_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     tenant = db.Column(db.String(128))
     place_id = db.Column(db.String(64))
+    bldg_id = db.Column(db.Integer, db.ForeignKey('buildings.bldg_id'), nullable=False)
+
+    # Define relationship to bldg.
+    bldg = db.relationship("Building",
+                           backref=db.backref("tenants",
+                                              order_by=tenant_id))
 
 
 ##############################################################################

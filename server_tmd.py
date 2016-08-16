@@ -109,23 +109,40 @@ def display_map():
     return render_template("mapbox.html")
 
 
-@app.route('/bldg_info.json')
-def bldg_info():
-    """Return info about building as JSON."""
+@app.route('/bldg_data.json')
+def bldg_data():
+    """Return data from buildings table as JSON."""
 
-    bldg_info = {"bldg_id": "34",
-            "building_name": "Transamerica Pyramid",
-            "lat": 37.775,
-            "lng": -124.255,
-            }
+    bldgs = Building.query.all()
 
-    return jsonify(bldg_info)
+    bldg_data = {}
+
+    for bldg in bldgs:
+        bldg_info = {"place_id": bldg.place_id,
+                     "rank": bldg.rank,
+                     "status": bldg.status,
+                     "building_name": bldg.building_name,
+                     "lat": bldg.lat,
+                     "lng": bldg.lng,
+                     "city": bldg.city_id,
+                     "height_m": bldg.height_m,
+                     "height_ft": bldg.height_ft,
+                     "floors": bldg.floors,
+                     "completed_yr": bldg.completed_yr,
+                     "material": bldg.material,
+                     "use": bldg.use, }
+
+        bldg_data[bldg.bldg_id] = bldg_info
+
+    return jsonify(bldg_data)
 
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
     # point that we invoke the DebugToolbarExtension
     app.debug = True
+
+    app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
     connect_to_db(app)
 

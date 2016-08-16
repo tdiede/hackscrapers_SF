@@ -2,7 +2,7 @@
 
 from google_places import (get_google_places, extract_geo, extract_names)  # my google places api file
 
-from model_buildings import (Building, City, Tenant, User)  # my model file for buildings
+from model_buildings import (Building, City, Tenant)  # my model file for buildings
 
 from model_buildings import connect_to_db, db
 from server_tmd import app
@@ -37,9 +37,12 @@ def load_buildings():
     # Read data file and insert data
     for row in open("seed_data/SFbldgs.csv"):
         row = row.rstrip()
-        bldg_id, rank, status, building_name, city, height_m, height_ft, floors, completed_yr, material, use = row.split(",")
+        rank, status, building_name, city_name, height_m, height_ft, floors, completed_yr, material, use = row.split(",")
 
         bldg_count += 1
+
+        # Get city_id from building's city_name.
+        city_id = City.query.filter_by(city=city_name).first().city_id
 
         # Make Google Places API request!
         places = get_google_places(building_name)
@@ -47,22 +50,18 @@ def load_buildings():
         if places:
             place_id, lat, lng = extract_geo(places)
 
-            # Also seed "tenants" table.
-            load_tenants(places, bldg_count)
-
         else:
             place_id = 0
             lat = 0
             lng = 0
 
-        bldg = Building(bldg_id=bldg_id,
-                        place_id=place_id,
+        bldg = Building(place_id=place_id,
                         rank=rank,
                         status=status,
                         building_name=building_name,
                         lat=lat,
                         lng=lng,
-                        city=city,
+                        city_id=city_id,
                         height_m=height_m,
                         height_ft=height_ft,
                         floors=floors,
@@ -75,11 +74,21 @@ def load_buildings():
         # We need to add to the session or it won't ever be stored
         db.session.add(bldg)
 
+        db.session.flush()
+
+        if places:
+
+            # Get bldg_id from newly committed building.
+            bldg_id = Building.query.filter_by(place_id=place_id).first().bldg_id
+
+            # Also seed "tenants" table.
+            load_tenants(places, bldg_count, bldg_id)
+
     # Once we're done, we should commit our work
     db.session.commit()
 
 
-def load_tenants(places, bldg_count):
+def load_tenants(places, bldg_count, bldg_id):
     """Load tenants from Google Places API request into database."""
 
     print "Tenants"
@@ -89,7 +98,8 @@ def load_tenants(places, bldg_count):
     for place in place_names:
 
         tenant = Tenant(tenant=place,
-                        place_id=place_id)
+                        place_id=place_id,
+                        bldg_id=bldg_id)
 
         print place
 
@@ -122,10 +132,9 @@ def load_cities():
     # Read data file and insert data
     for row in open("seed_data/GLBcities.csv"):
         row = row.rstrip()
-        city_id, rank, city, country, bldg_count = row.split(",")
+        rank, city, country, bldg_count = row.split(",")
 
-        city = City(city_id=city_id,
-                    rank=rank,
+        city = City(rank=rank,
                     city=city,
                     country=country,
                     bldg_count=bldg_count)
@@ -149,5 +158,5 @@ if __name__ == "__main__":
     db.create_all()
 
     # Import different types of data
-    load_buildings()
     load_cities()
+    load_buildings()

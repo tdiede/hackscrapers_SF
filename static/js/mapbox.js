@@ -73,6 +73,12 @@ var adus_source = new mapboxgl.GeoJSONSource({
     data: url_adus
 });
 
+var url_bldgs = '../static/geojson/bldgs.json';
+
+var bldgs_source = new mapboxgl.GeoJSONSource({
+    data: url_bldgs
+});
+
 map.on('load', function () {
 
     map.flyTo({
@@ -96,10 +102,26 @@ map.on('load', function () {
         'data': url_adus,
     });
 
+    map.addSource('bldgs', {
+        'type': 'json',
+        'data': url_bldgs,
+    });
+
     map.addLayer({
         'id': 'adus_data',
         'type': 'fill',
         'source': 'adus',
+        'layout': {},
+        'paint': {
+            'fill-color': '#088',
+            'fill-opacity': 0.2
+        }
+    });
+
+    map.addLayer({
+        'id': 'bldgs_data',
+        'type': 'circle',
+        'source': 'bldgs',
         'layout': {},
         'paint': {
             'fill-color': '#088',

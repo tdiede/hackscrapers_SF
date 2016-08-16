@@ -13,10 +13,12 @@
         <h1>Therese's project.</h1>
 
         <h2 class="lead">BUILDINGS</h2>
-
+        <p style="color: black">
         {% for bldg in bldgs %}
             {{ bldg.building_name }} --- {{ bldg.height_ft }} --- {{ bldg.floors }} --- {{ bldg.material }} --- {{ bldg.use }} <br>
+            {{ bldg.lat }} --- {{ bldg.lng }} <br>
         {% endfor %}
+        </p>
 
     </div>
 </div>
