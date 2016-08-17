@@ -109,32 +109,84 @@ def display_map():
     return render_template("mapbox.html")
 
 
-@app.route('/bldg_data.json')
+@app.route('/dendogram')
+def display_dendogram():
+    """Page where user can see dendogram and dendogram data."""
+
+    return render_template("dendogram.html")
+
+
+@app.route('/dendogram.json')
+def dendogram_data():
+    """Return data from buildings table for use in dendogram, JSON."""
+
+    cities = City.query.filter_by(city="San Francisco").first()
+    bldgs = Building.query.all()
+
+    buildings = {}
+    buildings_list = []
+
+    for bldg in bldgs:
+
+        tenants = {}
+        tenants_list = []
+
+        for tenant in bldg.tenants:
+            tenants = {"name": tenant.tenant}
+            tenants_list.append(tenants)
+
+        buildings = {"name": bldg.building_name,
+                     "children": tenants_list}
+        buildings_list.append(buildings)
+
+    dendogram = {"name": cities.city,
+                 "children": buildings_list}
+
+    return jsonify(dendogram)
+
+
+@app.route('/bldg_geojson.geojson')
 def bldg_data():
-    """Return data from buildings table as JSON."""
+    """Return data from buildings table as GEOJSON."""
 
     bldgs = Building.query.all()
 
-    bldg_data = {}
+    bldg_geojson = {}
+    features = []
 
     for bldg in bldgs:
-        bldg_info = {"place_id": bldg.place_id,
-                     "rank": bldg.rank,
-                     "status": bldg.status,
-                     "building_name": bldg.building_name,
-                     "lat": bldg.lat,
-                     "lng": bldg.lng,
-                     "city": bldg.city_id,
-                     "height_m": bldg.height_m,
-                     "height_ft": bldg.height_ft,
-                     "floors": bldg.floors,
-                     "completed_yr": bldg.completed_yr,
-                     "material": bldg.material,
-                     "use": bldg.use, }
 
-        bldg_data[bldg.bldg_id] = bldg_info
+        coordinates_list = [bldg.lng, bldg.lat]
 
-    return jsonify(bldg_data)
+        bldg_feature = {"type": "Feature",
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": coordinates_list,
+                            },
+                        "properties": {
+                            "bldg_id": bldg.bldg_id,
+                            "place_id": bldg.place_id,
+                            "rank": bldg.rank,
+                            "status": bldg.status,
+                            "building_name": bldg.building_name,
+                            "lat": bldg.lat,
+                            "lng": bldg.lng,
+                            "city": bldg.city_id,
+                            "height_m": bldg.height_m,
+                            "height_ft": bldg.height_ft,
+                            "floors": bldg.floors,
+                            "completed_yr": bldg.completed_yr,
+                            "material": bldg.material,
+                            "use": bldg.use,
+                            }
+                        }
+
+        features.append(bldg_feature)
+
+    bldg_geojson = {"type": "FeatureCollection",
+                    "features": features}
+
+    return jsonify(bldg_geojson)
 
 
 if __name__ == "__main__":

@@ -73,11 +73,25 @@ var adus_source = new mapboxgl.GeoJSONSource({
     data: url_adus
 });
 
-var url_bldgs = '../static/geojson/bldgs.json';
+var url_bldgs = '/bldg_geojson.geojson';
 
 var bldgs_source = new mapboxgl.GeoJSONSource({
     data: url_bldgs
 });
+
+var marker = new mapboxgl.Marker()
+    .setLngLat([-122.3924805, 37.7893387])
+    .addTo(map);
+
+var icon = '../static/img/x.png';
+
+
+var popup = new mapboxgl.Popup()
+  .setLngLat(marker.lngLat)
+  .setHTML("<h1>Hello World!</h1>")
+  .addTo(map);
+
+
 
 map.on('load', function () {
 
@@ -97,125 +111,98 @@ map.on('load', function () {
         }
     });
 
-    map.addSource('adus', {
-        'type': 'geojson',
-        'data': url_adus,
-    });
-
     map.addSource('bldgs', {
-        'type': 'json',
+        'type': 'geojson',
         'data': url_bldgs,
     });
 
     map.addLayer({
-        'id': 'adus_data',
-        'type': 'fill',
-        'source': 'adus',
-        'layout': {},
-        'paint': {
-            'fill-color': '#088',
-            'fill-opacity': 0.2
-        }
+        'id': 'bldgs',
+        'type': 'symbol',
+        'source': 'bldgs',
+        'layout': {
+            'icon-image': 'marker-15',
+            'icon-padding': 1,
+            'text-field': '{building_name}',
+            'text-font': ['Open Sans Regular', 'Arial Unicode MS Regular'],
+            'text-size': 12,
+            'text-offset': [0.5, 0.1],
+            'text-anchor': 'top-left'
+        },
+        // 'paint': {
+        //     'circle-radius': {
+        //         "property": "scaling",
+        //         "stops": [
+        //           // zoom is start_zoom and "scaling" is 0 -> circle radius will be.
+        //           [{zoom: start_zoom, value: 0}, 1],
+        //           // zoom is end_zoom and "scaling" is 0 -> circle radius will be.
+        //           [{zoom: end_zoom, value: 0}, 6],
+        //         ]},
+        //     'circle-color': '#088',
+        //     'circle-opacity': 0.5,
+        // }
     });
 
-    map.addLayer({
-        'id': 'bldgs_data',
-        'type': 'circle',
-        'source': 'bldgs',
-        'layout': {},
-        'paint': {
-            'fill-color': '#088',
-            'fill-opacity': 0.2
-        }
-    });
+    // map.addSource('adus', {
+    //     'type': 'geojson',
+    //     'data': url_adus,
+    // });
+
+    // map.addLayer({
+    //     'id': 'adus_data',
+    //     'type': 'fill',
+    //     'source': 'adus',
+    //     'layout': {},
+    //     'paint': {
+    //         'fill-color': '#088',
+    //         'fill-opacity': 0.2
+    //     }
+    // });
+
+});
+
+
+// Indicate that the symbols are clickable
+// by changing the cursor style to 'pointer'.
+map.on('mousemove', function (e) {
+    var features = map.queryRenderedFeatures(e.point, { layers: ['bldgs'] });
+    map.getCanvas().style.cursor = (features.length) ? 'pointer' : 'crosshair';
+});
+
+
+// When a click event occurs near a building circle or symbol,
+// open a popup at the location of the feature,
+// with description HTML from its properties.
+map.on('click', function (e) {
+    var features = map.queryRenderedFeatures(e.point, { layers: ['bldgs'] });
+    if (!features.length) {
+        return;
+    }
+
+    var feature = features[0];
+
+    var popup = new mapboxgl.Popup()
+        .setLngLat(map.unproject(e.point))
+        .setHTML(feature.properties.building_name + "<br>" + feature.properties.use)
+        .addTo(map);
 });
 
 
 
-
-
-// AJAX
+// // AJAX
 // function showBuildingInfo(results) {
 //     console.log(results);
-//     alert(results.bldg_id);
-//     alert(results.lat);
-//     alert(results.lng);
-
-//     bldg_info.forEach( function(marker) {
-
-//     // Create marker.
-//     new mapboxgl.Marker()
-//         .setLngLat()
-//         .addTo(map);
-
-//     console.log(marker._LntLat);
-
-//     });
-
-//     // map.marker.setLngLat(results.lng, results.lat);
-
+//     // alert(results.bldg_id);
+//     // alert(results.lat);
+//     // alert(results.lng);
 // }
 
 
 // function getBuildingInfo(evt) {
 //     evt.preventDefault();
 
-//     $.get("/bldg_info.json",
+//     $.get('/bldg_geojson.geojson',
 //         showBuildingInfo);
 // }
 
 // $("#testing-ajax").on("click", showBuildingInfo);
-
-
-
-
-
-
-
-//   var infoWindow = new google.maps.InfoWindow({
-//       width: 150
-//   });
-
-//   // Retrieving the information with AJAX
-//   $.get('/buildings.json', function (buildings) {
-//   });
-
-//     var bldg, marker, html;
-
-//       for (var key in bldgs) {
-//           bldg = bldgs[key];
-
-//           // Define the marker
-//           marker = new google.maps.Marker({
-//               position: new google.maps.LatLng(bldg.capLat, bldg.capLong),
-//               map: map,
-//               title: 'Building ID: ' + bldg.bldg_id,
-//               icon: '/static/img/x.png'
-//           });
-
-//           // Define the content of the infoWindow
-//           html = (
-//               '<div class="window-content">' +
-//                   '<img src="/static/img/polarbear.jpg" alt="polarbear" style="width:150px;" class="thumbnail">' +
-//                   '<p><b>Building Name: </b>' + bldg.building_name + '</p>' +
-//                   '<p><b>Bear birth year: </b>' + bear.birthYear + '</p>' +
-//               '</div>');
-
-//           // Inside the loop we call bindInfoWindow passing it the marker,
-//           // map, infoWindow and contentString
-//           bindInfoWindow(marker, map, infoWindow, html);
-//       }
-
-// function bindInfoWindow(marker, map, infoWindow, html) {
-//       google.maps.event.addListener(marker, 'click', function () {
-//           infoWindow.close();
-//           infoWindow.setContent(html);
-//           infoWindow.open(map, marker);
-//       });
-//   }
-// }
-
-// google.maps.event.addDomListener(window, 'load', initMap);
-
-
-
