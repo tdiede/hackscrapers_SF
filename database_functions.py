@@ -1,6 +1,6 @@
 """All functions database."""
 
-from model_buildings import User
+from model_buildings import User, Building
 
 from model_buildings import db
 
@@ -13,3 +13,21 @@ def add_user(username, password):
 
     db.session.add(user)
     db.session.commit()
+
+
+def get_bldg_query(bldg_search):
+    """Queries database for building searched by user."""
+
+    # search terms entered by user
+    search = bldg_search.split(" ")
+
+    search_results = []
+
+    for term in search:
+        if term.lower() != "building" and term.lower() != "tower":
+            bldg_match = db.session.query(Building).filter(Building.building_name.ilike('%'+term+'%')).first()
+            search_results.append(bldg_match)
+
+    search_results = list(set(search_results))
+
+    return search_results

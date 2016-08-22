@@ -1,16 +1,20 @@
 {% extends 'base.html' %}
 {% block title %}
 
-    <title>SKYSCRAPERS HOME</title>
+    <title>Register:SkyscraperGO</title>
 
 {% endblock %}
 
 {% block content %}
 
-<form action='/register' method='POST'>
-    <input type="text" name="username" value="username"></input>
-    <input type="text" name="password" value="password"></input>
-    <input type="submit" value="Register"></input>
-</form>
+<h1>WELCOME TO SKYSCRAPER GO!<br>COLLECT THEM ALL!</h1>
+
+    <form action='/register' method='POST'>
+        <input type="text" name="username" value="username"></input>
+        <input type="text" name="password" value="password"></input>
+        <input type="submit" value="Register"></input>
+    </form>
+
+<h4>Already a user? Login <a href='/'>here!</a></h4>
 
 {% endblock %}

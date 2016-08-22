@@ -10,31 +10,118 @@ from jinja2 import StrictUndefined
 from flask import (Flask, render_template, redirect, request, session, flash, jsonify)
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model_buildings import connect_to_db
+from model_buildings import connect_to_db, db
 from model_buildings import Building, City, User
 
-from database_functions import add_user
+from database_functions import add_user, get_bldg_query
+
+import flickr
 
 
 app = Flask(__name__)
 
-app.secret_key = 'jfsajweWlkakNjakswpclI'
+app.secret_key = 'jfsajweWlkakNjakswpclI_fictitious'
 
 app.jinja_env.undefined = StrictUndefined
 
 
 @app.route('/')
 def index():
-    """Return homepage."""
+    """Web app begins with login splash page."""
 
-    return render_template("homepage.html")
+    return render_template("login.html")
+
+
+@app.route('/login', methods=['POST'])
+def handle_login():
+    """Action for login form; user login to be completed."""
+
+    current_username = request.form['username']
+    current_password = request.form['password']
+
+    user = User.query.filter_by(username=current_username).one()
+    user_username = user.username
+    user_password = user.password
+
+    if user_username:  # Checks to see if user is registered.
+        if current_password == user_password:  # Checks to see if user password is correct.
+            session['current_user'] = current_username
+            flash("Logged in as %s" % (current_username))
+            return redirect('/dashboard')
+        else:
+            flash("Wrong password. Try again!")
+            return redirect('/')
+    else:
+        flash("Please register.")
+        return redirect('/register')
+
+
+@app.route('/dashboard')
+def dashboard():
+    """Return homepage (dashboard)."""
+
+    current_user = session.get('current_user')
+
+    return render_template("homepage.html", current_user=current_user)
+
+
+# @app.route('/gen_flickr_files')
+# def gen_flickr_files():
+#     """Calls Flickr API for photo search. Saves JSON data files for each bldg."""
+
+#     bldgs = db.session.query(Building).options(db.joinedload('city')).all()
+
+#     flickr.flickr_search(bldgs)
+
+#     return None
+
+
+# @app.route('/flickr_data.json')
+# def flickr_data():
+#     """Combines JSON file data, including image urls, into one file for all bldgs."""
+
+#     bldgs = Building.query.all()
+
+#     flickr.combine_files(bldgs)
+
+#     return None
+
+
+@app.route('/filter_flickr')
+def filter_flickr():
+    """Returns filtered list of Flickr image urls to display photos."""
+
+    data = flickr.load_file()
+
+    bldgs = Building.query.all()
+
+    bldg_photo_totals, bldgs_photos = flickr.return_photos(data, bldgs)
+
+    urls = flickr.filter_photos(bldg_photo_totals, bldgs_photos)
+
+    return render_template("building_photos.html", urls=urls)
 
 
 @app.route('/buildings')
 def buildings_list():
     """Return list of buildings."""
 
-    bldgs = Building.query.all()
+    bldg_search = request.args.get('building')
+
+    bldgs = []
+
+    if bldg_search:
+        search_results = get_bldg_query(bldg_search)
+        for term in search_results:
+            if term is None:
+                search_results.remove(None)
+            bldgs.append(term)
+        if len(search_results) == 0:
+            flash("Sorry, your search {} returned no results.".format(bldg_search))
+            return redirect('/dashboard')
+
+    else:
+        bldgs = Building.query.all()
 
     return render_template("buildings_list.html", bldgs=bldgs)
 
@@ -64,42 +151,27 @@ def handle_register():
 
     if User.query.filter_by(username=current_username).first():  # Checks to see if user is registered.
         flash("You're already registered. Please login.")
-        return redirect('/login')
+        return redirect('/')
     else:
         add_user(current_username, current_password)
         flash("Welcome. You are now a registered user, %s! Please make yourself at home." % (current_username))
-        return redirect('/')
+        return redirect('/dashboard')
 
 
-@app.route('/login')
-def user_login():
-    """User login form."""
+@app.route('/switch_user')
+def switch_user():
+    """User login form, when called to switch user."""
 
-    return render_template("login.html")
+    flash("Switch user.")
+    return redirect('/login')
 
 
-@app.route('/login', methods=['POST'])
-def handle_login():
-    """Action for login form; user login to be completed."""
+@app.route('/logout')
+def logout_user():
+    """User logout, automatically called if user switch."""
 
-    current_username = request.form['username']
-    current_password = request.form['password']
-
-    user = User.query.filter_by(username=current_username).one()
-    user_username = user.username
-    user_password = user.password
-
-    if user_username:  # Checks to see if user is registered.
-        if current_password == user_password:  # Checks to see if user password is correct.
-            session['current_user'] = current_username
-            flash("Logged in as %s" % (current_username))
-            return redirect('/')
-        else:
-            flash("Wrong password. Try again!")
-            return redirect('/login')
-    else:
-        flash("Please register.")
-        return redirect('/register')
+    flash("Thanks for playing. You have been logged out.")
+    return redirect('/dashboard')
 
 
 @app.route('/map')
@@ -109,14 +181,14 @@ def display_map():
     return render_template("mapbox.html")
 
 
-@app.route('/dendogram')
+@app.route('/dendrogram')
 def display_dendogram():
-    """Page where user can see dendogram and dendogram data."""
+    """Page where user can see dendrogram and dendrogram data."""
 
-    return render_template("dendogram.html")
+    return render_template("dendrogram.html")
 
 
-@app.route('/dendogram.json')
+@app.route('/dendrogram.json')
 def dendogram_data():
     """Return data from buildings table for use in dendogram, JSON."""
 
@@ -139,10 +211,10 @@ def dendogram_data():
                      "children": tenants_list}
         buildings_list.append(buildings)
 
-    dendogram = {"name": cities.city,
-                 "children": buildings_list}
+    dendrogram = {"name": cities.city,
+                  "children": buildings_list}
 
-    return jsonify(dendogram)
+    return jsonify(dendrogram)
 
 
 @app.route('/bldg_geojson.geojson')

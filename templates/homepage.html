@@ -1,22 +1,41 @@
 {% extends 'base.html' %}
 {% block title %}
 
-    <title>SKYSCRAPERS HOME</title>
+    <title>Dashboard:SkyscraperGO</title>
 
 {% endblock %}
 
 {% block content %}
 
-<div class="site-wrapper">
-    <div class="site-wrapper-inner">
+<div>
+    <img class="icon" src="/static/img/x.png">
+</div>
 
-        <img src="/static/img/x.png">
+<h1>WELCOME CURRENT PLAYER: {{ current_user }}</h1>
+<h1>DASHBOARD</h1>
 
-        <h1>Therese's project.</h1>
+<br>
+<br>
 
-        <h2 class="lead">HOMEPAGE</h2>
+<h1><a href='/map'>MAP</a></h1>
 
-    </div>
+<br>
+<br>
+
+<h1><a href='/buildings'>TABLE VIEWS BUILDINGS</a></h1>
+<h1><a href='/cities'>TABLE VIEWS CITIES</a></h1>
+<br>
+<br>
+
+<h1><a href='/dendrogram'>DENDROGRAM</a></h1>
+
+<div>
+    <a href='/buildings'>See all buildings.</a><br>
+    Search for a building.
+    <form action='/buildings'>
+        <input type="text" name="building" value="building"></input>
+        <input type="submit" value="SEARCH"></input>
+    </form>
 </div>
 
 {% endblock %}

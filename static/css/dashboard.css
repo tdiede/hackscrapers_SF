@@ -1,0 +1,19 @@
+/* Site Dashboard Homepage */
+
+/* style of body */
+
+body {
+    background: #333 url("/static/img/splash.jpg");
+    background-size: cover;
+
+    color: #bbbbbb;
+}
+
+/* The footer always appears at the bottom of the browser window. */
+
+footer {
+    background-color: #111111;
+    position: fixed;
+    bottom: 0;
+    width: 100%;  /* required because fixed position */
+}

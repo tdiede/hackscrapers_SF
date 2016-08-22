@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.css"/>
-    <link rel="stylesheet" href="/static/css/homepage.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="/static/css/site.css">
 
     <!-- my favicon -->
     <link rel="icon" 
@@ -13,7 +14,40 @@
 
 </head>
 <body>
+  <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href='/dashboard'>DASHBOARD</a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
+      <ul class="nav navbar-nav">
+        <li><a href='/buildings'>TABLE VIEWS</a></li>
+        <li><a href='/cities'>CITIES TABLE VIEW</a></li>
+        <li><a href='/filter_flickr'>PHOTOS VIEW</a></li>
+       
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+       
+        <li><a href='/map'>MAP</a></li>
+        <li><a href='/dendrogram'>DENDROGRAM</a></li>
+        <li><a href='/flickr_search'>PHOTOS</a></li>
+        <li><a href='/'>LOGIN</a></li>
+       
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+    </nav>
+  
+  <br>
+  <br>
     <!-- flash messages display here -->
     {% with messages = get_flashed_messages() %}
       {% if messages %}
