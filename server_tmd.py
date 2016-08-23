@@ -116,6 +116,8 @@ def buildings_list():
             if term is None:
                 search_results.remove(None)
             bldgs.append(term)
+        return render_template("building_details.html", bldgs=bldgs)
+
         if len(search_results) == 0:
             flash("Sorry, your search {} returned no results.".format(bldg_search))
             return redirect('/dashboard')
