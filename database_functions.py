@@ -24,7 +24,7 @@ def get_bldg_query(bldg_search):
     search_results = []
 
     for term in search:
-        if term.lower() != "building" and term.lower() != "tower":
+        if term.lower() != "building" and term.lower() != "tower":  # Hope to exclude these terms from search. Better way?
             bldg_match = db.session.query(Building).filter(Building.building_name.ilike('%'+term+'%')).first()
             search_results.append(bldg_match)
 

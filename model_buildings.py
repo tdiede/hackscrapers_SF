@@ -82,7 +82,7 @@ class Tenant(db.Model):
 
 
 ##############################################################################
-# Model definition
+# User
 
 class User(db.Model):
     """Users of web app in database."""
@@ -99,14 +99,68 @@ class User(db.Model):
     password = db.Column(db.String(64))
 
 
+###############################################################################
+# Definition example_data() for testing
+
+def example_data():
+    """Sample data for testing."""
+  # In case this is run more than once, empty out existing data from each table.
+    User.query.delete()
+    Building.query.delete()
+    Tenant.query.delete()
+    City.query.delete()
+
+    user = User(user_id=1,
+                username='me',
+                password='password')
+
+    bldg = Building(bldg_id=1,
+                    place_id='ChIJWdUJpGOAhYARfBVi2TE8daI',
+                    rank=1,
+                    status='Under Construction',
+                    building_name='Salesforce Tower',
+                    city_id=41,
+                    lat=37.7904907,
+                    lng=-122.397125,
+                    height_m=326.1,
+                    height_ft=1070,
+                    floors=61,
+                    completed_yr=2018,
+                    material='composite',
+                    use='office')
+
+    tenant = Tenant(tenant_id=1,
+                    tenant='50 Fremont Center',
+                    place_id='ChIJWdUJpGOAhYARfBVi2TE8daI',
+                    bldg_id=1)
+
+    city = City(city_id=41,
+                rank=40,
+                city='San Francisco',
+                country='United States',
+                bldg_count=109)
+
+    # db.session.add([user, bldg, tenant, city])
+
+    db.session.add(user)
+
+    db.session.add(bldg)
+    # db.session.flush()
+    db.session.add(tenant)
+    # db.session.flush()
+    db.session.add(city)
+
+    db.session.commit()
+
+
 ##############################################################################
 # Helper functions
 
-def connect_to_db(app):
+def connect_to_db(app, db_uri='postgresql:///buildings'):
     """Connect the database to our Flask app."""
 
     # Configure to use our PstgreSQL database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///buildings'
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri  # 'postgresql:///buildings'
     db.app = app
     db.init_app(app)
 

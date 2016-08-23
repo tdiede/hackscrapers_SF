@@ -80,8 +80,6 @@ def flickr_search(bldgs):
 
             page += 1
 
-    return None
-
 
 def save_file(data, bldg, page):
     """Dumps JSON data result into file."""
@@ -89,8 +87,6 @@ def save_file(data, bldg, page):
     f = open('json/'+str(bldg.bldg_id)+'/flckrdata_'+str(bldg.bldg_id)+'_'+str(page)+'.json', 'w')
     json.dump(data, f)
     f.close()
-
-    return None
 
 
 def combine_files(bldgs):
@@ -109,8 +105,6 @@ def combine_files(bldgs):
     f = open('json/flckrdata_bldgs.json', 'w')
     json.dump(photos_data, f)
     f.close()
-
-    return None
 
 
 def load_file():
