@@ -4,6 +4,8 @@ from model_buildings import User, Building
 
 from model_buildings import db
 
+from sqlalchemy.sql import func
+
 
 def add_user(username, password):
     """Called when a new user registers."""
@@ -31,3 +33,11 @@ def get_bldg_query(bldg_search):
     search_results = list(set(search_results))
 
     return search_results
+
+
+def avg_bldg_height():
+    """Queries database for average building height."""
+
+    avg = db.session.query(func.avg(Building.height_ft).label('average'))
+
+    return avg

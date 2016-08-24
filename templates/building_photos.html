@@ -7,20 +7,21 @@
 
 {% block content %}
 
-<div class="site-wrapper">
-    <div class="site-wrapper-inner">
-
-        <h1>Therese's project.</h1>
-
-        <h2 class="lead">BUILDINGS</h2>
-
-        {% for url in urls %}
-            <img src={{ url }} /> {{ url }}
-            <br>
-        {% endfor %}
+<h2>BUILDINGS</h2>
 
 
-    </div>
+
+<div class="jumbotron">
+  <h1>Hello, world!</h1>
+  <p>
+
+{% for url in urls %}
+    <img src={{ url }} /> {{ url }}
+    <br>
+{% endfor %}
+
+  </p>
+  <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
 </div>
 
 {% endblock %}

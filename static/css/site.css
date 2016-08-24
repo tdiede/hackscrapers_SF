@@ -1,10 +1,27 @@
 /* Style */
 
 
+.body {
+    margin: 0;
+    padding: 0;
+}
+
+
 /* Style our navbar. */
 
 .navbar {
-    background-color: #29aaf2; 
+    background-color: #333333;
+    margin-bottom: 0;
+}
+
+
+/* The footer always appears at the bottom of the browser window. */
+
+footer {
+    background-color: #333333;
+    position: fixed;
+    bottom: 0;
+    width: 100%;  /* required because fixed position */
 }
 
 /* Size icon down. */
@@ -12,4 +29,18 @@
 .icon {
     width: 25px;
     height: 25px;
+}
+
+
+/* Mapbox specific items. */
+
+#map-mapbox {
+    height: 800px;
+}
+
+.full-w {
+    padding: 0;
+}
+
+#placeholder {
 }

@@ -3,26 +3,43 @@
 
     <title>Map:SkyscraperGO</title>
 
-    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src='http://code.jquery.com/jquery.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js'></script>
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.css' rel='stylesheet' />
     <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v1.3.0/mapbox-gl-geocoder.js'></script>
     <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v1.3.0/mapbox-gl-geocoder.css' type='text/css' />
 
-    
-    <!-- <link href='../static/css/mapbox.css' rel='stylesheet' /> -->
-
 {% endblock %}
 
 {% block content %}
 
-    <h1>San Francisco</h1>
-    <div id='map-mapbox' style='height: 600px;' />
+<div class='container-fluid'>
+    <div class='row'>
+        <div class='col-md-8 full-w'>
 
-    <form>
-        <input type="submit" value="testing AJAX" id="testing-ajax"></input>
-    </form>
+            <div id='map-mapbox' ></div>
 
-    <script src='../static/js/mapbox.js'></script>
+        </div>
+        <div class='col-md-4 full-w'>
+
+            <div class='jumbotron collapse' id='placeholder'>
+                <h4 id='bldg_name'></h4>
+                <p id='bldg_info'></p>
+                <!-- need to add feature id to href!! -->
+                <p><a class='btn btn-primary btn-sm' data-toggle='collapse' href='/bldg_details' role='button'>Learn more</a></p>
+
+                <div class="bar-chart">
+                    <canvas id="barChart"></canvas>
+                    <div id="barLegend" class="chart-legend"></div>
+                <div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src='../static/js/mapbox_planview.js'></script>
 
 {% endblock %}

@@ -9,13 +9,25 @@
 
 <h1>WELCOME TO SKYSCRAPER GO!<br>COLLECT THEM ALL!</h1>
 
-    <form action='/login' method='POST'>
-        Username: 
-        <input type="text" name="username" value="username"></input>
-        Password:
-        <input type="text" name="password" value="password"></input>
-        <input type="submit" value="Login"></input>
-    </form>
+<div>
+<form action='/login' method='POST'>
+    <div class="input-group input-group-sm">
+      <span class="input-group-addon" id="sizing-addon3">who?</span>
+      <input type="text" class="form-control" placeholder="username" name="username" aria-describedby="sizing-addon3"></input>
+    </div>
+    <br>
+    <div class="input-group input-group-sm">
+      <span class="input-group-addon" id="sizing-addon3">how?</span>
+      <input type="text" class="form-control" placeholder="password" name="password" aria-describedby="sizing-addon3"></input>
+    </div>
+    <br>
+    <div class="input-group input-group-sm">
+      <span class="input-group-addon" id="sizing-addon3">go!</span>
+      <input type="submit" class="form-control" value="Login" aria-describedby="sizing-addon3"></input>
+    </div>
+        
+</form>
+</div>
 
 <h4>New user? Register <a href='/register'>here!</a></h4>
 

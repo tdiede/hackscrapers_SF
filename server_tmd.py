@@ -13,7 +13,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from model_buildings import connect_to_db, db
 from model_buildings import Building, City, User
 
-from database_functions import add_user, get_bldg_query
+from database_functions import add_user, get_bldg_query, avg_bldg_height
 
 import flickr
 
@@ -261,6 +261,43 @@ def bldg_data():
                     "features": features}
 
     return jsonify(bldg_geojson)
+
+
+@app.route('/bldg_barchart.json')
+def bldg_barchart():
+    """Return data from buildings table for barchart."""
+
+    # Only query the building in question (AJAX).
+    bldgs = Building.get()
+
+    # Get buildings average data.
+    avg_bldg_height = avg_bldg_height()
+
+    labels = ["average"]
+
+    for bldg in bldgs:
+
+        labels.append(bldg.building_name)
+
+    datasets = [
+        {
+            label: "Compare to San Francisco average bldg height (this dataset)",
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+            ],
+            borderWidth: 1,
+            data: [avg_bldg_height + " ft", bldg.height_ft + " ft"],
+        }
+    ]
+
+    bldg_barchart = {"labels": labels, "datasets": datasets}
+
+    return jsonify(bldg_barchart)
 
 
 if __name__ == "__main__":

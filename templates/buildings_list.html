@@ -7,17 +7,18 @@
 
 {% block content %}
 
+<div class="jumbotron">
+  <h1>BUILDINGS</h1>
+  <p>
 
-<h1>Therese's project.</h1>
+    {% for bldg in bldgs %}
+        {{ bldg.building_name }} --- {{ bldg.height_ft }} --- {{ bldg.floors }} --- {{ bldg.material }} --- {{ bldg.use }} <br>
+        {{ bldg.lat }} --- {{ bldg.lng }} <br>
+    {% endfor %}
 
-<h2>BUILDINGS</h2>
-<p style="color: black">
-
-{% for bldg in bldgs %}
-    {{ bldg.building_name }} --- {{ bldg.height_ft }} --- {{ bldg.floors }} --- {{ bldg.material }} --- {{ bldg.use }} <br>
-    {{ bldg.lat }} --- {{ bldg.lng }} <br>
-{% endfor %}
-</p>
+  </p>
+  <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+</div>
 
 
 {% endblock %}
