@@ -6,12 +6,24 @@
     padding: 0;
 }
 
+h3 {
+    margin: 10px;
+}
+
+.jumbotron {
+    padding: 0;
+}
+
 
 /* Style our navbar. */
 
 .navbar {
     background-color: #333333;
     margin-bottom: 0;
+}
+
+.glyphicon-remove {
+    cursor: pointer;
 }
 
 
@@ -42,5 +54,3 @@ footer {
     padding: 0;
 }
 
-#placeholder {
-}

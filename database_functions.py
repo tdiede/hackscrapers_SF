@@ -4,7 +4,7 @@ from model_buildings import User, Building
 
 from model_buildings import db
 
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func, desc
 
 
 def add_user(username, password):
@@ -38,6 +38,26 @@ def get_bldg_query(bldg_search):
 def avg_bldg_height():
     """Queries database for average building height."""
 
-    avg = db.session.query(func.avg(Building.height_ft).label('average'))
+    avg = db.session.query(func.avg(Building.height_ft).label('average')).scalar()
 
     return avg
+
+
+# @app.route('/sort_field')
+# def sort_field(field_id):
+#     """Return refreshed list of buildings after sorting field."""
+
+#     sort_field(field_id)
+
+#     return render_template("buildings_list.html", bldgs=bldgs)
+
+
+# def sort_field():
+#     """Orders query results in descending order."""
+
+#     bldgs = db.session.query(Building).all()
+
+#     bldgs_desc = bldgs.order_by(desc(Building.completed_yr))
+#     # bldgs_desc = bldgs.order_by(desc(Building.floors))
+
+#     return bldgs_desc

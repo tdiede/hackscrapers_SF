@@ -55,6 +55,13 @@ def load_buildings():
             lat = 0
             lng = 0
 
+        if height_m == ' ':
+            height_m = None
+        if height_ft == ' ':
+            height_ft = None
+        if completed_yr == ' ':
+            completed_yr = None
+
         bldg = Building(place_id=place_id,
                         rank=rank,
                         status=status,

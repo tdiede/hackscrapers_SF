@@ -42,10 +42,10 @@ CREATE TABLE buildings (
     city_id integer NOT NULL,
     lat double precision,
     lng double precision,
-    height_m character varying,
-    height_ft character varying,
+    height_m double precision,
+    height_ft double precision,
     floors integer,
-    completed_yr character varying,
+    completed_yr integer,
     material character varying(64),
     use character varying(64)
 );
@@ -212,82 +212,82 @@ ALTER TABLE ONLY users ALTER COLUMN user_id SET DEFAULT nextval('users_user_id_s
 --
 
 COPY buildings (bldg_id, place_id, rank, status, building_name, city_id, lat, lng, height_m, height_ft, floors, completed_yr, material, use) FROM stdin;
-1	ChIJm_js2XqAhYAR7kiGuH0qUmY	1	Under Construction	Salesforce Tower	41	37.7893387000000018	-122.392480500000005	326.1	1070	61	2018	composite	office
+1	ChIJY4PC02SAhYAR6ehorQSCczA	1	Under Construction	Salesforce Tower	41	37.7898911999999996	-122.393366400000005	326.100000000000023	1070	61	2018	composite	office
 2	ChIJQ-U7wYqAhYAReKjwcBt6SGU	2	Completed	Transamerica Pyramid	41	37.7951775000000083	-122.402778699999999	260	853	48	1972	composite	office
-3	ChIJIzwEpmSAhYARFA8d3d73WzI	3	Under Construction	181 Fremont	41	37.7896124999999969	-122.395433600000004	244.4	802	54	2017	steel	residential / office
-4	ChIJgVDtsouAhYARvYch9NRWjkI	4	Completed	555 California Street	41	37.7920620000000014	-122.403714800000003	237.4	779	52	1969	steel	office
-5	ChIJEyzd7mGAhYAR5sHoK8CXPMQ	5	Completed	345 California Center	41	37.7926135000000016	-122.400413900000004	211.8	695	48	1986	steel	hotel / office
-6	ChIJLe1rfmOAhYAR2ACDSr1e4Z8	6	Completed	Millennium Tower	41	37.7905057999999983	-122.3961611	196.6	645	58	2009	concrete	residential
-7	ChIJOQ37NHqAhYARkKjCRE6k-hE	7	Completed	One Rincon Hill South Tower	41	37.7857456000000127	-122.392094400000005	184.4	605	54	2008	concrete	residential
+3	ChIJk3URpmSAhYARPR3MFiHP830	3	Under Construction	181 Fremont	41	37.7896124999999969	-122.395433600000004	244.400000000000006	802	54	2017	steel	residential / office
+4	ChIJgVDtsouAhYARvYch9NRWjkI	4	Completed	555 California Street	41	37.7920620000000014	-122.403714800000003	237.400000000000006	779	52	1969	steel	office
+5	ChIJG0BIhWGAhYAR1zO7_lS1lpI	5	Completed	345 California Center	41	37.7926760000000002	-122.400325199999997	211.800000000000011	695	48	1986	steel	hotel / office
+6	ChIJLe1rfmOAhYAR2ACDSr1e4Z8	6	Completed	Millennium Tower	41	37.7905057999999983	-122.3961611	196.599999999999994	645	58	2009	concrete	residential
+7	ChIJOQ37NHqAhYARkKjCRE6k-hE	7	Completed	One Rincon Hill South Tower	41	37.7857456000000127	-122.392094400000005	184.400000000000006	605	54	2008	concrete	residential
 8	ChIJKRZgfWGAhYARt1bslE_PWQ8	8	Completed	101 California Street	41	37.7928897999999975	-122.397886	183	600	48	1982	steel	office
 9	ChIJWdUJpGOAhYARfBVi2TE8daI	9	Completed	50 Fremont Center	41	37.7904906999999994	-122.397125000000003	183	600	43	1985	steel	office
-10	ChIJdwEVAp6AhYARUXTwVWaVwmU	10	Completed	Chevron Tower	41	37.772160300000003	-122.418775199999999	174.6	573	40	1975	steel	office
-11	ChIJARA0SmGAhYARaguL-w1luao	11	Completed	Four Embarcadero Center	41	37.7946020999999988	-122.396014899999997	173.7	570	45	1984	steel	office
-12	ChIJG4kUEWGAhYARtQwQFYlJCio	12	Completed	One Embarcadero Center	41	37.7950111000000035	-122.397869600000007	173.4	569	45	1970	steel	office
-13	ChIJo7HdhWKAhYARp5lDOzOnnK0	13	Completed	44 Montgomery	41	37.789406900000003	-122.401067299999994	172.3	565	43	1967	steel	office
-14	ChIJA5Rk94qAhYARL-g2KXuYMh4	14	Completed	Spear Tower	41	37.7933146000000022	-122.394119399999994	172	564	42	1976	steel	office
+10	ChIJdwEVAp6AhYARUXTwVWaVwmU	10	Completed	Chevron Tower	41	37.772160300000003	-122.418775199999999	174.599999999999994	573	40	1975	steel	office
+11	ChIJARA0SmGAhYARaguL-w1luao	11	Completed	Four Embarcadero Center	41	37.7946020999999988	-122.396014899999997	173.699999999999989	570	45	1984	steel	office
+12	ChIJG4kUEWGAhYARtQwQFYlJCio	12	Completed	One Embarcadero Center	41	37.7950111000000035	-122.397869600000007	173.400000000000006	569	45	1970	steel	office
+13	ChIJo7HdhWKAhYARp5lDOzOnnK0	13	Completed	44 Montgomery	41	37.789406900000003	-122.401067299999994	172.300000000000011	565	43	1967	steel	office
+14	ChIJ2cuEqGaAhYARSOGx1G6DtvU	14	Completed	Spear Tower	41	37.7932746999999978	-122.394319899999999	172	564	42	1976	steel	office
 15	ChIJf9l5BkT3MhUR9bgdwkcE2xo	15	Completed	One Sansome Street	41	37.7904369999999972	-122.401347999999999	168	551	43	1984	steel	office
 16	ChIJg9dyCnyAhYARWltNAyFiLnM	16	Completed	One Rincon Hill North Tower	41	37.7852054000000024	-122.395799100000005	165	541	45	2014	steel	residential
 17	ChIJgSWpS2KAhYARXyMEvJK1UKM	17	Completed	Shaklee Terrace Building	41	37.7913718000000074	-122.398783399999999	164	538	38	1982	steel	office
-18	ChIJ4RVMW2KAhYARuLxcGkxzFoo	18	Completed	First Market Tower	41	37.7905713999999975	-122.399205499999994	161.2	529	38	1972	steel	office
-19	ChIJw-fnNoiAhYARkYz7cP25udk	18	Completed	McKesson Plaza	41	37.7888701999999981	-122.402581699999999	161.2	529	38	1969	steel	office
-20	ChIJc5SPsWOAhYARY9kqZIk2HUo	20	Completed	425 Market Street	41	37.7913004999999984	-122.398135800000006	159.7	524	38	1973	steel	office
-21	ChIJK5Rpz39hmoARKjcL9JTUw2E	21	Completed	Telesis Tower	41	37.7892050000000026	-122.403442200000001	152.4	500	38	1982	steel	office
-22	ChIJhxhwkomAhYARJLhTkLrKoLo	22	Completed	333 Bush Street	41	37.7906653000000006	-122.403176999999999	150.9	495	43	1986	steel	residential / office
-23	ChIJeSJHoI-AhYARembxZUVcNEk	23	Completed	Hilton San Francisco Union Square	41	37.7856280000000027	-122.410385000000005	150.3	493	46	1971	steel	hotel
+18	ChIJ4RVMW2KAhYARuLxcGkxzFoo	18	Completed	First Market Tower	41	37.7905713999999975	-122.399205499999994	161.199999999999989	529	38	1972	steel	office
+19	ChIJw-fnNoiAhYARkYz7cP25udk	18	Completed	McKesson Plaza	41	37.7888701999999981	-122.402581699999999	161.199999999999989	529	38	1969	steel	office
+20	ChIJc5SPsWOAhYARY9kqZIk2HUo	20	Completed	425 Market Street	41	37.7913004999999984	-122.398135800000006	159.699999999999989	524	38	1973	steel	office
+21	ChIJK5Rpz39hmoARKjcL9JTUw2E	21	Completed	Telesis Tower	41	37.7892050000000026	-122.403442200000001	152.400000000000006	500	38	1982	steel	office
+22	ChIJhxhwkomAhYARJLhTkLrKoLo	22	Completed	333 Bush Street	41	37.7906653000000006	-122.403176999999999	150.900000000000006	495	43	1986	steel	residential / office
+23	ChIJeSJHoI-AhYARembxZUVcNEk	23	Completed	Hilton San Francisco Union Square	41	37.7856280000000027	-122.410385000000005	150.300000000000011	493	46	1971	steel	hotel
 24	ChIJka2ABnt-j4AR71gZVOGofXw	24	Completed	Pacific Gas & Electric Building	41	37.8013787999999877	-122.404522099999994	150	492	34	1971	steel	office
-25	ChIJMz9haGGAhYAR-HJdMe4mAqg	25	Completed	50 California Street	41	37.7940729000000033	-122.397424099999995	148.4	487	37	1972	steel	office
-26	ChIJfyky1mKAhYAR251Q943yzfE	26	Completed	555 Mission Street	41	37.7885987000000014	-122.398835000000005	148.4	487	33	2008	steel	office
+25	ChIJb3G2aGGAhYARA7BvZhAo6cg	25	Completed	50 California Street	41	37.7940729000000033	-122.397424099999995	148.400000000000006	487	37	1972	steel	office
+26	ChIJfyky1mKAhYARMe-hYlNs-kY	26	Completed	555 Mission Street	41	37.7885987000000014	-122.398835000000005	148.400000000000006	487	33	2008	steel	office
 27	ChIJFzmL9IeAhYARH75pRwnV0sk	27	Completed	St. Regis San Francisco	41	37.7862709999999993	-122.401452000000006	147.5	484	42	2005	concrete	residential / hotel
-28	ChIJh57yKWKAhYARhFKmg6nNvcU	28	Completed	100 Pine Center	41	37.7926074000000014	-122.398984600000006	145.1	476	34	1972	steel	office
+28	ChIJecHmK2KAhYARWSwxRc4hKC0	28	Completed	100 Pine Center	41	37.7925427999999997	-122.3988564	145.099999999999994	476	34	1972	steel	office
 29	ChIJNUaYmGOAhYARH8yGnLTcfvI	29	Completed	45 Fremont Center	41	37.7913209000000023	-122.397133699999998	145	476	34	1979	steel	office
 30	ChIJexu7D36AhYARfGmEs3pNQIM	30	Completed	333 Market Building	41	37.7918630000000135	-122.397578899999999	144	472	33	1979	steel	office
 31	ChIJWyGdpouAhYARbToYS1QXQYQ	31	Completed	650 California Street	41	37.792862999999997	-122.405185000000003	142	466	33	1964	steel	office
-32	ChIJgQJIqnuAhYARepV1YXAK_BI	32	Under Construction	340 Fremont Street	41	37.7871884999999992	-122.393137400000001	134.1	440	40	2016	concrete	residential
+32	ChIJgQJIqnuAhYARepV1YXAK_BI	32	Under Construction	340 Fremont Street	41	37.7871884999999992	-122.393137400000001	134.099999999999994	440	40	2016	concrete	residential
 33	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33	Completed	One California	41	37.7899507999999997	-122.402046400000003	133.5	438	32	1969	steel	office
-34	ChIJne1RNoaAhYARQ0LNBX6AFyQ	34	Completed	San Francisco Marriott	41	37.7851379999999892	-122.4041268	132.9	436	39	1989	steel	hotel
-35	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35	Completed	140 New Montgomery Street	41	37.7884868000000012	-122.401392799999996	132.7	435	26	1925	steel	residential / hotel
-36	ChIJkYbnH4qAhYARE9q5MOy2Sp0	36	Completed	Russ Building	41	37.7910145000000028	-122.402896100000007	132.6	435	32	1927	steel	office
-37	ChIJbclv9IqAhYARsIAAErIC5eY	37	Completed	505 Montgomery	41	37.7940260000000023	-122.403135199999994	129.5	425	24	1988	steel	office
+34	ChIJne1RNoaAhYARQ0LNBX6AFyQ	34	Completed	San Francisco Marriott	41	37.7851379999999892	-122.4041268	132.900000000000006	436	39	1989	steel	hotel
+35	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35	Completed	140 New Montgomery Street	41	37.7884868000000012	-122.401392799999996	132.699999999999989	435	26	1925	steel	residential / hotel
+36	ChIJkYbnH4qAhYARE9q5MOy2Sp0	36	Completed	Russ Building	41	37.7910145000000028	-122.402896100000007	132.599999999999994	435	32	1927	steel	office
+37	ChIJmQaMSYqAhYAR66oZa_1cJmc	37	Completed	505 Montgomery	41	37.7938692999999972	-122.403328500000001	129.5	425	24	1988	steel	office
 38	ChIJ3Qt5xnqAhYARuoJLmmzaTIY	38	Completed	The Infinity II	41	37.7894261	-122.391225000000006	128	420	41	2009	concrete	residential
 39	ChIJfyky1mKAhYARvsSatEOkBDo	39	Completed	JPMorgan Chase Building	41	37.7885849999999976	-122.398572000000001	128	420	31	2002	steel	office
-40	ChIJW4wwR4mAhYARDSUTkiCTdYY	40	Completed	The Paramount	41	37.7892683000000034	-122.405836600000001	127.4	418	40	2002	precast	residential
-41	ChIJVcNxG5qAhYAR_MvGwepvjZE	41	Completed	Providian Financial Building	41	37.7819213000000005	-122.418379799999997	127	417	30	1983	steel	office
+40	ChIJ-bVolb-AhYARGoGnmRHh0Jw	40	Completed	The Paramount	41	37.7881149999999977	-122.425600500000002	127.400000000000006	418	40	2002	precast	residential
+41	ChIJVcNxG5qAhYAR_MvGwepvjZE	41	Completed	Providian Financial Building	41	37.7820212000000026	-122.418486400000006	127	417	30	1983	steel	office
 42	ChIJj5R7F2GAhYARubN1VnuNZZM	42	Completed	Three Embarcadero Center	41	37.7951890000000006	-122.397354199999995	126	413	31	1976	steel	office
 43	ChIJZ76fAGGAhYARX3kjrSwKu8Q	42	Completed	Two Embarcadero Center	41	37.794976400000003	-122.398935600000002	126	413	31	1974	steel	office
-44	ChIJUcpwj2KAhYAR7luCzfbMtVk	44	Completed	595 Market Street	41	37.7892815000000013	-122.400859100000005	125	410	30	1979	concrete	office
+44	ChIJh4kphGKAhYARaEyp_EdxDr0	44	Completed	595 Market Street	41	37.7891689	-122.400677000000002	125	410	30	1979	concrete	office
 45	ChIJx8Jssp6AhYAR95lVPh0wmwU	45	Completed	100 Van Ness	41	37.7767309999999981	-122.419251399999993	122	400	30	1974	steel	residential
-46	ChIJ0x_HRXqAhYAROhkrk7dEktA	46	Under Construction	399 Fremont	41	37.7870909999999967	-122.392082500000001	121.9	400	42	2016	concrete	residential
-47	ChIJLTY_UGCAhYARqvWB2GQTfns	47	Completed	One Maritime Plaza	41	37.7955356999999879	-122.399159699999998	121.3	398	25	1967	steel	office
+46	ChIJ0x_HRXqAhYAROhkrk7dEktA	46	Under Construction	399 Fremont	41	37.7870909999999967	-122.392082500000001	121.900000000000006	400	42	2016	concrete	residential
+47	ChIJLTY_UGCAhYARqvWB2GQTfns	47	Completed	One Maritime Plaza	41	37.7955356999999879	-122.399159699999998	121.299999999999997	398	25	1967	steel	office
 48	ChIJ0zD-nWKAhYARkEidg1fyAoQ	48	Completed	33 New Montgomery	41	37.7884868000000012	-122.401392799999996	116.5	382	21	1986	steel	office
-49	ChIJLwiwJWOAhYARGaOiwPOYeJo	49	Completed	535 Mission Street	41	37.7888897999999998	-122.398103599999999	115.4	379	26	2015	composite	office
-50	ChIJcZaNPWKAhYAReio9zTi-GAE	50	Completed	Shell Building	41	37.7915733000000031	-122.399971899999997	115.2	378	29	1929	steel	office
-51	ChIJa-JlzmOAhYAR7rCaTWDGv6Y	51	Completed	388 Market Street	41	37.7922753000000071	-122.398032599999993	114.3	375	26	1985	steel	residential / office
-52	ChIJh2VAamKAhYARsLFItXv13uk	52	Completed	222 Second Street	41	37.7884742999999972	-122.398716199999996	112.8	370	26	2015	steel/concrete	office
+49	ChIJLwiwJWOAhYARGaOiwPOYeJo	49	Completed	535 Mission Street	41	37.7888897999999998	-122.398103599999999	115.400000000000006	379	26	2015	composite	office
+50	ChIJcZaNPWKAhYAReio9zTi-GAE	50	Completed	Shell Building	41	37.7915733000000031	-122.399971899999997	115.200000000000003	378	29	1929	steel	office
+51	ChIJa-JlzmOAhYAR0Gco7AjrQvM	51	Completed	388 Market Street	41	37.7922723000000005	-122.398030700000007	114.299999999999997	375	26	1985	steel	residential / office
+52	ChIJh2VAamKAhYARsLFItXv13uk	52	Completed	222 Second Street	41	37.7884742999999972	-122.398716199999996	112.799999999999997	370	26	2015	steel/concrete	office
 53	ChIJH_aEqGaAhYARJ7KJDgLsUCc	53	Completed	Steuart Tower	41	37.793046099999998	-122.394421600000001	111	364	27	1976	steel	office
 54	ChIJZ76fAGGAhYARXGFhbxFtl2g	54	Completed	101 Second Street	41	37.7881106999999972	-122.399398300000001	108	354	26	1999	steel	office
-55	ChIJ3Qt5xnqAhYARuoJLmmzaTIY	55	Completed	The Infinity I	41	37.7894261	-122.391225000000006	106.7	350	35	2008	concrete	office
-56	ChIJjc-4touAhYAR4ofEQYpyAnc	56	Completed	601 California Street	41	37.7924870000000013	-122.404666000000006	106.4	349	22	1960	steel	office
-57	ChIJmVeqb_WAhYARMcQ6BEg4HGM	57	Completed	Bridgeview	41	37.7980426000000023	-122.402438500000002	101.4	333	26	2002	concrete	residential / retail
-58	ChIJo6k9lmKAhYAR9894kyvnvxU	58	Completed	55 Second Street	41	37.7888090000000005	-122.400362000000001	100.6	330	25	2002	steel	office
-59	ChIJC2bxnWGAhYARZ8hc-3cWc3E	59	Completed	150 California Street	41	37.7936462999999989	-122.398510099999996	100.6	330	23	1999	steel	office
+55	ChIJ3Qt5xnqAhYARuoJLmmzaTIY	55	Completed	The Infinity I	41	37.7894261	-122.391225000000006	106.700000000000003	350	35	2008	concrete	office
+56	ChIJjc-4touAhYARGto5PuR2B58	56	Completed	601 California Street	41	37.7923642000000015	-122.404858700000005	106.400000000000006	349	22	1960	steel	office
+57	ChIJmVeqb_WAhYARMcQ6BEg4HGM	57	Completed	Bridgeview	41	37.7980426000000023	-122.402438500000002	101.400000000000006	333	26	2002	concrete	residential / retail
+58	ChIJo6k9lmKAhYAR9894kyvnvxU	58	Completed	55 Second Street	41	37.7888090000000005	-122.400362000000001	100.599999999999994	330	25	2002	steel	office
+59	ChIJC2bxnWGAhYARelPMwWW2G_E	59	Completed	150 California Street	41	37.7936447000000086	-122.398508100000001	100.599999999999994	330	23	1999	steel	office
 60	ChIJZXDI4YmAhYARnAMpXX7zBpU	60	Completed	225 Bush Street	41	37.7909886999999998	-122.401337400000003	100	328	22	1922	steel	office
-61	ChIJRV0ZxomAhYAR44NGV4Xa-08	61	Completed	Hunter-Dulin Building	41	37.789816799999997	-122.402550199999993	98.3	322	22	1926	steel	office
+61	ChIJRV0ZxomAhYAR44NGV4Xa-08	61	Completed	Hunter-Dulin Building	41	37.789816799999997	-122.402550199999993	98.2999999999999972	322	22	1926	steel	office
 62	ChIJawZVGD1-j4ARCe5z3nWjEGY	62	Completed	The Summit	41	37.7605404999999976	-122.421844500000006	96	315	32	1965	concrete	residential
-63	ChIJf17NcIyAhYARD9lFyiQWVcg	63	Completed	Ritz Carlton Residence Club	41	37.7882674000000023	-122.403267999999997	95.1	312	24	1889	steel	residential / hotel
-64	ChIJe_Jd35qAhYAREiEefhA9oZU	64	Completed	McAllister Tower Apartments	41	37.7809461000000013	-122.4143404	94.5	310	28	1930	steel	residential
+63	ChIJf17NcIyAhYARD9lFyiQWVcg	63	Completed	Ritz Carlton Residence Club	41	37.7882674000000023	-122.403267999999997	95.0999999999999943	312	24	1889	steel	residential / hotel
+64	ChIJtxQY35qAhYARc6Rpc_IHhW8	64	Completed	McAllister Tower Apartments	41	37.7810605000000024	-122.413902100000001	94.5	310	28	1930	steel	residential
 65	ChIJBfmZpoyAhYAR3d-DlZfDVco	65	Completed	PG&E Headquarters	41	37.7940107000000012	-122.407428600000003	93.5	307	18	1925	steel	office
-66	ChIJvxanInuAhYARwbG9SVp-q3w	66	Completed	299 Fremont	41	37.7883786000000015	-122.393667699999995	91.4	300	25	2016	concrete	residential
-67	ChIJF-l7ZYiAhYARKE6JvZNUJPQ	67	Completed	Central Tower	41	37.7872600999999975	-122.403643799999998	90.8	298	21	1938	steel	office
-68	ChIJXy_Z1ImAhYARJGOdimh_r6Y	68	Completed	Hobart Building	41	37.7894639000000012	-122.401621000000006	86.9	285	21	1914	steel	office
-69	ChIJcWfgM2CAhYARD19rCAPLhVU	69	Completed	Le Meridien San Francisco	41	37.7947028999999972	-122.400803100000005	82.9	272	25	1988	steel	hotel
-70	ChIJc5SPsWOAhYARduCXE-uUbKE	70	Completed	Ferry Building	41	37.7958049000000003	-122.393482199999994	74.7	245	12	1898	steel	office / retail
-71	ChIJawzOqISAhYARUySdEKzydUI	71	Completed	San Francisco Federal Building	41	37.7791820999999999	-122.412217900000002	71.3	234	18	2007	concrete	office
-72	0	72	Under Construction	San Francisco International Airport FAA Airport Traffic Control Tower (ATCT)	41	0	0	67.4	221	12	2015	steel/concrete	air traffic control tower
+66	ChIJvxanInuAhYARwbG9SVp-q3w	66	Completed	299 Fremont	41	37.7884255999999965	-122.393714099999997	91.4000000000000057	300	25	2016	concrete	residential
+67	ChIJF-l7ZYiAhYARKE6JvZNUJPQ	67	Completed	Central Tower	41	37.7872600999999975	-122.403643799999998	90.7999999999999972	298	21	1938	steel	office
+68	ChIJXy_Z1ImAhYARJGOdimh_r6Y	68	Completed	Hobart Building	41	37.7894639000000012	-122.401621000000006	86.9000000000000057	285	21	1914	steel	office
+69	ChIJcWfgM2CAhYARD19rCAPLhVU	69	Completed	Le Meridien San Francisco	41	37.7947028999999972	-122.400803100000005	82.9000000000000057	272	25	1988	steel	hotel
+70	ChIJWTGPjmaAhYARnYsfhjHT8JM	70	Completed	Ferry Building	41	37.7961831000000004	-122.393700100000004	74.7000000000000028	245	12	1898	steel	office / retail
+71	ChIJawzOqISAhYARUySdEKzydUI	71	Completed	San Francisco Federal Building	41	37.7791820999999999	-122.412217900000002	71.2999999999999972	234	18	2007	concrete	office
+72	0	72	Under Construction	San Francisco International Airport FAA Airport Traffic Control Tower (ATCT)	41	0	0	67.4000000000000057	221	12	2015	steel/concrete	air traffic control tower
 73	ChIJAQAAQIyAhYARRN3yIQG4hd4	73	Completed	Coit Tower	41	37.802394900000003	-122.405822200000003	64	210	13	1933	concrete	observation
-74	ChIJ4-0AFn-AhYAR8U3tZOE1RFs	74	Vision	Echelon on Rincon Hill	41	37.7805399999999878	-122.397255999999999	 	 	42	 	concrete	residential
-75	ChIJGYvZq42AhYAR0W1s4P4V9c8	75	Completed	The InterContinental San Francisco	41	37.7915050999999877	-122.410458199999994	 	 	40	2008	concrete	hotel
-76	ChIJj3bDaoiAhYAR1w2LBOLmKlw	76	Completed	Humboldt Bank Building	41	37.787821000000001	-122.402942300000007	 	 	19	1908	steel	office
+74	0	74	Vision	Echelon on Rincon Hill	41	0	0	\N	\N	42	\N	concrete	residential
+75	ChIJF1lX2oaAhYARuyWPqjE12Oo	75	Completed	The InterContinental San Francisco	41	37.7819922999999989	-122.4048813	\N	\N	40	2008	concrete	hotel
+76	ChIJj3bDaoiAhYAR1w2LBOLmKlw	76	Completed	Humboldt Bank Building	41	37.787821000000001	-122.402942300000007	\N	\N	19	1908	steel	office
 \.
 
 
@@ -518,29 +518,29 @@ SELECT pg_catalog.setval('cities_city_id_seq', 200, true);
 --
 
 COPY tenants (tenant_id, tenant, place_id, bldg_id) FROM stdin;
-1	50 Fremont Center	ChIJm_js2XqAhYAR7kiGuH0qUmY	1
-2	Transbay Temporary Terminal Station	ChIJm_js2XqAhYAR7kiGuH0qUmY	1
-3	Transamerica Pyramid	ChIJQ-U7wYqAhYAReKjwcBt6SGU	2
-4	Millennium Tower San Francisco	ChIJIzwEpmSAhYARFA8d3d73WzI	3
-5	Ruth Krishnan, San Francisco Real Estate	ChIJIzwEpmSAhYARFA8d3d73WzI	3
-6	AIA San Francisco	ChIJIzwEpmSAhYARFA8d3d73WzI	3
-7	Swiftbot Inc.	ChIJIzwEpmSAhYARFA8d3d73WzI	3
-8	Temporary Transbay Terminal	ChIJIzwEpmSAhYARFA8d3d73WzI	3
-9	Jay Paul Co	ChIJIzwEpmSAhYARFA8d3d73WzI	3
-10	Somo	ChIJIzwEpmSAhYARFA8d3d73WzI	3
-11	Waysgo Corporation.	ChIJIzwEpmSAhYARFA8d3d73WzI	3
-12	KickLabs	ChIJIzwEpmSAhYARFA8d3d73WzI	3
-13	Urban Fabrick	ChIJIzwEpmSAhYARFA8d3d73WzI	3
-14	Gunshot Digital	ChIJIzwEpmSAhYARFA8d3d73WzI	3
-15	Heller Manus Architects	ChIJIzwEpmSAhYARFA8d3d73WzI	3
-16	Podio	ChIJIzwEpmSAhYARFA8d3d73WzI	3
-17	PeopleConnect San Francisco Recruiters	ChIJIzwEpmSAhYARFA8d3d73WzI	3
-18	Voices.com	ChIJIzwEpmSAhYARFA8d3d73WzI	3
-19	Lifesta, Inc.	ChIJIzwEpmSAhYARFA8d3d73WzI	3
-20	Justinmind	ChIJIzwEpmSAhYARFA8d3d73WzI	3
-21	555 California Street Building	ChIJgVDtsouAhYARvYch9NRWjkI	4
-22	Central Parking	ChIJEyzd7mGAhYAR5sHoK8CXPMQ	5
-23	Cushman & Wakefield Inc	ChIJEyzd7mGAhYAR5sHoK8CXPMQ	5
+1	Millennium Tower San Francisco	ChIJY4PC02SAhYAR6ehorQSCczA	1
+2	50 Fremont Center	ChIJY4PC02SAhYAR6ehorQSCczA	1
+3	Temporary Transbay Terminal	ChIJY4PC02SAhYAR6ehorQSCczA	1
+4	Transamerica Pyramid	ChIJQ-U7wYqAhYAReKjwcBt6SGU	2
+5	Ruth Krishnan, San Francisco Real Estate	ChIJk3URpmSAhYARPR3MFiHP830	3
+6	Swiftbot Inc.	ChIJk3URpmSAhYARPR3MFiHP830	3
+7	Brilliant You	ChIJk3URpmSAhYARPR3MFiHP830	3
+8	Jay Paul Co	ChIJk3URpmSAhYARPR3MFiHP830	3
+9	Somo	ChIJk3URpmSAhYARPR3MFiHP830	3
+10	KickLabs	ChIJk3URpmSAhYARPR3MFiHP830	3
+11	Waysgo Corporation.	ChIJk3URpmSAhYARPR3MFiHP830	3
+12	Gunshot Digital	ChIJk3URpmSAhYARPR3MFiHP830	3
+13	Podio	ChIJk3URpmSAhYARPR3MFiHP830	3
+14	Voices.com	ChIJk3URpmSAhYARPR3MFiHP830	3
+15	TripAlertz	ChIJk3URpmSAhYARPR3MFiHP830	3
+16	PeopleConnect San Francisco Recruiters	ChIJk3URpmSAhYARPR3MFiHP830	3
+17	Web Chalet, Inc.	ChIJk3URpmSAhYARPR3MFiHP830	3
+18	Heller Manus Architects	ChIJk3URpmSAhYARPR3MFiHP830	3
+19	Justinmind	ChIJk3URpmSAhYARPR3MFiHP830	3
+20	Razoo	ChIJk3URpmSAhYARPR3MFiHP830	3
+21	Lifesta, Inc.	ChIJk3URpmSAhYARPR3MFiHP830	3
+22	555 California Street Building	ChIJgVDtsouAhYARvYch9NRWjkI	4
+23	Central Parking	ChIJG0BIhWGAhYAR1zO7_lS1lpI	5
 24	Millennium Tower San Francisco	ChIJLe1rfmOAhYAR2ACDSr1e4Z8	6
 25	One Rincon Hill	ChIJOQ37NHqAhYARkKjCRE6k-hE	7
 26	101 California	ChIJKRZgfWGAhYARt1bslE_PWQ8	8
@@ -554,309 +554,312 @@ COPY tenants (tenant_id, tenant, place_id, bldg_id) FROM stdin;
 34	Starbucks	ChIJo7HdhWKAhYARp5lDOzOnnK0	13
 35	First Republic Bank	ChIJo7HdhWKAhYARp5lDOzOnnK0	13
 36	Nichols Research Inc	ChIJo7HdhWKAhYARp5lDOzOnnK0	13
-37	Montgomery St. Station	ChIJo7HdhWKAhYARp5lDOzOnnK0	13
-38	One Market Garage	ChIJA5Rk94qAhYARL-g2KXuYMh4	14
-39	One Market Street	ChIJA5Rk94qAhYARL-g2KXuYMh4	14
-40	One Sansome Property LLC	ChIJf9l5BkT3MhUR9bgdwkcE2xo	15
-41	Premier Business Centers	ChIJf9l5BkT3MhUR9bgdwkcE2xo	15
-42	One Rincon Hill	ChIJg9dyCnyAhYARWltNAyFiLnM	16
-43	303 Second Street Plaza	ChIJg9dyCnyAhYARWltNAyFiLnM	16
-44	Shaklee Terraces	ChIJgSWpS2KAhYARXyMEvJK1UKM	17
-45	Office Building	ChIJ4RVMW2KAhYARuLxcGkxzFoo	18
-46	Millennium Tower San Francisco	ChIJ4RVMW2KAhYARuLxcGkxzFoo	18
-47	Towers Watson	ChIJ4RVMW2KAhYARuLxcGkxzFoo	18
-48	McKesson Plaza	ChIJw-fnNoiAhYARkYz7cP25udk	19
-49	McKesson Corporation	ChIJw-fnNoiAhYARkYz7cP25udk	19
-50	425 Market Street Building	ChIJc5SPsWOAhYARY9kqZIk2HUo	20
-51	One Montgomery Tower	ChIJK5Rpz39hmoARKjcL9JTUw2E	21
-52	333 Bush Street	ChIJhxhwkomAhYARJLhTkLrKoLo	22
-53	Hilton San Francisco Union Square	ChIJeSJHoI-AhYARembxZUVcNEk	23
-54	PG&E Pacific Energy Center	ChIJka2ABnt-j4AR71gZVOGofXw	24
-55	Pacific Gas and Electric Company	ChIJka2ABnt-j4AR71gZVOGofXw	24
-56	Pacific Gas and Electric Company Customer Service Office	ChIJka2ABnt-j4AR71gZVOGofXw	24
-57	Pacific Gas & Electric Co	ChIJka2ABnt-j4AR71gZVOGofXw	24
-58	Pacific Gas and Electric Company	ChIJka2ABnt-j4AR71gZVOGofXw	24
-59	Pacific Gas and Electric Company	ChIJka2ABnt-j4AR71gZVOGofXw	24
-60	Pacific Gas & Electric Co	ChIJka2ABnt-j4AR71gZVOGofXw	24
-61	Regus San Francisco	ChIJMz9haGGAhYAR-HJdMe4mAqg	25
-62	Bank of America Financial Center	ChIJMz9haGGAhYAR-HJdMe4mAqg	25
-63	Chipotle Mexican Grill	ChIJMz9haGGAhYAR-HJdMe4mAqg	25
-64	OfficeTeam	ChIJMz9haGGAhYAR-HJdMe4mAqg	25
-65	Robert Half Legal	ChIJMz9haGGAhYAR-HJdMe4mAqg	25
-66	Holland & Knight LLP	ChIJMz9haGGAhYAR-HJdMe4mAqg	25
-67	YMCA	ChIJMz9haGGAhYAR-HJdMe4mAqg	25
-68	Recology	ChIJMz9haGGAhYAR-HJdMe4mAqg	25
-69	Piper Jaffray & Co	ChIJMz9haGGAhYAR-HJdMe4mAqg	25
-70	Eichstaedt & Lervold, LLP	ChIJMz9haGGAhYAR-HJdMe4mAqg	25
-71	The Creative Group	ChIJMz9haGGAhYAR-HJdMe4mAqg	25
-72	Nossaman LLP	ChIJMz9haGGAhYAR-HJdMe4mAqg	25
-73	Woodruff-Sawyer & Co	ChIJMz9haGGAhYAR-HJdMe4mAqg	25
-74	Kikkoman Sales USA Inc	ChIJMz9haGGAhYAR-HJdMe4mAqg	25
-75	Robert Half Technology	ChIJMz9haGGAhYAR-HJdMe4mAqg	25
-76	Nob Hill Notary Mobile & In-House Services	ChIJMz9haGGAhYAR-HJdMe4mAqg	25
-77	FirstService Residential	ChIJMz9haGGAhYAR-HJdMe4mAqg	25
-78	SAS Financial Advisors, LLC	ChIJMz9haGGAhYAR-HJdMe4mAqg	25
-79	Accountemps	ChIJMz9haGGAhYAR-HJdMe4mAqg	25
-80	Medley Partners LLC	ChIJMz9haGGAhYAR-HJdMe4mAqg	25
-81	Standard Parking	ChIJfyky1mKAhYAR251Q943yzfE	26
-82	Deloitte	ChIJfyky1mKAhYAR251Q943yzfE	26
-83	Silicon Valley Bank	ChIJfyky1mKAhYAR251Q943yzfE	26
-84	Chase Bank	ChIJfyky1mKAhYAR251Q943yzfE	26
-85	HEYDAY - Organic Cafe and Bakery	ChIJfyky1mKAhYAR251Q943yzfE	26
-86	Novak Druce Connolly Bove + Quigg LLP	ChIJfyky1mKAhYAR251Q943yzfE	26
-87	A.T. Kearney, Inc.	ChIJfyky1mKAhYAR251Q943yzfE	26
-88	CNA San Francisco Branch	ChIJfyky1mKAhYAR251Q943yzfE	26
-89	Tishman Speyer	ChIJfyky1mKAhYAR251Q943yzfE	26
-90	Financial Technology Partners	ChIJfyky1mKAhYAR251Q943yzfE	26
-91	BNY Mellon Wealth Management San Francisco	ChIJfyky1mKAhYAR251Q943yzfE	26
-92	Strata Apartments	ChIJfyky1mKAhYAR251Q943yzfE	26
-93	DLA Piper	ChIJfyky1mKAhYAR251Q943yzfE	26
-94	Gibson Dunn & Crutcher	ChIJfyky1mKAhYAR251Q943yzfE	26
-95	CodeFuel	ChIJfyky1mKAhYAR251Q943yzfE	26
-96	Gibson Dunn & Crutcher: Cussen Deborah A	ChIJfyky1mKAhYAR251Q943yzfE	26
-97	Allianz Global Investors	ChIJfyky1mKAhYAR251Q943yzfE	26
-98	Crowley Theresa	ChIJfyky1mKAhYAR251Q943yzfE	26
-99	Vinson & Elkins LLP	ChIJfyky1mKAhYAR251Q943yzfE	26
-100	DLA Piper Us LLP: Sekimura Gerald	ChIJfyky1mKAhYAR251Q943yzfE	26
-101	The St. Regis San Francisco	ChIJFzmL9IeAhYARH75pRwnV0sk	27
-102	100 Pine	ChIJh57yKWKAhYARhFKmg6nNvcU	28
-103	Shorenstein Company	ChIJNUaYmGOAhYARH8yGnLTcfvI	29
-104	50 Fremont Center	ChIJNUaYmGOAhYARH8yGnLTcfvI	29
-105	Wells Fargo Insurance Services	ChIJNUaYmGOAhYARH8yGnLTcfvI	29
-106	333 Market	ChIJexu7D36AhYARfGmEs3pNQIM	30
-107	Wells Fargo Bank	ChIJexu7D36AhYARfGmEs3pNQIM	30
-108	Russell's Convenience	ChIJexu7D36AhYARfGmEs3pNQIM	30
-109	Ace Parking	ChIJexu7D36AhYARfGmEs3pNQIM	30
-110	650 California St LLC	ChIJWyGdpouAhYARbToYS1QXQYQ	31
-111	Thornton Tomasetti	ChIJWyGdpouAhYARbToYS1QXQYQ	31
-112	Credit Suisse AG (Investment Banking)	ChIJWyGdpouAhYARbToYS1QXQYQ	31
-113	AppDirect	ChIJWyGdpouAhYARbToYS1QXQYQ	31
-114	340 Fremont Apartments	ChIJgQJIqnuAhYARepV1YXAK_BI	32
-115	One Medical Group	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
-116	Climate One	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
-117	One Workplace	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
-118	One Medical Group	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
-119	One Market Street	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
-120	One Maritime Plaza	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
-121	One Montgomery Tower	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
-122	One Market Restaurant	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
-123	Exam One	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
-124	Capital One Café	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
-125	San Francisco Soup Company	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
-126	One Hawthorne Sales Center	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
-127	One Bush Plaza	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
-128	One Rincon Hill	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
-129	Oakwood Apartments	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
-130	Wells Fargo Bank	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
-131	One & Co	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
-132	One Medical Group	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
-133	One Medical Group	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
-134	AppleOne Employment Services	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
-135	San Francisco Marriott Marquis	ChIJne1RNoaAhYARQ0LNBX6AFyQ	34
-136	San Francisco Marriott Union Square	ChIJne1RNoaAhYARQ0LNBX6AFyQ	34
-137	JW Marriott San Francisco Union Square	ChIJne1RNoaAhYARQ0LNBX6AFyQ	34
-138	Courtyard San Francisco Downtown	ChIJne1RNoaAhYARQ0LNBX6AFyQ	34
-139	Bin 55	ChIJne1RNoaAhYARQ0LNBX6AFyQ	34
-140	Courtyard San Francisco Union Square	ChIJne1RNoaAhYARQ0LNBX6AFyQ	34
-141	SF Marriott Massage & Fitness Center	ChIJne1RNoaAhYARQ0LNBX6AFyQ	34
-142	Yelp	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
-143	Mourad	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
-144	Trou Normand	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
-145	Knoll	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
-146	Bloomberg Tech	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
-147	Apcera	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
-148	AmWINS Insurance Brokerage of California	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
-149	G2 Insurance	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
-150	Lumos Labs, Inc.	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
-151	AT&T	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
-152	Bre New Montgomery LLC	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
-153	Russ Building Garage	ChIJkYbnH4qAhYARE9q5MOy2Sp0	36
-154	Regus San Francisco	ChIJbclv9IqAhYARsIAAErIC5eY	37
-155	505 Montgomery Garage	ChIJbclv9IqAhYARsIAAErIC5eY	37
-156	Bank of the West	ChIJbclv9IqAhYARsIAAErIC5eY	37
-157	Palio Caffe	ChIJbclv9IqAhYARsIAAErIC5eY	37
-158	Latham & Watkins LLP	ChIJbclv9IqAhYARsIAAErIC5eY	37
-159	BookATailor San Francisco Showroom	ChIJbclv9IqAhYARsIAAErIC5eY	37
-160	Helen's Place	ChIJbclv9IqAhYARsIAAErIC5eY	37
-161	Payroll Resourcesce Group	ChIJbclv9IqAhYARsIAAErIC5eY	37
-162	Venable LLP, San Francisco, CA	ChIJbclv9IqAhYARsIAAErIC5eY	37
-163	Guarantee Mortgage	ChIJbclv9IqAhYARsIAAErIC5eY	37
-164	Low, Ball & Lynch	ChIJbclv9IqAhYARsIAAErIC5eY	37
-165	Portcullis, Inc.	ChIJbclv9IqAhYARsIAAErIC5eY	37
-166	The Infinity Towers	ChIJ3Qt5xnqAhYARuoJLmmzaTIY	38
-167	JPMorgan Chase	ChIJfyky1mKAhYARvsSatEOkBDo	39
-168	JPMorgan Chase	ChIJfyky1mKAhYARvsSatEOkBDo	39
-169	JPMorgan Chase	ChIJfyky1mKAhYARvsSatEOkBDo	39
+37	Lester Marc w OD	ChIJo7HdhWKAhYARp5lDOzOnnK0	13
+38	Montgomery St. Station	ChIJo7HdhWKAhYARp5lDOzOnnK0	13
+39	One Market Garage	ChIJ2cuEqGaAhYARSOGx1G6DtvU	14
+40	One Market Street	ChIJ2cuEqGaAhYARSOGx1G6DtvU	14
+41	Regus San Francisco	ChIJ2cuEqGaAhYARSOGx1G6DtvU	14
+42	One Sansome Property LLC	ChIJf9l5BkT3MhUR9bgdwkcE2xo	15
+43	Citigroup Center	ChIJf9l5BkT3MhUR9bgdwkcE2xo	15
+44	Premier Business Centers	ChIJf9l5BkT3MhUR9bgdwkcE2xo	15
+45	One Rincon Hill	ChIJg9dyCnyAhYARWltNAyFiLnM	16
+46	303 Second Street Plaza	ChIJg9dyCnyAhYARWltNAyFiLnM	16
+47	Shaklee Terraces	ChIJgSWpS2KAhYARXyMEvJK1UKM	17
+48	Office Building	ChIJ4RVMW2KAhYARuLxcGkxzFoo	18
+49	One Market Garage	ChIJ4RVMW2KAhYARuLxcGkxzFoo	18
+50	Towers Watson	ChIJ4RVMW2KAhYARuLxcGkxzFoo	18
+51	McKesson Plaza	ChIJw-fnNoiAhYARkYz7cP25udk	19
+52	McKesson Corporation	ChIJw-fnNoiAhYARkYz7cP25udk	19
+53	425 Market Street Building	ChIJc5SPsWOAhYARY9kqZIk2HUo	20
+54	One Montgomery Tower	ChIJK5Rpz39hmoARKjcL9JTUw2E	21
+55	333 Bush Street	ChIJhxhwkomAhYARJLhTkLrKoLo	22
+56	Hilton San Francisco Union Square	ChIJeSJHoI-AhYARembxZUVcNEk	23
+57	PG&E Pacific Energy Center	ChIJka2ABnt-j4AR71gZVOGofXw	24
+58	Pacific Gas and Electric Company Customer Service Office	ChIJka2ABnt-j4AR71gZVOGofXw	24
+59	Pacific Gas & Electric Co	ChIJka2ABnt-j4AR71gZVOGofXw	24
+60	Pacific Gas and Electric Company	ChIJka2ABnt-j4AR71gZVOGofXw	24
+61	Pacific Gas and Electric Company	ChIJka2ABnt-j4AR71gZVOGofXw	24
+62	Pacific Gas and Electric Company	ChIJka2ABnt-j4AR71gZVOGofXw	24
+63	Pacific Gas & Electric Co	ChIJka2ABnt-j4AR71gZVOGofXw	24
+64	Regus San Francisco	ChIJb3G2aGGAhYARA7BvZhAo6cg	25
+65	Bank of America Financial Center	ChIJb3G2aGGAhYARA7BvZhAo6cg	25
+66	Chipotle Mexican Grill	ChIJb3G2aGGAhYARA7BvZhAo6cg	25
+67	OfficeTeam	ChIJb3G2aGGAhYARA7BvZhAo6cg	25
+68	The Creative Group	ChIJb3G2aGGAhYARA7BvZhAo6cg	25
+69	Robert Half Legal	ChIJb3G2aGGAhYARA7BvZhAo6cg	25
+70	Holland & Knight LLP	ChIJb3G2aGGAhYARA7BvZhAo6cg	25
+71	YMCA	ChIJb3G2aGGAhYARA7BvZhAo6cg	25
+72	Recology	ChIJb3G2aGGAhYARA7BvZhAo6cg	25
+73	Piper Jaffray & Co	ChIJb3G2aGGAhYARA7BvZhAo6cg	25
+74	Eichstaedt & Lervold, LLP	ChIJb3G2aGGAhYARA7BvZhAo6cg	25
+75	Nossaman LLP	ChIJb3G2aGGAhYARA7BvZhAo6cg	25
+76	Accountemps	ChIJb3G2aGGAhYARA7BvZhAo6cg	25
+77	Woodruff-Sawyer & Co	ChIJb3G2aGGAhYARA7BvZhAo6cg	25
+78	Kikkoman Sales USA Inc	ChIJb3G2aGGAhYARA7BvZhAo6cg	25
+79	Nob Hill Notary Mobile & In-House Services	ChIJb3G2aGGAhYARA7BvZhAo6cg	25
+80	Colliers International	ChIJb3G2aGGAhYARA7BvZhAo6cg	25
+81	Serena Kokjer Greening	ChIJb3G2aGGAhYARA7BvZhAo6cg	25
+82	FirstService Residential	ChIJb3G2aGGAhYARA7BvZhAo6cg	25
+83	Huntsman Architectural Group	ChIJb3G2aGGAhYARA7BvZhAo6cg	25
+84	Deloitte	ChIJfyky1mKAhYARMe-hYlNs-kY	26
+85	Standard Parking	ChIJfyky1mKAhYARMe-hYlNs-kY	26
+86	HEYDAY - Organic Cafe and Bakery	ChIJfyky1mKAhYARMe-hYlNs-kY	26
+87	Silicon Valley Bank	ChIJfyky1mKAhYARMe-hYlNs-kY	26
+88	Chase Bank	ChIJfyky1mKAhYARMe-hYlNs-kY	26
+89	Novak Druce Connolly Bove + Quigg LLP	ChIJfyky1mKAhYARMe-hYlNs-kY	26
+90	A.T. Kearney, Inc.	ChIJfyky1mKAhYARMe-hYlNs-kY	26
+91	CNA San Francisco Branch	ChIJfyky1mKAhYARMe-hYlNs-kY	26
+92	Tishman Speyer	ChIJfyky1mKAhYARMe-hYlNs-kY	26
+93	Vinson & Elkins LLP	ChIJfyky1mKAhYARMe-hYlNs-kY	26
+94	Financial Technology Partners	ChIJfyky1mKAhYARMe-hYlNs-kY	26
+95	BNY Mellon Wealth Management San Francisco	ChIJfyky1mKAhYARMe-hYlNs-kY	26
+96	Strata Apartments	ChIJfyky1mKAhYARMe-hYlNs-kY	26
+97	Gibson Dunn & Crutcher	ChIJfyky1mKAhYARMe-hYlNs-kY	26
+98	Gibson Dunn & Crutcher: Cussen Deborah A	ChIJfyky1mKAhYARMe-hYlNs-kY	26
+99	DLA Piper	ChIJfyky1mKAhYARMe-hYlNs-kY	26
+100	Allianz Global Investors	ChIJfyky1mKAhYARMe-hYlNs-kY	26
+101	Crowley Theresa	ChIJfyky1mKAhYARMe-hYlNs-kY	26
+102	DLA Piper Us LLP: Sekimura Gerald	ChIJfyky1mKAhYARMe-hYlNs-kY	26
+103	DLA Piper: Doyle Jon F	ChIJfyky1mKAhYARMe-hYlNs-kY	26
+104	The St. Regis San Francisco	ChIJFzmL9IeAhYARH75pRwnV0sk	27
+105	100 Pine	ChIJecHmK2KAhYARWSwxRc4hKC0	28
+106	Intelligent Office	ChIJecHmK2KAhYARWSwxRc4hKC0	28
+107	Shorenstein Company	ChIJNUaYmGOAhYARH8yGnLTcfvI	29
+108	50 Fremont Center	ChIJNUaYmGOAhYARH8yGnLTcfvI	29
+109	Wells Fargo Insurance Services	ChIJNUaYmGOAhYARH8yGnLTcfvI	29
+110	333 Market	ChIJexu7D36AhYARfGmEs3pNQIM	30
+111	Wells Fargo Bank	ChIJexu7D36AhYARfGmEs3pNQIM	30
+112	Russell's Convenience	ChIJexu7D36AhYARfGmEs3pNQIM	30
+113	Ace Parking	ChIJexu7D36AhYARfGmEs3pNQIM	30
+114	650 California St LLC	ChIJWyGdpouAhYARbToYS1QXQYQ	31
+115	Thornton Tomasetti	ChIJWyGdpouAhYARbToYS1QXQYQ	31
+116	Credit Suisse AG (Investment Banking)	ChIJWyGdpouAhYARbToYS1QXQYQ	31
+117	Walkup, Melodia, Kelly & Schoenberger	ChIJWyGdpouAhYARbToYS1QXQYQ	31
+118	AppDirect	ChIJWyGdpouAhYARbToYS1QXQYQ	31
+119	340 Fremont Apartments	ChIJgQJIqnuAhYARepV1YXAK_BI	32
+120	One Medical Group	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
+121	Climate One	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
+122	One Workplace	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
+123	One Medical Group	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
+124	One Market Street	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
+125	One Maritime Plaza	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
+126	Exam One	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
+127	One Market Restaurant	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
+128	Capital One Café	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
+129	San Francisco Soup Company	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
+130	One Bush Plaza	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
+131	One Hawthorne Sales Center	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
+132	One Rincon Hill	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
+133	Regus San Francisco	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
+134	Wells Fargo Bank	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
+135	One Medical Group	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
+136	One Medical Group	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
+137	One Sansome Property LLC	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
+138	One & Co	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
+139	AppleOne Employment Services	ChIJ3c4r0omAhYAR0T06lsxLBOQ	33
+140	San Francisco Marriott Marquis	ChIJne1RNoaAhYARQ0LNBX6AFyQ	34
+141	San Francisco Marriott Union Square	ChIJne1RNoaAhYARQ0LNBX6AFyQ	34
+142	JW Marriott San Francisco Union Square	ChIJne1RNoaAhYARQ0LNBX6AFyQ	34
+143	Courtyard San Francisco Downtown	ChIJne1RNoaAhYARQ0LNBX6AFyQ	34
+144	Bin 55	ChIJne1RNoaAhYARQ0LNBX6AFyQ	34
+145	Courtyard San Francisco Union Square	ChIJne1RNoaAhYARQ0LNBX6AFyQ	34
+146	SF Marriott Massage & Fitness Center	ChIJne1RNoaAhYARQ0LNBX6AFyQ	34
+147	Yelp	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
+148	Mourad	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
+149	Trou Normand	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
+150	Knoll	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
+151	Bloomberg Tech	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
+152	Software AG	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
+153	Apcera	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
+154	AmWINS Insurance Brokerage of California	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
+155	G2 Insurance	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
+156	Lumos Labs, Inc.	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
+157	Bre New Montgomery LLC	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
+158	Russ Building Garage	ChIJkYbnH4qAhYARE9q5MOy2Sp0	36
+159	Regus San Francisco	ChIJmQaMSYqAhYAR66oZa_1cJmc	37
+160	505 Montgomery Garage	ChIJmQaMSYqAhYAR66oZa_1cJmc	37
+161	Bank of the West	ChIJmQaMSYqAhYAR66oZa_1cJmc	37
+162	BookATailor San Francisco Showroom	ChIJmQaMSYqAhYAR66oZa_1cJmc	37
+163	Palio Caffe	ChIJmQaMSYqAhYAR66oZa_1cJmc	37
+164	Helen's Place	ChIJmQaMSYqAhYAR66oZa_1cJmc	37
+165	Payroll Resourcesce Group	ChIJmQaMSYqAhYAR66oZa_1cJmc	37
+166	Davis Wright Tremaine LLP	ChIJmQaMSYqAhYAR66oZa_1cJmc	37
+167	Latham & Watkins: Mayer Katherine	ChIJmQaMSYqAhYAR66oZa_1cJmc	37
+168	Ramsdell Capital Management	ChIJmQaMSYqAhYAR66oZa_1cJmc	37
+169	The Infinity Towers	ChIJ3Qt5xnqAhYARuoJLmmzaTIY	38
 170	JPMorgan Chase	ChIJfyky1mKAhYARvsSatEOkBDo	39
 171	JPMorgan Chase	ChIJfyky1mKAhYARvsSatEOkBDo	39
-172	Chase Bank	ChIJfyky1mKAhYARvsSatEOkBDo	39
-173	The Paramount Luxury Apartments	ChIJW4wwR4mAhYARDSUTkiCTdYY	40
-174	Paramount Student Housing - The Park	ChIJW4wwR4mAhYARDSUTkiCTdYY	40
-175	BBVA San Francisco Rep Office	ChIJVcNxG5qAhYAR_MvGwepvjZE	41
-176	Varden Pacific LLC	ChIJVcNxG5qAhYAR_MvGwepvjZE	41
-177	Silicon Legal Strategy	ChIJVcNxG5qAhYAR_MvGwepvjZE	41
-178	Spring Studio	ChIJVcNxG5qAhYAR_MvGwepvjZE	41
-179	Procore	ChIJVcNxG5qAhYAR_MvGwepvjZE	41
-180	Seal Software	ChIJVcNxG5qAhYAR_MvGwepvjZE	41
-181	Concepcion Enterprises, LLC	ChIJVcNxG5qAhYAR_MvGwepvjZE	41
-182	Clustrix Inc	ChIJVcNxG5qAhYAR_MvGwepvjZE	41
-183	The Atashi Rang Law Firm PC	ChIJVcNxG5qAhYAR_MvGwepvjZE	41
-274	Schlesinger	ChIJC2bxnWGAhYARZ8hc-3cWc3E	59
-184	Provident Credit Union, San Francisco Community Branch (Federal Building)	ChIJVcNxG5qAhYAR_MvGwepvjZE	41
-185	Three Embarcadero Center	ChIJj5R7F2GAhYARubN1VnuNZZM	42
-186	Embarcadero Center	ChIJZ76fAGGAhYARX3kjrSwKu8Q	43
-187	One Medical Group	ChIJZ76fAGGAhYARX3kjrSwKu8Q	43
-188	Chase Bank	ChIJUcpwj2KAhYAR7luCzfbMtVk	44
-189	Uno Dos Tacos	ChIJUcpwj2KAhYAR7luCzfbMtVk	44
-190	Consumer Credit Counseling Service of San Francisco	ChIJUcpwj2KAhYAR7luCzfbMtVk	44
-191	Consulate General of Singapore	ChIJUcpwj2KAhYAR7luCzfbMtVk	44
-192	FinancialForce.com	ChIJUcpwj2KAhYAR7luCzfbMtVk	44
-193	Creative Circle	ChIJUcpwj2KAhYAR7luCzfbMtVk	44
-194	Calypso Technology	ChIJUcpwj2KAhYAR7luCzfbMtVk	44
-195	Rockman et al, Inc.	ChIJUcpwj2KAhYAR7luCzfbMtVk	44
-196	BALANCE	ChIJUcpwj2KAhYAR7luCzfbMtVk	44
-197	Chu & Waters	ChIJUcpwj2KAhYAR7luCzfbMtVk	44
-198	Hedani Choy Spalding	ChIJUcpwj2KAhYAR7luCzfbMtVk	44
-199	Integrated Benefits Institute	ChIJUcpwj2KAhYAR7luCzfbMtVk	44
-200	SelectQuote Insurance Services	ChIJUcpwj2KAhYAR7luCzfbMtVk	44
-201	CERA LLP	ChIJUcpwj2KAhYAR7luCzfbMtVk	44
-202	Nelson	ChIJUcpwj2KAhYAR7luCzfbMtVk	44
-203	Bay Dynamics	ChIJUcpwj2KAhYAR7luCzfbMtVk	44
-204	Watts, Cohn and Partners, Inc.	ChIJUcpwj2KAhYAR7luCzfbMtVk	44
-205	The Hartford Financial Services Group, Inc.	ChIJUcpwj2KAhYAR7luCzfbMtVk	44
-206	Murray, Stok & Company	ChIJUcpwj2KAhYAR7luCzfbMtVk	44
-207	Consulate General of Colombia	ChIJUcpwj2KAhYAR7luCzfbMtVk	44
-208	100 Van Ness	ChIJx8Jssp6AhYAR95lVPh0wmwU	45
-209	399 Fremont	ChIJ0x_HRXqAhYAROhkrk7dEktA	46
-210	One Maritime Plaza	ChIJLTY_UGCAhYARqvWB2GQTfns	47
-211	Bank of America Financial Center	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
-212	GLB 33 New Montgomery LP	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
-213	Learn IT	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
-214	Insight Global	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
-215	Bre New Montgomery LLC	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
-216	WeWork Transbay	ChIJLwiwJWOAhYARGaOiwPOYeJo	49
-217	One Medical Group	ChIJLwiwJWOAhYARGaOiwPOYeJo	49
-218	Shell Building Barber Shop	ChIJcZaNPWKAhYAReio9zTi-GAE	50
-219	Raven Office Centers	ChIJa-JlzmOAhYAR7rCaTWDGv6Y	51
-220	Dunhill Partners West	ChIJa-JlzmOAhYAR7rCaTWDGv6Y	51
-221	Market Street Chiropractic	ChIJa-JlzmOAhYAR7rCaTWDGv6Y	51
-222	Subway	ChIJa-JlzmOAhYAR7rCaTWDGv6Y	51
-223	Miss Tomato Sandwich Shop	ChIJa-JlzmOAhYAR7rCaTWDGv6Y	51
-224	Sushirrito - FIDI Market	ChIJa-JlzmOAhYAR7rCaTWDGv6Y	51
-225	Davinci Virtual Office Solutions	ChIJa-JlzmOAhYAR7rCaTWDGv6Y	51
-226	Jack's Shoe Services	ChIJa-JlzmOAhYAR7rCaTWDGv6Y	51
-227	Davinci Meeting Rooms	ChIJa-JlzmOAhYAR7rCaTWDGv6Y	51
-228	Allied Offices	ChIJa-JlzmOAhYAR7rCaTWDGv6Y	51
-229	P M Realty Group	ChIJa-JlzmOAhYAR7rCaTWDGv6Y	51
-230	Puri Law	ChIJa-JlzmOAhYAR7rCaTWDGv6Y	51
-231	CGI Carol Gilbert Inc	ChIJa-JlzmOAhYAR7rCaTWDGv6Y	51
-232	Buffington & Aaron: Aaron Diane	ChIJa-JlzmOAhYAR7rCaTWDGv6Y	51
-233	G3 Visas and Passports, Inc.	ChIJa-JlzmOAhYAR7rCaTWDGv6Y	51
-234	Commercial Coverage Insurance Agency	ChIJa-JlzmOAhYAR7rCaTWDGv6Y	51
-235	Pac Ocean Forwarding	ChIJa-JlzmOAhYAR7rCaTWDGv6Y	51
-236	CPIC International	ChIJa-JlzmOAhYAR7rCaTWDGv6Y	51
-237	Dr. Akira Olsen Psychologist	ChIJa-JlzmOAhYAR7rCaTWDGv6Y	51
-238	Quality Planning Corporation	ChIJa-JlzmOAhYAR7rCaTWDGv6Y	51
-239	Tishman Speyer	ChIJh2VAamKAhYARsLFItXv13uk	52
-240	One Market Garage	ChIJH_aEqGaAhYARJ7KJDgLsUCc	53
-241	ABM Parking Services	ChIJZ76fAGGAhYARXGFhbxFtl2g	54
-242	Moss Adams LLP	ChIJZ76fAGGAhYARXGFhbxFtl2g	54
-243	King & Spalding LLP	ChIJZ76fAGGAhYARXGFhbxFtl2g	54
-244	Rowbotham & Company LLP	ChIJZ76fAGGAhYARXGFhbxFtl2g	54
-245	HFF	ChIJZ76fAGGAhYARXGFhbxFtl2g	54
-246	California Appellate Project	ChIJZ76fAGGAhYARXGFhbxFtl2g	54
-247	Reed Smith LLP	ChIJZ76fAGGAhYARXGFhbxFtl2g	54
-248	The Infinity Towers	ChIJ3Qt5xnqAhYARuoJLmmzaTIY	38
-249	T R 601 California Corporation	ChIJjc-4touAhYAR4ofEQYpyAnc	56
-250	Old Republic Title	ChIJjc-4touAhYAR4ofEQYpyAnc	56
-251	Fisher Development, Inc.	ChIJjc-4touAhYAR4ofEQYpyAnc	56
-252	Fidelity National Title	ChIJjc-4touAhYAR4ofEQYpyAnc	56
-253	SKS Partners	ChIJjc-4touAhYAR4ofEQYpyAnc	56
-254	Girard Gibbs LLP	ChIJjc-4touAhYAR4ofEQYpyAnc	56
-255	Bledsoe, Cathcart, Diestel, Pedersen & Treppa, LLP	ChIJjc-4touAhYAR4ofEQYpyAnc	56
-256	Field Research Corporation	ChIJjc-4touAhYAR4ofEQYpyAnc	56
-257	Springs & Associates	ChIJjc-4touAhYAR4ofEQYpyAnc	56
-258	Weiss & Weissman	ChIJjc-4touAhYAR4ofEQYpyAnc	56
-259	Dennis M Sullivan Law Offices	ChIJjc-4touAhYAR4ofEQYpyAnc	56
-260	Ware Malcomb | San Francisco	ChIJjc-4touAhYAR4ofEQYpyAnc	56
-261	Traver Walter J	ChIJjc-4touAhYAR4ofEQYpyAnc	56
-262	Weiss & Weissman: Seher Alan R	ChIJjc-4touAhYAR4ofEQYpyAnc	56
-263	Alaska National Insurance	ChIJjc-4touAhYAR4ofEQYpyAnc	56
-264	Avison Young	ChIJjc-4touAhYAR4ofEQYpyAnc	56
-265	Main Management LLC	ChIJjc-4touAhYAR4ofEQYpyAnc	56
-266	Bacchus Capital Management	ChIJjc-4touAhYAR4ofEQYpyAnc	56
-267	Family Law Offices of Robert J. Rothman	ChIJjc-4touAhYAR4ofEQYpyAnc	56
-268	Newport Asia LLC	ChIJjc-4touAhYAR4ofEQYpyAnc	56
-269	BridgeView CFO	ChIJmVeqb_WAhYARMcQ6BEg4HGM	57
-270	Bridgeview Owners Association	ChIJmVeqb_WAhYARMcQ6BEg4HGM	57
-271	Bridge View Funding Inc	ChIJmVeqb_WAhYARMcQ6BEg4HGM	57
-272	Hines 55 Second Street LP	ChIJo6k9lmKAhYAR9894kyvnvxU	58
-273	KPMG	ChIJo6k9lmKAhYAR9894kyvnvxU	58
-275	City National Bank	ChIJC2bxnWGAhYARZ8hc-3cWc3E	59
-276	Colchis Capital Management, L.P.	ChIJC2bxnWGAhYARZ8hc-3cWc3E	59
-277	Vista Equity Partners	ChIJC2bxnWGAhYARZ8hc-3cWc3E	59
-278	Savills Studley	ChIJC2bxnWGAhYARZ8hc-3cWc3E	59
-279	Capital Access Group	ChIJC2bxnWGAhYARZ8hc-3cWc3E	59
-280	Harrington Maureen A	ChIJC2bxnWGAhYARZ8hc-3cWc3E	59
-281	Blackstone Technology Group	ChIJC2bxnWGAhYARZ8hc-3cWc3E	59
-282	Field Paoli Architects	ChIJC2bxnWGAhYARZ8hc-3cWc3E	59
-283	643 Capital Management	ChIJC2bxnWGAhYARZ8hc-3cWc3E	59
-284	N.F. Stroth & Associates, LLC	ChIJC2bxnWGAhYARZ8hc-3cWc3E	59
-285	GCA Savvian	ChIJC2bxnWGAhYARZ8hc-3cWc3E	59
-286	Redwood Energy Co	ChIJC2bxnWGAhYARZ8hc-3cWc3E	59
-287	Technvison Management	ChIJC2bxnWGAhYARZ8hc-3cWc3E	59
-288	Puchulski Stang Ziehl Young: Singer Pamela E	ChIJC2bxnWGAhYARZ8hc-3cWc3E	59
-289	Medigroup Management LP	ChIJC2bxnWGAhYARZ8hc-3cWc3E	59
-290	Mesirow Financial Administration Corporation	ChIJC2bxnWGAhYARZ8hc-3cWc3E	59
-291	Pachulski Stang Ziehl Jones: Bertenthal David M	ChIJC2bxnWGAhYARZ8hc-3cWc3E	59
-292	Glumac	ChIJC2bxnWGAhYARZ8hc-3cWc3E	59
-293	Microdesk, Inc.	ChIJC2bxnWGAhYARZ8hc-3cWc3E	59
-294	Coffee Cultures	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
-295	ProPark	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
-296	Benefit Cosmetics HQ	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
-297	CVS Pharmacy	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
-298	General Assembly San Francisco	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
+172	JPMorgan Chase	ChIJfyky1mKAhYARvsSatEOkBDo	39
+173	JPMorgan Chase	ChIJfyky1mKAhYARvsSatEOkBDo	39
+174	JPMorgan Chase	ChIJfyky1mKAhYARvsSatEOkBDo	39
+175	Chase Bank	ChIJfyky1mKAhYARvsSatEOkBDo	39
+176	The Paramount Luxury Apartments	ChIJ-bVolb-AhYARGoGnmRHh0Jw	40
+177	Paramount Student Housing - The Park	ChIJ-bVolb-AhYARGoGnmRHh0Jw	40
+178	Paramount Realty Inc	ChIJ-bVolb-AhYARGoGnmRHh0Jw	40
+179	BBVA San Francisco Rep Office	ChIJVcNxG5qAhYAR_MvGwepvjZE	41
+180	Varden Pacific LLC	ChIJVcNxG5qAhYAR_MvGwepvjZE	41
+181	Silicon Legal Strategy	ChIJVcNxG5qAhYAR_MvGwepvjZE	41
+182	Propel Ventures	ChIJVcNxG5qAhYAR_MvGwepvjZE	41
+183	Spring Studio	ChIJVcNxG5qAhYAR_MvGwepvjZE	41
+184	Procore	ChIJVcNxG5qAhYAR_MvGwepvjZE	41
+185	Seal Software	ChIJVcNxG5qAhYAR_MvGwepvjZE	41
+186	Concepcion Enterprises, LLC	ChIJVcNxG5qAhYAR_MvGwepvjZE	41
+187	Clustrix Inc	ChIJVcNxG5qAhYAR_MvGwepvjZE	41
+188	Provident Credit Union, San Francisco Community Branch (Federal Building)	ChIJVcNxG5qAhYAR_MvGwepvjZE	41
+189	Yogen Fruz	ChIJj5R7F2GAhYARubN1VnuNZZM	42
+190	Embarcadero Center	ChIJZ76fAGGAhYARX3kjrSwKu8Q	43
+191	One Medical Group	ChIJZ76fAGGAhYARX3kjrSwKu8Q	43
+192	Uno Dos Tacos	ChIJh4kphGKAhYARaEyp_EdxDr0	44
+193	Creative Circle	ChIJh4kphGKAhYARaEyp_EdxDr0	44
+194	Chase Bank	ChIJh4kphGKAhYARaEyp_EdxDr0	44
+195	Consulate General of Singapore	ChIJh4kphGKAhYARaEyp_EdxDr0	44
+196	Consumer Credit Counseling Service of San Francisco	ChIJh4kphGKAhYARaEyp_EdxDr0	44
+197	FinancialForce.com	ChIJh4kphGKAhYARaEyp_EdxDr0	44
+198	Calypso Technology	ChIJh4kphGKAhYARaEyp_EdxDr0	44
+199	Rockman et al, Inc.	ChIJh4kphGKAhYARaEyp_EdxDr0	44
+200	SelectQuote Insurance Services	ChIJh4kphGKAhYARaEyp_EdxDr0	44
+201	BALANCE	ChIJh4kphGKAhYARaEyp_EdxDr0	44
+202	Consulate General of Colombia	ChIJh4kphGKAhYARaEyp_EdxDr0	44
+203	Chu & Waters	ChIJh4kphGKAhYARaEyp_EdxDr0	44
+204	Hedani Choy Spalding	ChIJh4kphGKAhYARaEyp_EdxDr0	44
+205	Integrated Benefits Institute	ChIJh4kphGKAhYARaEyp_EdxDr0	44
+206	CERA LLP	ChIJh4kphGKAhYARaEyp_EdxDr0	44
+207	Bay Dynamics	ChIJh4kphGKAhYARaEyp_EdxDr0	44
+208	CMG Mortgage Insurance Co	ChIJh4kphGKAhYARaEyp_EdxDr0	44
+209	Nelson	ChIJh4kphGKAhYARaEyp_EdxDr0	44
+210	Watts, Cohn and Partners, Inc.	ChIJh4kphGKAhYARaEyp_EdxDr0	44
+211	The Hartford Financial Services Group, Inc.	ChIJh4kphGKAhYARaEyp_EdxDr0	44
+212	100 Van Ness	ChIJx8Jssp6AhYAR95lVPh0wmwU	45
+213	399 Fremont	ChIJ0x_HRXqAhYAROhkrk7dEktA	46
+214	One Maritime Plaza	ChIJLTY_UGCAhYARqvWB2GQTfns	47
+215	Bank of America Financial Center	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
+216	GLB 33 New Montgomery LP	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
+217	Learn IT	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
+218	Insight Global	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
+219	Bre New Montgomery LLC	ChIJ0zD-nWKAhYARkEidg1fyAoQ	35
+220	WeWork Transbay	ChIJLwiwJWOAhYARGaOiwPOYeJo	49
+221	One Medical Group	ChIJLwiwJWOAhYARGaOiwPOYeJo	49
+222	Shell Building Barber Shop	ChIJcZaNPWKAhYAReio9zTi-GAE	50
+223	Raven Office Centers	ChIJa-JlzmOAhYAR0Gco7AjrQvM	51
+224	Market Street Chiropractic	ChIJa-JlzmOAhYAR0Gco7AjrQvM	51
+225	Dunhill Partners West	ChIJa-JlzmOAhYAR0Gco7AjrQvM	51
+226	Sushirrito - FIDI Market	ChIJa-JlzmOAhYAR0Gco7AjrQvM	51
+227	Subway	ChIJa-JlzmOAhYAR0Gco7AjrQvM	51
+228	Miss Tomato Sandwich Shop	ChIJa-JlzmOAhYAR0Gco7AjrQvM	51
+229	Lasertorium Printer - Copier - Scanner Repair	ChIJa-JlzmOAhYAR0Gco7AjrQvM	51
+230	Jack's Shoe Services	ChIJa-JlzmOAhYAR0Gco7AjrQvM	51
+231	San Francisco Immigration Attorney - Reeves & Associates	ChIJa-JlzmOAhYAR0Gco7AjrQvM	51
+232	Davinci Virtual Office Solutions	ChIJa-JlzmOAhYAR0Gco7AjrQvM	51
+233	Commercial Coverage Insurance Agency	ChIJa-JlzmOAhYAR0Gco7AjrQvM	51
+234	Sirkin & Associates	ChIJa-JlzmOAhYAR0Gco7AjrQvM	51
+235	Law Offices of Nate Kelly	ChIJa-JlzmOAhYAR0Gco7AjrQvM	51
+236	Davinci Meeting Rooms	ChIJa-JlzmOAhYAR0Gco7AjrQvM	51
+237	Allied Offices	ChIJa-JlzmOAhYAR0Gco7AjrQvM	51
+238	SkyLux Travel	ChIJa-JlzmOAhYAR0Gco7AjrQvM	51
+239	P M Realty Group	ChIJa-JlzmOAhYAR0Gco7AjrQvM	51
+240	Puri Law	ChIJa-JlzmOAhYAR0Gco7AjrQvM	51
+241	CGI Carol Gilbert Inc	ChIJa-JlzmOAhYAR0Gco7AjrQvM	51
+242	Buffington & Aaron: Aaron Diane	ChIJa-JlzmOAhYAR0Gco7AjrQvM	51
+243	Tishman Speyer	ChIJh2VAamKAhYARsLFItXv13uk	52
+244	One Market Garage	ChIJH_aEqGaAhYARJ7KJDgLsUCc	53
+245	ABM Parking Services	ChIJZ76fAGGAhYARXGFhbxFtl2g	54
+246	Moss Adams LLP	ChIJZ76fAGGAhYARXGFhbxFtl2g	54
+247	King & Spalding LLP	ChIJZ76fAGGAhYARXGFhbxFtl2g	54
+248	Rowbotham & Company LLP	ChIJZ76fAGGAhYARXGFhbxFtl2g	54
+249	HFF	ChIJZ76fAGGAhYARXGFhbxFtl2g	54
+250	California Appellate Project	ChIJZ76fAGGAhYARXGFhbxFtl2g	54
+251	Reed Smith LLP	ChIJZ76fAGGAhYARXGFhbxFtl2g	54
+252	The Infinity Towers	ChIJ3Qt5xnqAhYARuoJLmmzaTIY	38
+253	T R 601 California Corporation	ChIJjc-4touAhYARGto5PuR2B58	56
+254	Old Republic Title	ChIJjc-4touAhYARGto5PuR2B58	56
+255	Fidelity National Title	ChIJjc-4touAhYARGto5PuR2B58	56
+256	Fisher Development, Inc.	ChIJjc-4touAhYARGto5PuR2B58	56
+257	Weiss & Weissman	ChIJjc-4touAhYARGto5PuR2B58	56
+258	Alaska National Insurance	ChIJjc-4touAhYARGto5PuR2B58	56
+259	SKS Partners	ChIJjc-4touAhYARGto5PuR2B58	56
+260	Girard Gibbs LLP	ChIJjc-4touAhYARGto5PuR2B58	56
+261	Bledsoe, Cathcart, Diestel, Pedersen & Treppa, LLP	ChIJjc-4touAhYARGto5PuR2B58	56
+262	Field Research Corporation	ChIJjc-4touAhYARGto5PuR2B58	56
+263	Springs & Associates	ChIJjc-4touAhYARGto5PuR2B58	56
+264	Dennis M Sullivan Law Offices	ChIJjc-4touAhYARGto5PuR2B58	56
+265	Ware Malcomb | San Francisco	ChIJjc-4touAhYARGto5PuR2B58	56
+266	Traver Walter J	ChIJjc-4touAhYARGto5PuR2B58	56
+267	Weiss & Weissman: Seher Alan R	ChIJjc-4touAhYARGto5PuR2B58	56
+268	Avison Young	ChIJjc-4touAhYARGto5PuR2B58	56
+269	Yingli Green Energy Americas	ChIJjc-4touAhYARGto5PuR2B58	56
+270	Family Law Offices of Robert J. Rothman	ChIJjc-4touAhYARGto5PuR2B58	56
+271	Main Management LLC	ChIJjc-4touAhYARGto5PuR2B58	56
+272	Bacchus Capital Management	ChIJjc-4touAhYARGto5PuR2B58	56
+273	Bridgeview Owners Association	ChIJmVeqb_WAhYARMcQ6BEg4HGM	57
+274	BridgeView CFO	ChIJmVeqb_WAhYARMcQ6BEg4HGM	57
+275	Bridge View Funding Inc	ChIJmVeqb_WAhYARMcQ6BEg4HGM	57
+276	Hines 55 Second Street LP	ChIJo6k9lmKAhYAR9894kyvnvxU	58
+277	KPMG	ChIJo6k9lmKAhYAR9894kyvnvxU	58
+278	Schlesinger	ChIJC2bxnWGAhYARelPMwWW2G_E	59
+279	City National Bank Private Client	ChIJC2bxnWGAhYARelPMwWW2G_E	59
+280	Colchis Capital Management, L.P.	ChIJC2bxnWGAhYARelPMwWW2G_E	59
+281	Savills Studley	ChIJC2bxnWGAhYARelPMwWW2G_E	59
+282	Vista Equity Partners	ChIJC2bxnWGAhYARelPMwWW2G_E	59
+283	Capital Access Group	ChIJC2bxnWGAhYARelPMwWW2G_E	59
+284	Harrington Maureen A	ChIJC2bxnWGAhYARelPMwWW2G_E	59
+285	Field Paoli Architects	ChIJC2bxnWGAhYARelPMwWW2G_E	59
+286	Blackstone Technology Group	ChIJC2bxnWGAhYARelPMwWW2G_E	59
+287	N.F. Stroth & Associates, LLC	ChIJC2bxnWGAhYARelPMwWW2G_E	59
+288	643 Capital Management	ChIJC2bxnWGAhYARelPMwWW2G_E	59
+289	Redwood Energy Co	ChIJC2bxnWGAhYARelPMwWW2G_E	59
+290	Technvison Management	ChIJC2bxnWGAhYARelPMwWW2G_E	59
+291	Puchulski Stang Ziehl Young: Singer Pamela E	ChIJC2bxnWGAhYARelPMwWW2G_E	59
+292	Medigroup Management LP	ChIJC2bxnWGAhYARelPMwWW2G_E	59
+293	Mesirow Financial Administration Corporation	ChIJC2bxnWGAhYARelPMwWW2G_E	59
+294	Pachulski Stang Ziehl Jones: Bertenthal David M	ChIJC2bxnWGAhYARelPMwWW2G_E	59
+295	Glumac	ChIJC2bxnWGAhYARelPMwWW2G_E	59
+296	Microdesk, Inc.	ChIJC2bxnWGAhYARelPMwWW2G_E	59
+297	Pachulski Stang Ziehl Young: Fried Joshua M	ChIJC2bxnWGAhYARelPMwWW2G_E	59
+298	Coffee Cultures	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
 299	Target	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
-300	JVS	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
-301	TinyCo, Inc.	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
-302	Meltwater Group	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
-303	Flynn Properties	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
+300	ProPark	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
+301	Benefit Cosmetics HQ	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
+302	CVS Pharmacy	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
+303	General Assembly San Francisco	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
 304	CKGS Visa Application Center San Francisco	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
-305	India Passport Application Center San Francisco	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
-306	Flynn Restaurant Group	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
-307	LiveRamp	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
-308	Ricoh USA	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
-309	Affirm, Inc.	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
-310	Groupon	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
-311	Nitro PDF	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
-312	National Lymphedema Network	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
-313	Lendify Financial LLC	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
-314	Hunter-Dulin Building	ChIJRV0ZxomAhYAR44NGV4Xa-08	61
-315	The Summit	ChIJawZVGD1-j4ARCe5z3nWjEGY	62
-316	Summit Furniture	ChIJawZVGD1-j4ARCe5z3nWjEGY	62
-317	The Summit SF	ChIJawZVGD1-j4ARCe5z3nWjEGY	62
-318	The Ritz-Carlton Club, San Francisco	ChIJf17NcIyAhYARD9lFyiQWVcg	63
-319	McAllister Tower	ChIJe_Jd35qAhYAREiEefhA9oZU	64
-320	PG&E Pacific Energy Center	ChIJBfmZpoyAhYAR3d-DlZfDVco	65
-321	PG&E Corporation	ChIJBfmZpoyAhYAR3d-DlZfDVco	65
-322	Pacific Gas and Electric Company	ChIJBfmZpoyAhYAR3d-DlZfDVco	65
-323	Pacific Gas and Electric Company Customer Service Office	ChIJBfmZpoyAhYAR3d-DlZfDVco	65
-324	Solaire	ChIJvxanInuAhYARwbG9SVp-q3w	66
-325	Central Tower Market	ChIJF-l7ZYiAhYARKE6JvZNUJPQ	67
-326	Central Towers Apartments	ChIJF-l7ZYiAhYARKE6JvZNUJPQ	67
-327	Central Tower Office Building	ChIJF-l7ZYiAhYARKE6JvZNUJPQ	67
-328	Hobart Building Office	ChIJXy_Z1ImAhYARJGOdimh_r6Y	68
-329	Le Méridien San Francisco	ChIJcWfgM2CAhYARD19rCAPLhVU	69
-330	Ferry Building	ChIJc5SPsWOAhYARduCXE-uUbKE	70
-331	Ferry Plaza Farmers Market	ChIJc5SPsWOAhYARduCXE-uUbKE	70
-332	Blue Bottle Coffee	ChIJc5SPsWOAhYARduCXE-uUbKE	70
-333	Cowgirl Creamery Cheese Shop	ChIJc5SPsWOAhYARduCXE-uUbKE	70
-334	San Francisco Federal Building	ChIJawzOqISAhYARUySdEKzydUI	71
-335	Coit Tower	ChIJAQAAQIyAhYARRN3yIQG4hd4	73
-336	First Person, Inc	ChIJ4-0AFn-AhYAR8U3tZOE1RFs	74
-337	Intercontinental San Francisco	ChIJGYvZq42AhYAR0W1s4P4V9c8	75
-338	Intercontinental Mark Hopkins San Francisco	ChIJGYvZq42AhYAR0W1s4P4V9c8	75
-339	The Monadnock Building	ChIJj3bDaoiAhYAR1w2LBOLmKlw	76
+305	JVS	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
+306	TinyCo, Inc.	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
+307	Meltwater Group	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
+308	Flynn Properties	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
+309	Flynn Restaurant Group	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
+310	India Passport Application Center San Francisco	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
+311	LiveRamp	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
+312	Ricoh USA	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
+313	Affirm, Inc.	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
+314	RocketSpace Inc	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
+315	Groupon	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
+316	National Lymphedema Network	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
+317	Lendify Financial LLC	ChIJZXDI4YmAhYARnAMpXX7zBpU	60
+318	Hunter-Dulin Building	ChIJRV0ZxomAhYAR44NGV4Xa-08	61
+319	The Summit	ChIJawZVGD1-j4ARCe5z3nWjEGY	62
+320	Summit Furniture	ChIJawZVGD1-j4ARCe5z3nWjEGY	62
+321	The Summit SF	ChIJawZVGD1-j4ARCe5z3nWjEGY	62
+322	The Ritz-Carlton Club, San Francisco	ChIJf17NcIyAhYARD9lFyiQWVcg	63
+323	Hastings Tower	ChIJtxQY35qAhYARc6Rpc_IHhW8	64
+324	PG&E Pacific Energy Center	ChIJBfmZpoyAhYAR3d-DlZfDVco	65
+325	PG&E Corporation	ChIJBfmZpoyAhYAR3d-DlZfDVco	65
+326	Pacific Gas and Electric Company	ChIJBfmZpoyAhYAR3d-DlZfDVco	65
+327	Pacific Gas and Electric Company Customer Service Office	ChIJBfmZpoyAhYAR3d-DlZfDVco	65
+328	Solaire	ChIJvxanInuAhYARwbG9SVp-q3w	66
+329	Central Tower Market	ChIJF-l7ZYiAhYARKE6JvZNUJPQ	67
+330	Central Towers Apartments	ChIJF-l7ZYiAhYARKE6JvZNUJPQ	67
+331	Central Tower Office Building	ChIJF-l7ZYiAhYARKE6JvZNUJPQ	67
+332	Hobart Building Office	ChIJXy_Z1ImAhYARJGOdimh_r6Y	68
+333	Le Méridien San Francisco	ChIJcWfgM2CAhYARD19rCAPLhVU	69
+334	Ferry Building	ChIJWTGPjmaAhYARnYsfhjHT8JM	70
+335	Ferry Plaza Farmers Market	ChIJWTGPjmaAhYARnYsfhjHT8JM	70
+336	Blue Bottle Coffee	ChIJWTGPjmaAhYARnYsfhjHT8JM	70
+337	Cowgirl Creamery Cheese Shop	ChIJWTGPjmaAhYARnYsfhjHT8JM	70
+338	The Slanted Door	ChIJWTGPjmaAhYARnYsfhjHT8JM	70
+339	San Francisco Federal Building	ChIJawzOqISAhYARUySdEKzydUI	71
+340	Coit Tower	ChIJAQAAQIyAhYARRN3yIQG4hd4	73
+341	Intercontinental San Francisco	ChIJF1lX2oaAhYARuyWPqjE12Oo	75
+342	The Monadnock Building	ChIJj3bDaoiAhYAR1w2LBOLmKlw	76
 \.
 
 
@@ -864,7 +867,7 @@ COPY tenants (tenant_id, tenant, place_id, bldg_id) FROM stdin;
 -- Name: tenants_tenant_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vagrant
 --
 
-SELECT pg_catalog.setval('tenants_tenant_id_seq', 339, true);
+SELECT pg_catalog.setval('tenants_tenant_id_seq', 342, true);
 
 
 --

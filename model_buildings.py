@@ -30,10 +30,10 @@ class Building(db.Model):
     city_id = db.Column(db.Integer, db.ForeignKey('cities.city_id'), nullable=False)
     lat = db.Column(db.Float)
     lng = db.Column(db.Float)
-    height_m = db.Column(db.String, nullable=True)
-    height_ft = db.Column(db.String, nullable=True)
+    height_m = db.Column(db.Float, nullable=True)
+    height_ft = db.Column(db.Float, nullable=True)
     floors = db.Column(db.Integer, nullable=True)
-    completed_yr = db.Column(db.String, nullable=True)
+    completed_yr = db.Column(db.Integer, nullable=True)
     material = db.Column(db.String(64), nullable=True)
     use = db.Column(db.String(64), nullable=True)
 

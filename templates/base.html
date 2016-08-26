@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+    <link rel="stylesheet" href="/static/css/font-awesome.css">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+
     <link rel="stylesheet" href="/static/css/site.css">
     <link rel="stylesheet" href="/static/css/dashboard.css">
+
+    <script src='http://code.jquery.com/jquery.js'></script>
+    <!-- <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> -->
+    <script src="https://cdn.rawgit.com/jwarby/jquery-awesome-cursor/master/dist/jquery.awesome-cursor.min.js"></script>
 
     <!-- my favicon -->
     <link rel="icon" 
@@ -24,16 +31,33 @@
     </div>
 
     <ul class="nav navbar-nav">
-      <li><a href='/buildings'>TABLE VIEWS</a></li>
-      <li><a href='/cities'>CITIES TABLE VIEW</a></li>
-      <li><a href='/filter_flickr'>PHOTOS VIEW</a></li>       
+      <li><a href='/buildings'>
+            <span class='glyphicon glyphicon-th-list'></span> &nbsp SF BUILDINGS
+          </a>
+      </li>
+      <li><a href='/map'>
+            <span class='glyphicon glyphicon-map-marker'></span> &nbsp MAP VIEW
+          </a>
+      </li>
+      <li><a href='/dendrogram'>
+            <span class='glyphicon glyphicon-ice-lolly-tasted'></span> &nbsp DENDROGRAM
+          </a>
+      </li>
+      <li><a href='/cities'>
+            <span class='glyphicon glyphicon-globe'></span> &nbsp GLOBAL BY CITY
+          </a>
+      </li>  
     </ul>
 
     <ul class="nav navbar-nav navbar-right">
-      <li><a href='/map'>MAP</a></li>
-      <li><a href='/dendrogram'>DENDROGRAM</a></li>
-      <li><a href='/flickr_search'>PHOTOS</a></li>
-      <li><a href='/'>LOGIN</a></li>
+      <li><a href='/filter_flickr'>
+            <span class='glyphicon glyphicon-th'></span> &nbsp PHOTOS
+          </a>
+      </li>
+      <li><a href='/'>
+            <span class='glyphicon glyphicon-user'></span> &nbsp USER
+          </a>
+      </li>
     </ul>
 
   </div>

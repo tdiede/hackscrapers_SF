@@ -1,24 +1,63 @@
 {% extends 'base.html' %}
 {% block title %}
 
-    <title>BUILDINGS LIST</title>
+    <title>BUILDINGS</title>
+
+    <link rel="stylesheet" href='../static/css/bootstrap-sortable.css'>
 
 {% endblock %}
 
 {% block content %}
 
+<h3>{{ bldgs[0].city.city.upper() }} <br> BUILDINGS</h3>
+
 <div class="jumbotron">
-  <h1>BUILDINGS</h1>
-  <p>
-
+    <table class="table sortable table-sm table-bordered table-striped table-hover">
+    <thead>
+        <tr>
+            <th data-defaultsign='nospan'><span class='glyphicon glyphicon-sort-by-attributes'></span> Rank</th>
+            <th>Building Name</th>
+            <th data-defaultsign='nospan' id='data-completed_yr'> Year Completed</th>
+            <th>Status</th>
+            <th data-defaultsign='nospan' id='data-floors'> Floors</th>
+            <th data-defaultsign='nospan' id='data-height_ft'> Height (ft)</th>
+            <th data-defaultsign='nospan' id='data-height_m'> Height (m)</th>
+            <th>Material</th>
+            <th>Use</th>
+        </tr>
+    </thead>
+    <tbody>
     {% for bldg in bldgs %}
-        {{ bldg.building_name }} --- {{ bldg.height_ft }} --- {{ bldg.floors }} --- {{ bldg.material }} --- {{ bldg.use }} <br>
-        {{ bldg.lat }} --- {{ bldg.lng }} <br>
+        <tr>
+            <td scope="row">{{ bldg.rank }}</td>
+            <td>{{ bldg.building_name }}</td>
+            <td>{{ bldg.completed_yr }}</td>
+            <td>{{ bldg.status }}</td>
+            <td>{{ bldg.floors }}</td>
+            <td>
+            {% if bldg.height_ft is not none %}
+                {{ bldg.height_ft }}
+            {% else %}
+                --
+            {% endif %}</td>
+            <td>
+            {% if bldg.height_m is not none %}
+                {{ bldg.height_m }}
+            {% else %}
+                --
+            {% endif %}</td>
+            <td>{{ bldg.material }}</td>
+            <td>{{ bldg.use }}</td>
+        </tr>
     {% endfor %}
-
-  </p>
-  <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+    </tbody>
+    </table>
 </div>
 
+    <script src='https://code.jquery.com/jquery-1.12.3.js'></script>
+    <script src='https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js'></script>
+    <script src='../static/js/bootstrap-sortable.js'></script>
+    <script src='../static/js/moment.min.js'></script>
+    <script src='../static/js/table.js'></script>
 
 {% endblock %}

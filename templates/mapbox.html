@@ -3,12 +3,15 @@
 
     <title>Map:SkyscraperGO</title>
 
-    <script src='http://code.jquery.com/jquery.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js'></script>
+
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.css' rel='stylesheet' />
-    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v1.3.0/mapbox-gl-geocoder.js'></script>
-    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v1.3.0/mapbox-gl-geocoder.css' type='text/css' />
+
+<!--     // <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v1.3.0/mapbox-gl-geocoder.js'></script>
+    // <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v1.3.0/mapbox-gl-geocoder.css' type='text/css' />
+
+    // <script src='../static/js/turf.min.js'></script> -->
 
 {% endblock %}
 
@@ -23,17 +26,18 @@
         </div>
         <div class='col-md-4 full-w'>
 
+            <div class="bar-chart">
+                <canvas id="barChart"></canvas>
+                <div id="barLegend" class="chart-legend"></div>
+            <div>
+
             <div class='jumbotron collapse' id='placeholder'>
+                <br>
+                <span id='details_close' class='glyphicon glyphicon-remove'></span>
                 <h4 id='bldg_name'></h4>
                 <p id='bldg_info'></p>
-                <!-- need to add feature id to href!! -->
-                <p><a class='btn btn-primary btn-sm' data-toggle='collapse' href='/bldg_details' role='button'>Learn more</a></p>
-
-                <div class="bar-chart">
-                    <canvas id="barChart"></canvas>
-                    <div id="barLegend" class="chart-legend"></div>
-                <div>
-
+                <p><a id='bldg_details' class='btn btn-primary btn-sm' data-toggle='collapse' data-feature='feature' role='button'>Learn more</a></p>
+                <br>
             </div>
 
         </div>
