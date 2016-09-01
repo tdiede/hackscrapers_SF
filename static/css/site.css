@@ -54,3 +54,11 @@ footer {
     padding: 0;
 }
 
+.placeholder {
+    border: 3px solid #d9534f;
+    min-height: 20em;
+}
+
+.bldg-name {
+    cursor: pointer;
+}

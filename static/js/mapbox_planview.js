@@ -138,18 +138,18 @@ map.on('load', function () {
 
 
     // BarChart from chart.js to display bldg height comparison.
-    function createChart(bldg_data) {
+    function createChart(bldgData) {
         var options = { responsive: true };
         var ctx_bar = $("#barChart").get(0).getContext("2d");
         var myBarChart = new Chart(ctx_bar, {type: 'bar',
-                                             data: bldg_data,
+                                             data: bldgData,
                                              options: options});
         $('#barLegend').html(myBarChart.generateLegend());
     }
 
     function showChart(evt) {
-        var bldg_id = $('#bldg_details').data('feature');
-        var bldg_data = $.get('/bldg_barchart.json/'+bldg_id, createChart);
+        var bldg_id = $('#bldg-details').data('feature');
+        $.get('/bldg_barchart.json/'+bldg_id, createChart);
     }
 
     // $('#bldg_details').on('click', showChart);
@@ -188,13 +188,13 @@ function hideInfo(feature) {
     $('.jumbotron').slideUp(1000);
 }
 
-$('#details_close').on('click', hideInfo);
+$('#details-close').on('click', hideInfo);
 
 function showInfo(feature) {
     $('.jumbotron').slideDown(500);
-    $('#bldg_name').html(feature.properties.building_name);
-    $('#bldg_info').html("Rank: " + feature.properties.rank + " at " + feature.properties.height_ft + " feet tall!" + feature.properties.use).append("another line here");
-    $('#bldg_details').data('feature', feature.properties.bldg_id);
+    $('#bldg-name').html(feature.properties.building_name);
+    $('#bldg-info').html("Rank: " + feature.properties.rank + " at " + feature.properties.height_ft + " feet tall!" + feature.properties.use).append("another line here");
+    $('#bldg-details').data('feature', feature.properties.bldg_id);
 }
 
 // // Uses the #bldg_details button to post bldg_id and route to new url.

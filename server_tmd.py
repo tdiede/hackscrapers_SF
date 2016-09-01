@@ -15,29 +15,14 @@ from model_buildings import Building, City, User
 
 from database_functions import add_user, get_bldg_query, avg_bldg_height
 
-import flickr
+# import flickr
+from mongodb_tmd import flickr
 
-
-from flask.ext.mongoalchemy import MongoAlchemy
-app = Flask(__name__)
-app.config['MONGOALCHEMY_DATABASE'] = 'library'
-db = MongoAlchemy(app)
-
-class Author(db.Document):
-    name = db.StringField()
-
-class Book(db.Document):
-    title = db.StringField()
-    author = db.DocumentField(Author)
-    year = db.IntField()
-
-
+# import pprint
 
 
 app = Flask(__name__)
-
 app.secret_key = 'jfsajweWlkakNjakswpclI_fictitious'
-
 app.jinja_env.undefined = StrictUndefined
 
 
@@ -132,7 +117,7 @@ def buildings_list():
             if term is None:
                 search_results.remove(None)
             bldgs.append(term)
-        return render_template("building_details.html", bldgs=bldgs)
+        return render_template("buildings_list.html", bldgs=bldgs)
 
         if len(search_results) == 0:
             flash("Sorry, your search {} returned no results.".format(bldg_search))
@@ -317,6 +302,86 @@ def bldg_barchart(bldg_id):
     bldg_barchart = {"labels": labels, "datasets": datasets}
 
     return jsonify(bldg_barchart)
+
+
+@app.route('/bldg/<int:bldg_id>')
+def show_bldg_details(bldg_id):
+    """When user clicks on name of building, show building details."""
+
+    bldg = Building.query.get(bldg_id)
+
+    photos = flickr.find({'$text': {'$search': bldg.building_name}})
+
+    # urls_m = []
+
+    # for photo in photos:
+    #     url_m = photo['url_m']
+    #     urls_m.append(url_m)
+
+    url_m = photos[0]['url_m']
+
+    bldg_feature = {}
+
+    coordinates_list = [bldg.lng, bldg.lat]
+
+    bldg_feature = {"type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": coordinates_list,
+                        },
+                    "properties": {
+                        "bldg_id": bldg.bldg_id,
+                        "place_id": bldg.place_id,
+                        "rank": bldg.rank,
+                        "status": bldg.status,
+                        "building_name": bldg.building_name,
+                        "lat": bldg.lat,
+                        "lng": bldg.lng,
+                        "city": bldg.city_id,
+                        "height_m": bldg.height_m,
+                        "height_ft": bldg.height_ft,
+                        "floors": bldg.floors,
+                        "completed_yr": bldg.completed_yr,
+                        "material": bldg.material,
+                        "use": bldg.use,
+                        },
+                    "photos": {
+                        "url_m": url_m,
+                        },
+                    }
+
+    return jsonify(bldg_feature)
+
+
+# @app.route('/photos')
+# def get_photos():
+
+#     bldgs = Building.query.all()
+
+#     photos_bldgs = []
+
+#     for bldg in bldgs:
+#         photos = create_photos_by_bldg(bldg.bldg_id)
+#         photos_bldgs.append(photos)
+
+#     return pprint.pprint(photos_bldgs)
+
+
+@app.route('/user_curates', methods=['GET'])
+def user_curates():
+
+    user_query = "night skyscraper"
+    # user_query = request.args.get['user_query']
+    user_terms = user_query.split(' ')
+
+    queried_photos = []
+
+    # for term in user_terms:
+    photos = flickr.find({'$text': {'$search': {'$all': user_terms}}})
+    for photo in photos:
+        queried_photos.append(photo)
+
+    return render_template("curated_photos.html", query=queried_photos)
 
 
 ####################################################################

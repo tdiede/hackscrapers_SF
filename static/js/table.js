@@ -14,3 +14,25 @@
 // }
 
 // $('#sort').on('click', sortField)
+
+
+function createBuildingDetails(result) {
+    $('.jumbotron').slideToggle(500);
+    console.log(result);
+    $('#bldg-info').html(result.properties.building_name + " " + result.properties.material);
+    $('#bldg-img').attr('src', result.photos.url_m);
+    
+}
+
+function showBuildingDetails(evt) {
+    var bldg_id = $('.bldg-name').data('bldg');
+    $.get('/bldg/'+bldg_id, createBuildingDetails);
+}
+
+$('.bldg-name').on('click', showBuildingDetails);
+
+function hideInfo(feature) {
+    $('.jumbotron').slideUp(1000);
+}
+
+$('#details-close').on('click', hideInfo);

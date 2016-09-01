@@ -89,31 +89,32 @@ def save_file(data, bldg, page):
     f.close()
 
 
-def combine_files(bldgs):
-    """Loads JSON data from files and combines into one file for all bldgs."""
+# # Cannot combine this many files, or files of this size. Fails.
+# def combine_files(bldgs):
+#     """Loads JSON data from files and combines into one file for all bldgs."""
 
-    photos_data = {}
+#     photos_data = {}
 
-    for bldg in bldgs:
-        for file in os.listdir('json/'+str(bldg.bldg_id)):
-            if file.endswith('.json'):
-                f = open('json/'+str(bldg.bldg_id)+'/'+file, 'r')
-                data = json.load(f)
-                photos_data[bldg.bldg_id] = data
-                f.close()
+#     for bldg in bldgs:
+#         for file in os.listdir('json/'+str(bldg.bldg_id)):
+#             if file.endswith('.json'):
+#                 f = open('json/'+str(bldg.bldg_id)+'/'+file, 'r')
+#                 data = json.load(f)
+#                 photos_data[bldg.bldg_id] = data
+#                 f.close()
 
-    f = open('json/flckrdata_bldgs.json', 'w')
-    json.dump(photos_data, f)
-    f.close()
+#     f = open('json/flckrdata_bldgs.json', 'w')
+#     json.dump(photos_data, f)
+#     f.close()
 
 
-def load_file():
-    """Loads combined JSON data file to read."""
+# def load_file():
+#     """Loads combined JSON data file to read."""
 
-    f = open('json/flckrdata_bldgs.json', 'r')
-    data = json.load(f)
+#     f = open('json/flckrdata_bldgs.json', 'r')
+#     data = json.load(f)
 
-    return data
+#     return data
 
 
 def return_photos(data, bldgs):

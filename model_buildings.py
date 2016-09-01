@@ -171,4 +171,4 @@ if __name__ == "__main__":
 
     from server_tmd import app
     connect_to_db(app)
-    print "Connected to DB."
+    print "Connected to postgresql DB."

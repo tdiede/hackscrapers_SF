@@ -7,35 +7,52 @@
 
 {% block content %}
 
-<div>
-    <img class="icon" src="/static/img/x.png">
+<h3>WELCOME {{ current_user }} ! DASHBOARD</h3>
+
+<div class='container-fluid'>
+
+    <div class='row'>
+        <div class='col-md-6'>
+            <div class='placeholder thumbnail'>
+                <h3><a href='/map'>MAP</a></h3>
+                <div class="img img-responsive full-width"></div>
+            </div>
+        </div>
+
+        <div class='col-md-6'>
+            <div class='placeholder thumbnail'>
+                <h3><a href='/buildings'>BUILDINGS TABLE</a></h3>
+                <img src="" class="img img-responsive full-width" />
+                    <a href='/buildings'>See all buildings.</a><br>
+                    Search for a building.
+                    <form action='/buildings'>
+                        <input type="text" name="building" value="building"></input>
+                        <input type="submit" value="SEARCH"></input>
+                    </form>
+            </div>
+        </div>
+    </div>
+
+    <div class='row'>
+        <div class='col-md-6'>
+            <div class='placeholder thumbnail'>
+                <h3><a href='/dendrogram'>DENDROGRAM</a></h3>
+                <img src="" class="img img-responsive full-width" />
+            </div>
+        </div>
+
+        <div class='col-md-6'>
+            <div class='placeholder thumbnail'>
+                <h3><a href='/cities'>CITIES TABLE</a></h3>
+                <img src="" class="img img-responsive full-width" />
+            </div>
+        </div>
+    </div>
 </div>
 
-<h1>WELCOME CURRENT PLAYER: {{ current_user }}</h1>
-<h1>DASHBOARD</h1>
 
-<br>
-<br>
-
-<h1><a href='/map'>MAP</a></h1>
-
-<br>
-<br>
-
-<h1><a href='/buildings'>TABLE VIEWS BUILDINGS</a></h1>
-<h1><a href='/cities'>TABLE VIEWS CITIES</a></h1>
-<br>
-<br>
-
-<h1><a href='/dendrogram'>DENDROGRAM</a></h1>
-
-<div>
-    <a href='/buildings'>See all buildings.</a><br>
-    Search for a building.
-    <form action='/buildings'>
-        <input type="text" name="building" value="building"></input>
-        <input type="submit" value="SEARCH"></input>
-    </form>
-</div>
 
 {% endblock %}
+
+
+flickr.aggregate([ {'$match': { 'tags': 'building' } }, {'$group': {'_id': '$tags', 'count': {'$sum': 1}}}, {'$sort': { 'count': 1}} ])

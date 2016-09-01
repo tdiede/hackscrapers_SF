@@ -61,3 +61,12 @@ def avg_bldg_height():
 #     # bldgs_desc = bldgs.order_by(desc(Building.floors))
 
 #     return bldgs_desc
+
+if __name__ == "__main__":
+    import doctest
+
+    print
+    result = doctest.testmod()
+    if not result.failed:
+        print "ALL TESTS PASSED. GOOD WORK!"
+    print

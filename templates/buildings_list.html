@@ -11,47 +11,58 @@
 
 <h3>{{ bldgs[0].city.city.upper() }} <br> BUILDINGS</h3>
 
-<div class="jumbotron">
-    <table class="table sortable table-sm table-bordered table-striped table-hover">
-    <thead>
-        <tr>
-            <th data-defaultsign='nospan'><span class='glyphicon glyphicon-sort-by-attributes'></span> Rank</th>
-            <th>Building Name</th>
-            <th data-defaultsign='nospan' id='data-completed_yr'> Year Completed</th>
-            <th>Status</th>
-            <th data-defaultsign='nospan' id='data-floors'> Floors</th>
-            <th data-defaultsign='nospan' id='data-height_ft'> Height (ft)</th>
-            <th data-defaultsign='nospan' id='data-height_m'> Height (m)</th>
-            <th>Material</th>
-            <th>Use</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for bldg in bldgs %}
-        <tr>
-            <td scope="row">{{ bldg.rank }}</td>
-            <td>{{ bldg.building_name }}</td>
-            <td>{{ bldg.completed_yr }}</td>
-            <td>{{ bldg.status }}</td>
-            <td>{{ bldg.floors }}</td>
-            <td>
-            {% if bldg.height_ft is not none %}
-                {{ bldg.height_ft }}
-            {% else %}
-                --
-            {% endif %}</td>
-            <td>
-            {% if bldg.height_m is not none %}
-                {{ bldg.height_m }}
-            {% else %}
-                --
-            {% endif %}</td>
-            <td>{{ bldg.material }}</td>
-            <td>{{ bldg.use }}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-    </table>
+<div class='container-fluid'>
+    <div class='row'>
+        <table class="table sortable table-sm table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <th data-defaultsign='nospan'><span class='glyphicon glyphicon-sort-by-attributes'></span> Rank</th>
+                <th>Building Name</th>
+                <th data-defaultsign='nospan' id='data-completed_yr'> Year Completed</th>
+                <th>Status</th>
+                <th data-defaultsign='nospan' id='data-floors'> Floors</th>
+                <th data-defaultsign='nospan' id='data-height_ft'> Height (ft)</th>
+                <th data-defaultsign='nospan' id='data-height_m'> Height (m)</th>
+                <th>Material</th>
+                <th>Use</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for bldg in bldgs %}
+            <tr>
+                <td scope="row">{{ bldg.rank }}</td>
+                <!-- multiple rows don't respond. -->
+                <td class='bldg-name' data-bldg='{{bldg.bldg_id}}'>{{ bldg.building_name }}</td>
+                <td>{{ bldg.completed_yr }}</td>
+                <td>{{ bldg.status }}</td>
+                <td>{{ bldg.floors }}</td>
+                <td>
+                {% if bldg.height_ft is not none %}
+                    {{ bldg.height_ft }}
+                {% else %}
+                    --
+                {% endif %}</td>
+                <td>
+                {% if bldg.height_m is not none %}
+                    {{ bldg.height_m }}
+                {% else %}
+                    --
+                {% endif %}</td>
+                <td>{{ bldg.material }}</td>
+                <td>{{ bldg.use }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+    </div>
+    <div class='row'>
+        <div class='jumbotron collapse' id='placeholder'>
+            <br>
+            <span id='details-close' class='glyphicon glyphicon-remove'></span>
+            <p id='bldg-info'></p>
+            <img id='bldg-img' src='' />
+        </div>
+    </div>
 </div>
 
     <script src='https://code.jquery.com/jquery-1.12.3.js'></script>
