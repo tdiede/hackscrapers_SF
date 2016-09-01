@@ -1,5 +1,3 @@
-![Background](static/img/splash.jpg)
-
 Hackscrapers SF encourages San Francisco residents to get to know the skyline of their city and explore the tall buildings around them. Users can interact with a Mapbox GL web map that displays markers to represent tall buildings from a PostgreSQL database. An AJAX request returns a chart with more information and a Flickr photo selected at random from metadata stored in a MongoDB database. The photo results can be further queried to allow users to contribute their own search terms and filter per their interests. Users can then assemble collectible cards to show favorite buildings on their profile.
 
 
@@ -29,3 +27,6 @@ Hackscrapers SF encourages San Francisco residents to get to know the skyline of
 
 ## <a name="author"></a>Author
 Therese Diede is a Full-Stack Software Engineer in San Francisco, CA.
+
+
+![Background](static/img/splash.jpg)
