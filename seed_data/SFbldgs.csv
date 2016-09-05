@@ -1,76 +1,132 @@
-1,Under Construction,Salesforce Tower,San Francisco,326.1,1070,61,2018,composite,office
-2,Completed,Transamerica Pyramid,San Francisco,260,853,48,1972,composite,office
-3,Under Construction,181 Fremont,San Francisco,244.4,802,54,2017,steel,residential / office
-4,Completed,555 California Street,San Francisco,237.4,779,52,1969,steel,office
-5,Completed,345 California Center,San Francisco,211.8,695,48,1986,steel,hotel / office
-6,Completed,Millennium Tower,San Francisco,196.6,645,58,2009,concrete,residential
-7,Completed,One Rincon Hill South Tower,San Francisco,184.4,605,54,2008,concrete,residential
-8,Completed,101 California Street,San Francisco,183,600,48,1982,steel,office
-9,Completed,50 Fremont Center,San Francisco,183,600,43,1985,steel,office
-10,Completed,Chevron Tower,San Francisco,174.6,573,40,1975,steel,office
-11,Completed,Four Embarcadero Center,San Francisco,173.7,570,45,1984,steel,office
-12,Completed,One Embarcadero Center,San Francisco,173.4,569,45,1970,steel,office
-13,Completed,44 Montgomery,San Francisco,172.3,565,43,1967,steel,office
-14,Completed,Spear Tower,San Francisco,172,564,42,1976,steel,office
-15,Completed,One Sansome Street,San Francisco,168,551,43,1984,steel,office
-16,Completed,One Rincon Hill North Tower,San Francisco,165,541,45,2014,steel,residential
-17,Completed,Shaklee Terrace Building,San Francisco,164,538,38,1982,steel,office
-18,Completed,First Market Tower,San Francisco,161.2,529,38,1972,steel,office
-18,Completed,McKesson Plaza,San Francisco,161.2,529,38,1969,steel,office
-20,Completed,425 Market Street,San Francisco,159.7,524,38,1973,steel,office
-21,Completed,Telesis Tower,San Francisco,152.4,500,38,1982,steel,office
-22,Completed,333 Bush Street,San Francisco,150.9,495,43,1986,steel,residential / office
-23,Completed,Hilton San Francisco Union Square,San Francisco,150.3,493,46,1971,steel,hotel
-24,Completed,Pacific Gas & Electric Building,San Francisco,150,492,34,1971,steel,office
-25,Completed,50 California Street,San Francisco,148.4,487,37,1972,steel,office
-26,Completed,555 Mission Street,San Francisco,148.4,487,33,2008,steel,office
-27,Completed,St. Regis San Francisco,San Francisco,147.5,484,42,2005,concrete,residential / hotel
-28,Completed,100 Pine Center,San Francisco,145.1,476,34,1972,steel,office
-29,Completed,45 Fremont Center,San Francisco,145,476,34,1979,steel,office
-30,Completed,333 Market Building,San Francisco,144,472,33,1979,steel,office
-31,Completed,650 California Street,San Francisco,142,466,33,1964,steel,office
-32,Under Construction,340 Fremont Street,San Francisco,134.1,440,40,2016,concrete,residential
-33,Completed,One California,San Francisco,133.5,438,32,1969,steel,office
-34,Completed,San Francisco Marriott,San Francisco,132.9,436,39,1989,steel,hotel
-35,Completed,140 New Montgomery Street,San Francisco,132.7,435,26,1925,steel,residential / hotel
-36,Completed,Russ Building,San Francisco,132.6,435,32,1927,steel,office
-37,Completed,505 Montgomery,San Francisco,129.5,425,24,1988,steel,office
-38,Completed,The Infinity II,San Francisco,128,420,41,2009,concrete,residential
-39,Completed,JPMorgan Chase Building,San Francisco,128,420,31,2002,steel,office
-40,Completed,The Paramount,San Francisco,127.4,418,40,2002,precast,residential
-41,Completed,Providian Financial Building,San Francisco,127,417,30,1983,steel,office
-42,Completed,Three Embarcadero Center,San Francisco,126,413,31,1976,steel,office
-42,Completed,Two Embarcadero Center,San Francisco,126,413,31,1974,steel,office
-44,Completed,595 Market Street,San Francisco,125,410,30,1979,concrete,office
-45,Completed,100 Van Ness,San Francisco,122,400,30,1974,steel,residential
-46,Under Construction,399 Fremont,San Francisco,121.9,400,42,2016,concrete,residential
-47,Completed,One Maritime Plaza,San Francisco,121.3,398,25,1967,steel,office
-48,Completed,33 New Montgomery,San Francisco,116.5,382,21,1986,steel,office
-49,Completed,535 Mission Street,San Francisco,115.4,379,26,2015,composite,office
-50,Completed,Shell Building,San Francisco,115.2,378,29,1929,steel,office
-51,Completed,388 Market Street,San Francisco,114.3,375,26,1985,steel,residential / office
-52,Completed,222 Second Street,San Francisco,112.8,370,26,2015,steel/concrete,office
-53,Completed,Steuart Tower,San Francisco,111,364,27,1976,steel,office
-54,Completed,101 Second Street,San Francisco,108,354,26,1999,steel,office
-55,Completed,The Infinity I,San Francisco,106.7,350,35,2008,concrete,office
-56,Completed,601 California Street,San Francisco,106.4,349,22,1960,steel,office
-57,Completed,Bridgeview,San Francisco,101.4,333,26,2002,concrete,residential / retail
-58,Completed,55 Second Street,San Francisco,100.6,330,25,2002,steel,office
-59,Completed,150 California Street,San Francisco,100.6,330,23,1999,steel,office
-60,Completed,225 Bush Street,San Francisco,100,328,22,1922,steel,office
-61,Completed,Hunter-Dulin Building,San Francisco,98.3,322,22,1926,steel,office
-62,Completed,The Summit,San Francisco,96,315,32,1965,concrete,residential
-63,Completed,Ritz Carlton Residence Club,San Francisco,95.1,312,24,1889,steel,residential / hotel
-64,Completed,McAllister Tower Apartments,San Francisco,94.5,310,28,1930,steel,residential
-65,Completed,PG&E Headquarters,San Francisco,93.5,307,18,1925,steel,office
-66,Completed,299 Fremont,San Francisco,91.4,300,25,2016,concrete,residential
-67,Completed,Central Tower,San Francisco,90.8,298,21,1938,steel,office
-68,Completed,Hobart Building,San Francisco,86.9,285,21,1914,steel,office
-69,Completed,Le Meridien San Francisco,San Francisco,82.9,272,25,1988,steel,hotel
-70,Completed,Ferry Building,San Francisco,74.7,245,12,1898,steel,office / retail
-71,Completed,San Francisco Federal Building,San Francisco,71.3,234,18,2007,concrete,office
-72,Under Construction,San Francisco International Airport FAA Airport Traffic Control Tower (ATCT),San Francisco,67.4,221,12,2015,steel/concrete,air traffic control tower
-73,Completed,Coit Tower,San Francisco,64,210,13,1933,concrete,observation
-74,Vision,Echelon on Rincon Hill,San Francisco, , ,42, ,concrete,residential
-75,Completed,The InterContinental San Francisco,San Francisco, , ,40,2008,concrete,hotel
-76,Completed,Humboldt Bank Building,San Francisco, , ,19,1908,steel,office
+1,under construction,Salesforce Tower,San Francisco,326.10,1070,61,2018,composite,office
+2,proposed,Oceanwide Center Tower 1,San Francisco,275.80,905,61,,,residential / office
+3,completed,Transamerica Pyramid,San Francisco,260.00,853,48,1972,composite,office
+4,under construction,181 Fremont,San Francisco,244.40,802,54,2017,steel,residential / office
+5,completed,555 California Street,San Francisco,237.40,779,52,1969,steel,office
+6,completed,345 California Center,San Francisco,211.80,695,48,1986,steel,hotel / office
+7,completed,Millennium Tower,San Francisco,196.60,645,58,2009,concrete,residential
+8,proposed,Oceanwide Center Tower 2,San Francisco,190.50,625,54,,,residential / hotel
+9,under construction,Park Tower at Transbay,San Francisco,184.50,605,43,2018,,office
+10,completed,One Rincon Hill South Tower,San Francisco,184.40,605,54,2008,concrete,residential
+11,completed,101 California Street,San Francisco,183.00,600,48,1982,steel,office
+12,completed,50 Fremont Center,San Francisco,183.00,600,43,1985,steel,office
+13,completed,Chevron Tower,San Francisco,174.60,573,40,1975,steel,office
+14,completed,Four Embarcadero Center,San Francisco,173.70,570,45,1984,steel,office
+15,completed,One Embarcadero Center,San Francisco,173.40,569,45,1970,steel,office
+16,completed,44 Montgomery,San Francisco,172.30,565,43,1967,steel,office
+17,completed,Spear Tower,San Francisco,172.00,564,42,1976,steel,office
+18,completed,One Sansome Street,San Francisco,168.00,551,43,1984,steel,office
+19,proposed,400 Folsom,San Francisco,167.70,550,50,,,residential
+20,proposed,Transbay Center Residential Tower,San Francisco,167.60,550,,,,residential
+21,completed,One Rincon Hill North Tower,San Francisco,165.00,541,45,2014,steel,residential
+22,completed,Shaklee Terrace Building,San Francisco,164.00,538,38,1982,steel,office
+23,completed,First Market Tower,San Francisco,161.20,529,38,1972,steel,office
+23,completed,McKesson Plaza,San Francisco,161.20,529,38,1969,steel,office
+25,completed,425 Market Street,San Francisco,159.70,524,38,1973,steel,office
+26,proposed,706 Mission,San Francisco,155.50,510,44,2018,,residential / office
+27,completed,Telesis Tower,San Francisco,152.40,500,38,1982,steel,office
+28,completed,333 Bush Street,San Francisco,150.90,495,43,1986,steel,residential / office
+29,completed,Hilton San Francisco Union Square,San Francisco,150.30,493,46,1971,steel,hotel
+30,completed,Pacific Gas & Electric Building,San Francisco,150.00,492,34,1971,steel,office
+31,completed,50 California Street,San Francisco,148.40,487,37,1972,steel,office
+32,completed,555 Mission Street,San Francisco,148.40,487,33,2008,steel,office
+33,completed,St. Regis San Francisco,San Francisco,147.50,484,42,2005,concrete,residential / hotel
+34,completed,100 Pine Center,San Francisco,145.10,476,34,1972,steel,office
+35,completed,45 Fremont Center,San Francisco,145.00,476,34,1979,steel,office
+36,completed,333 Market Building,San Francisco,144.00,472,33,1979,steel,office
+37,proposed,5M Development - N1 Tower,San Francisco,143.30,470,40,,,residential
+38,completed,650 California Street,San Francisco,142.00,466,33,1964,steel,office
+39,completed,100 First Plaza,San Francisco,136.20,447,27,1988,,office
+40,under construction,340 Fremont Street,San Francisco,134.10,440,40,2016,concrete,residential
+41,completed,One California,San Francisco,133.50,438,32,1969,steel,office
+42,completed,San Francisco Marriott,San Francisco,132.90,436,39,1989,steel,hotel
+43,completed,140 New Montgomery Street,San Francisco,132.70,435,26,1925,steel,residential / hotel
+44,completed,Russ Building,San Francisco,132.60,435,32,1927,steel,office
+45,proposed,5M Development - H1 Tower,San Francisco,132.60,435,23,,,office
+46,completed,Jasper,San Francisco,131.00,430,39,2015,,residential
+47,completed,505 Montgomery,San Francisco,129.50,425,24,1988,steel,office
+48,completed,The Infinity II,San Francisco,128.00,420,41,2009,concrete,residential
+49,completed,JPMorgan Chase Building,San Francisco,128.00,420,31,2002,steel,office
+50,completed,The Paramount,San Francisco,127.40,418,40,2002,precast,residential
+51,completed,Providian Financial Building,San Francisco,127.00,417,30,1983,steel,office
+52,proposed,1481 Post Street,San Francisco,126.80,416,36,,,residential
+53,completed,Three Embarcadero Center,San Francisco,126.00,413,31,1976,steel,office
+53,completed,Two Embarcadero Center,San Francisco,126.00,413,31,1974,steel,office
+55,completed,350 Mission Street,San Francisco,125.90,413,27,2015,,office
+56,completed,595 Market Street,San Francisco,125.00,410,30,1979,concrete,office
+57,completed,123 Mission Building,San Francisco,124.00,407,29,1986,,office
+58,completed,Embarcadero Center West,San Francisco,123.00,404,33,1989,,office
+59,completed,101 Montgomery Street,San Francisco,123.00,404,28,1984,,office
+60,completed,100 Van Ness,San Francisco,122.00,400,30,1974,steel,residential
+61,proposed,160 Folsom Street,San Francisco,121.90,400,40,,,residential
+62,completed,Westin-St. Francis Hotel Tower,San Francisco,121.90,400,32,1972,,hotel
+63,under construction,399 Fremont,San Francisco,121.90,400,42,2016,concrete,residential
+63,completed,LUMINA I,San Francisco,121.90,400,42,2015,,residential
+65,proposed,655 4th Street,San Francisco,121.90,400,40,,,residential
+66,proposed,1500 Mission Street,San Francisco,121.90,400,39,,,residential
+67,proposed,One Van Ness,San Francisco,121.90,400,34,,,residential
+68,completed,Four Seasons Hotel & Residences,San Francisco,121.30,398,40,2001,,residential / hotel
+69,completed,One Maritime Plaza,San Francisco,121.30,398,25,1967,steel,office
+70,completed,8 Nema,San Francisco,118.00,387,37,2014,,residential
+71,completed,33 New Montgomery,San Francisco,116.50,382,21,1986,steel,office
+72,under construction,41 Tehama,San Francisco,115.80,380,35,2017,,residential
+73,completed,535 Mission Street,San Francisco,115.40,379,26,2015,composite,office
+74,completed,Shell Building,San Francisco,115.20,378,29,1929,steel,office
+75,completed,456 Montgomery Street,San Francisco,115.20,378,26,1986,,office
+76,completed,388 Market Street,San Francisco,114.30,375,26,1985,steel,residential / office
+77,completed,The Westin San Francisco Market Street,San Francisco,114.00,374,34,1984,,hotel
+78,completed,222 Second Street,San Francisco,112.80,370,26,2015,steel/concrete,office
+79,completed,San Francisco Hilton Hotel Financial District,San Francisco,111.30,365,28,1971,,hotel
+80,completed,199 Fremont Street,San Francisco,111.30,365,27,2000,,office
+81,completed,Steuart Tower,San Francisco,111.00,364,27,1976,steel,office
+82,completed,425 California Street,San Francisco,109.40,359,27,1967,,office
+83,completed,100 Montgomery Street,San Francisco,108.50,356,25,1955,,office
+84,completed,Grand Hyatt San Francisco,San Francisco,108.20,355,35,1972,,hotel
+85,completed,101 Second Street,San Francisco,108.00,354,26,1999,steel,office
+86,completed,Fox Plaza,San Francisco,107.90,354,29,1967,,residential / office
+87,completed,580 California Street,San Francisco,107.00,351,23,1984,,office
+88,completed,LUMINA II,San Francisco,106.70,350,37,2015,,residential
+89,completed,The Infinity I,San Francisco,106.70,350,35,2008,concrete,office
+90,completed,Parc 55 San Francisco,San Francisco,106.70,350,32,1984,,hotel
+91,proposed,Central SOMA Tower,San Francisco,106.70,350,,,,residential
+92,completed,601 California Street,San Francisco,106.40,349,22,1960,steel,office
+93,completed,Hilton San Francisco Union Square Tower II,San Francisco,106.00,348,23,1987,,hotel
+94,completed,450 Sutter Street,San Francisco,104.60,343,26,1929,,office
+95,completed,135 Main Street,San Francisco,103.60,340,22,1990,,office
+96,completed,71 Stevenson Street,San Francisco,103.00,338,26,1986,,office
+97,completed,Bridgeview,San Francisco,101.40,333,26,2002,concrete,residential / retail
+98,completed,55 Second Street,San Francisco,100.60,330,25,2002,steel,office
+99,completed,Royal Towers Apartments,San Francisco,100.60,330,24,1964,,residential
+100,completed,150 California Street,San Francisco,100.60,330,23,1999,steel,office
+101,completed,San Francisco Marriott Union Square,San Francisco,100.30,329,29,1972,,hotel
+102,completed,Bechtel Building,San Francisco,100.00,328,23,1967,,office
+103,completed,225 Bush Street,San Francisco,100.00,328,22,1922,steel,office
+104,completed,Fairmont San Francisco,San Francisco,99.10,325,29,1961,,hotel
+105,completed,235 Pine Street,San Francisco,98.80,324,26,1990,,office
+106,completed,Hunter-Dulin Building,San Francisco,98.30,322,22,1926,steel,office
+107,completed,Central Plaza,San Francisco,96.90,318,23,1987,,office
+108,completed,W San Francisco,San Francisco,96.00,315,33,1999,,hotel
+109,completed,The Summit,San Francisco,96.00,315,32,1965,concrete,residential
+110,completed,Sir Francis Drake Hotel,San Francisco,96.00,315,22,1928,,hotel
+111,completed,353 Sacramento Street,San Francisco,95.40,313,23,1983,,office
+112,completed,McAllister Tower Apartments,San Francisco,94.50,310,28,1930,steel,residential
+113,completed,PG&E Headquarters,San Francisco,93.50,307,18,1925,steel,office
+114,completed,Trinity Place Building A,San Francisco,93.00,305,25,2009,,residential
+115,completed,299 Fremont,San Francisco,91.40,300,25,2016,concrete,residential
+116,completed,Central Tower,San Francisco,90.80,298,21,1938,steel,office
+117,completed,Hobart Building,San Francisco,86.90,285,21,1914,steel,office
+118,completed,Le Meridien San Francisco,San Francisco,82.90,272,25,1988,steel,hotel
+119,completed,Cathedral Apartments,San Francisco,78.30,257,16,1930,,residential
+120,proposed,30 Otis Street,San Francisco,76.20,250,26,,,residential
+121,completed,18 Nema,San Francisco,74.60,245,23,2013,,residential
+122,completed,San Francisco Federal Building,San Francisco,71.30,234,18,2007,concrete,office
+123,completed,Blu Residences,San Francisco,67.40,221,21,2009,,residential
+124,under construction,San Francisco International Airport FAA Airport Traffic Control Tower (ATCT),San Francisco,67.40,221,12,2015,steel/concrete,air traffic control tower
+125,proposed,5M Development - M2 Tower,San Francisco,67.20,220,20,,,residential
+126,proposed,75 Howard Street,San Francisco,67.00,220,20,,,residential / retail
+127,completed,Coit Tower,San Francisco,64.00,210,13,1933,concrete,observation
+128,proposed,5M Development - N2 Tower,San Francisco,59.40,195,11,,,office
+129,completed,The InterContinental San Francisco,San Francisco,,,40,2008,concrete,hotel
+130,proposed,Waldorf Astoria,San Francisco,,,21,,,hotel
+131,completed,Hyatt Regency San Francisco,San Francisco,,,20,1973,,hotel
+132,completed,Humboldt Bank Building,San Francisco,,,19,1908,steel,office

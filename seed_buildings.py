@@ -40,6 +40,8 @@ def load_buildings():
         rank, status, building_name, city_name, height_m, height_ft, floors, completed_yr, material, use = row.split(",")
 
         bldg_count += 1
+        print "*"*80
+        print city_name
 
         # Get city_id from building's city_name.
         city_id = City.query.filter_by(city=city_name).first().city_id
@@ -55,12 +57,14 @@ def load_buildings():
             lat = 0
             lng = 0
 
-        if height_m == ' ':
+        if height_m == '':
             height_m = None
-        if height_ft == ' ':
+        if height_ft == '':
             height_ft = None
-        if completed_yr == ' ':
+        if completed_yr == '':
             completed_yr = None
+        if floors == '':
+            floors = None
 
         bldg = Building(place_id=place_id,
                         rank=rank,

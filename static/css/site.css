@@ -1,13 +1,10 @@
 /* Style */
 
-
-.body {
-    margin: 0;
-    padding: 0;
-}
-
-h3 {
-    margin: 10px;
+body {
+    /*background: #333 url("/static/img/splash.jpg");*/
+    background-size: cover;
+    color: #bbbbbb;
+    margin-top: 50px;
 }
 
 .jumbotron {
@@ -44,6 +41,28 @@ footer {
 }
 
 
+.card {
+    height: 300px;
+    padding: 10px;
+}
+
+.carte-blanche {
+    /*border: 2px dashed #dddddd;*/
+    border-radius: 7px;
+    background-color: #dddddd;
+}
+
+.card-collectible {
+    border-radius: 7px;
+    background-color: #999999;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 7px;
+}
+
 /* Mapbox specific items. */
 
 #map-mapbox {
@@ -59,6 +78,18 @@ footer {
     min-height: 20em;
 }
 
+a {
+    cursor: pointer;
+}
+
+.navbar span:hover {
+    color: #eeeeee;
+}
+
 .bldg-name {
     cursor: pointer;
+}
+
+.horizontalLine {
+    border-top: thin solid #bbbbbb;
 }

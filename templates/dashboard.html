@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% block title %}
+
+    <title>Dashboard:SkyscraperGO</title>
+
+{% endblock %}
+
+{% block content %}
+
+<div class='container'>
+
+<br>
+
+<h2>USER DASHBOARD | WELCOME {{ current_user }}! COLLECT 'EM ALL!</h2>
+
+<br>
+
+{% if collection_html is defined %}
+{% for row_html in collection_html %}
+<div class="row">
+{% for card_html in row_html %}
+{{ card_html }}
+{% endfor %}
+</div><br><br>
+{% endfor %}
+{% endif %}
+
+<!-- <div class="col-md-3">
+  <div class="card card-block card-collectible">
+    <h3 class="card-title">{ bldg.building_name }</h3>
+    <img class="card-img-top thumbnail img-fluid" src="static/img/splash.jpg" alt="Card image cap">
+    <p class="card-text"></p>
+    <a id="flip-card" data-bldg="{bldg.bldg_id}" class="btn btn-info">flip for info</a>
+  </div>
+</div> -->
+
+<!--   <div class="col-md-3">
+    <div class="card card-block carte-blanche">
+      <h3 class="card-title"><a href="#create">Create your card.</a></h3>
+      <p class="card-text"></p>
+      <a href="#" class="btn btn-info"></a>
+    </div>
+  </div> -->
+
+
+
+<br>
+<br>
+
+<br>
+<br>
+
+<div class='row'>
+<div id='create'>
+  <a href='/buildings'>View table of all buildings.</a><br>
+  Search for a building.
+  <form id='search-bldg' action='/search_bldg.json'>
+    <input id='search-terms' type='text' placeholder='building' name='building'>
+    <button type='submit' class='btn btn-info' value='search'>search!</button>
+  </form>
+
+<br>
+<br>
+
+<div class='row collapse' id='search-table'>
+        <table class="table sortable table-sm table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <th data-defaultsign='nospan'><span class='glyphicon glyphicon-sort-by-attributes'></span> Rank</th>
+                <th>Building Name</th>
+                <th data-defaultsign='nospan' id='data-completed_yr'> Year Completed</th>
+                <th>Status</th>
+                <th data-defaultsign='nospan' id='data-floors'> Floors</th>
+                <th data-defaultsign='nospan' id='data-height_ft'> Height (ft)</th>
+                <th data-defaultsign='nospan' id='data-height_m'> Height (m)</th>
+                <th>Material</th>
+                <th>Use</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td id="rank" scope="row"></td>
+                <td id="name"></td>
+                <td id="year"></td>
+                <td id="status"></td>
+                <td id="floors"></td>
+                <td id="feet"></td>
+                <td id="meters"></td>
+                <td id="material"></td>
+                <td id="use"></td>
+            </tr>
+        </tbody>
+        </table>
+
+<form id='create-card' action='/create_card.json'>
+  <button id='data-bldg-id' data-bldg='' type='submit' class='btn btn-info' value='create'>create!</button>
+</form>
+
+<form id='save-card' action='/save_card.json'>
+  <button id='data-card-id' data-card='' type='submit' class='btn btn-info' value='save'>save!</button>
+</form>
+
+</div>
+
+
+
+<br>
+<br>
+
+<br>
+<br>
+
+<br>
+<br>
+
+<br>
+<br>
+
+<br>
+<br>
+</div>
+</div>
+
+
+</div>
+
+    <script src='http://code.jquery.com/jquery.js'></script>
+    <script src='../static/js/dashboard.js'></script>
+
+{% endblock %}

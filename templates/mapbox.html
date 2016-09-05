@@ -9,13 +9,16 @@
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.css' rel='stylesheet' />
 
 <!--     // <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v1.3.0/mapbox-gl-geocoder.js'></script>
-    // <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v1.3.0/mapbox-gl-geocoder.css' type='text/css' />
+    // <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v1.3.0/mapbox-gl-geocoder.css' type='text/css' /> -->
 
-    // <script src='../static/js/turf.min.js'></script> -->
+    <script src='../static/js/turf.min.js'></script>
+    <script src='../static/js/turf_modules.min.js'></script>
 
 {% endblock %}
 
 {% block content %}
+
+<!-- add hover over markers feature -->
 
 <div class='container-fluid'>
     <div class='row'>
@@ -24,19 +27,34 @@
             <div id='map-mapbox' ></div>
 
         </div>
-        <div class='col-md-4 full-w'>
+        <div class='col-md-4'>
 
-            <div class="bar-chart">
+            <div>
+                <br>
+                <form>
+                    <input id='radius' type='text' placeholder='radius' name='radius'>
+                    <button id='update-radius' type='submit' class='btn btn-info' data-radius='radius' role='button' value='search'>search!</button>
+                </form>
+                <br>
+            </div>
+
+<!--             <div class="bar-chart">
                 <canvas id="barChart"></canvas>
                 <div id="barLegend" class="chart-legend"></div>
-            <div>
+            <div> -->
 
             <div class='jumbotron collapse' id='placeholder'>
                 <br>
                 <span id='details-close' class='glyphicon glyphicon-remove'></span>
                 <h4 id='bldg-name'></h4>
-                <p id='bldg-info'></p>
-                <p><a id='bldg-details' class='btn btn-primary btn-sm' data-toggle='collapse' data-feature='feature' role='button'>Learn more</a></p>
+                    <img id='bldg-img' src='' />
+                    <p id='photo-suggest'></p>
+                    <p class='photo-properties' id='photo-title'></p>
+                    <h6 class='photo-properties'>BY</h6>
+                    <p class='photo-properties' id='photo-ownername'></p>
+                    <p class='photo-properties' id='photo-descript'></p>
+                    <p id='bldg-info'></p>
+                    <p><a id='bldg-details' class='btn btn-info' data-toggle='collapse' data-feature='feature' role='button'>collect a card!</a></p>
                 <br>
             </div>
 

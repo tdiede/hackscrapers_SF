@@ -7,18 +7,21 @@ Author: Therese Diede
 
 from jinja2 import StrictUndefined
 
-from flask import (Flask, render_template, redirect, request, session, flash, jsonify)
+from flask import (Flask, render_template, redirect, request, session, flash, jsonify, Markup)
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model_buildings import connect_to_db, db
-from model_buildings import Building, City, User
+from model_buildings import Building, City, User, Card
 
-from database_functions import add_user, get_bldg_query, avg_bldg_height
+# from flickr import flickr_search
+from mongodb_tmd import flickr, total_photos
 
-# import flickr
-from mongodb_tmd import flickr
+import json
+import pprint
 
-# import pprint
+from sqlalchemy.sql import func, desc
+
+from random import randint, sample
 
 
 app = Flask(__name__)
@@ -40,12 +43,10 @@ def handle_login():
     current_username = request.form['username']
     current_password = request.form['password']
 
-    user = User.query.filter_by(username=current_username).one()
-    user_username = user.username
-    user_password = user.password
+    user = User.query.filter_by(username=current_username).first()
 
-    if user_username:  # Checks to see if user is registered.
-        if current_password == user_password:  # Checks to see if user password is correct.
+    if user:  # Checks to see if user is registered.
+        if current_password == user.password:  # Checks to see if user password is correct.
             session['current_user'] = current_username
             flash("Logged in as %s" % (current_username))
             return redirect('/dashboard')
@@ -57,8 +58,8 @@ def handle_login():
         return redirect('/register')
 
 
-@app.route('/dashboard')
-def dashboard():
+@app.route('/homepage')
+def homepage():
     """Return homepage (dashboard)."""
 
     current_user = session.get('current_user')
@@ -66,41 +67,159 @@ def dashboard():
     return render_template("homepage.html", current_user=current_user)
 
 
+@app.route('/dashboard')
+def dashboard():
+    """Return user dashboard and profile."""
+
+    if not session:
+        return redirect('/')
+
+    else:
+        current_user = session['current_user']
+        user = User.query.filter_by(username=current_user).one()
+        cards = Card.query.filter_by(user_id=user.user_id).all()
+
+        card_bldg = []
+        for card in cards:
+            bldg = Building.query.filter_by(bldg_id=card.bldg_id).one()
+            match = card, bldg
+            card_bldg.append(match)
+
+        card_collection = assemble_card_row(card_bldg)
+
+        empty_card_html = Markup('<div class="col-md-3"><div class="card card-block carte-blanche"><h3 class="card-title"><a href="#create">Create your card.</a></h3><p class="card-text"></p><a href="#" class="btn btn-info"></a></div></div>')
+
+        collection_html = []
+        for card_row in card_collection:
+            row_html = []
+            for card in card_row:
+                card_html = Markup('<div class="col-md-3"><div class="card card-block card-collectible"><h3 class="card-title"> ' + card[1].building_name + ' </h3><img class="card-img-top thumbnail img-fluid" src=' + 'static/img/splash.jpg' + ' ><p class="card-text"></p><a id="flip-card" data-bldg=' + str(card[0].bldg_id) + ' class="btn btn-info">flip for info</a></div></div>')
+                row_html.append(card_html)
+            if len(row_html) < 3:
+                row_html.append(empty_card_html)
+            collection_html.append(row_html)
+        if len(collection_html) % 3 == 0:
+            row_html = []
+            row_html.append(empty_card_html)
+            collection_html.append(row_html)
+
+        return render_template("dashboard.html", current_user=current_user, collection_html=collection_html)
+
+
+def assemble_card_row(card_bldg):
+    """Counts existing cards created by user and groups by threes."""
+
+    card_collection = []
+    i = 0
+    while (i <= len(card_bldg)/3):
+        card_row = card_bldg[i*3:i+3]
+        card_collection.append(card_row)
+        i += 1
+
+    return card_collection
+
+
+@app.route('/search_bldg.json')
+def search_bldgs():
+    """Queries database for building(s) searched by user and returns a json."""
+
+    search_results = []
+    bldg_response = {}
+
+    # Search terms entered by user
+    search_terms = request.args.get('building')
+    if search_terms:
+        search = search_terms.split(" ")
+    else:
+        # flash("Your search is empty.")
+        return redirect('/dashboard')
+
+    for term in search:
+        # if term.lower() != "building" and term.lower() != "tower":  # Hope to exclude these terms from search. Better way?
+        bldg_match = db.session.query(Building).filter(Building.building_name.ilike('%'+term+'%')).all()
+        search_results.extend(bldg_match)
+
+    if search_results:
+        for bldg in search_results:
+            bldg_response = {'bldg_id': bldg.bldg_id,
+                             'place_id': bldg.place_id,
+                             'rank': bldg.rank,
+                             'status': bldg.status,
+                             'building_name': bldg.building_name,
+                             'lat': bldg.lat,
+                             'lng': bldg.lng,
+                             'city': bldg.city_id,
+                             'height_m': bldg.height_m,
+                             'height_ft': bldg.height_ft,
+                             'floors': bldg.floors,
+                             'completed_yr': bldg.completed_yr,
+                             'material': bldg.material,
+                             'use': bldg.use}
+
+        return jsonify(bldg_response)
+
+    else:
+        # flash("Your search returned no results.")
+        return redirect('/dashboard')
+
+
+@app.route('/create_card.json')
+def create_card():
+    """User selects photo to put on card."""
+
+    bldg_id = request.args.get('bldg_id')
+
+    bldg = {'bldg_id': int(bldg_id)}
+
+    return jsonify(bldg)
+
+
+@app.route('/save_card.json')
+def save_card():
+    """Saves new card to user profile and database."""
+
+    current_user = session['current_user']
+
+    user = User.query.filter_by(username=current_user).one()
+    user_id = user.user_id
+    # bldg_id = request.form.get('bldg_id')
+
+    bldg_id = 26
+
+    duplicate_card = Card.query.filter_by(user_id=user_id).filter_by(bldg_id=bldg_id).first()
+    if duplicate_card:
+        flash("You already have that card %d!" % duplicate_card.card_id)
+        return redirect('/dashboard')
+    else:
+        add_card(user_id, bldg_id)
+        return jsonify(new_card)
+
+
+# def refresh_dashboard():
+#     """After user creates and saves card, refresh dashboard."""
+
+#     cards = Card.query.filter_by(user_id=user_id).all()
+#     print cards
+
+#     card_html, empty_card_html = refresh_dashboard()
+
+#     bldg = Building.query.filter_by(bldg_id=bldg_id).one()
+
+#     flash("New card for {} has now been added to your collection!".format(bldg.building_name))
+#     return render_template("dashboard.html", current_user=current_user, cards=cards, card_html=card_html, empty_card_html=empty_card_html)
+
+
+# # # Only called once to generate files.
+# # # Another function populates database.
 # @app.route('/gen_flickr_files')
 # def gen_flickr_files():
 #     """Calls Flickr API for photo search. Saves JSON data files for each bldg."""
 
 #     bldgs = db.session.query(Building).options(db.joinedload('city')).all()
 
-#     flickr.flickr_search(bldgs)
+#     flickr_search(bldgs)
 
 #     return None
-
-
-# @app.route('/flickr_data.json')
-# def flickr_data():
-#     """Combines JSON file data, including image urls, into one file for all bldgs."""
-
-#     bldgs = Building.query.all()
-
-#     flickr.combine_files(bldgs)
-
-#     return None
-
-
-@app.route('/filter_flickr')
-def filter_flickr():
-    """Returns filtered list of Flickr image urls to display photos."""
-
-    data = flickr.load_file()
-
-    bldgs = Building.query.all()
-
-    bldg_photo_totals, bldgs_photos = flickr.return_photos(data, bldgs)
-
-    urls = flickr.filter_photos(bldg_photo_totals, bldgs_photos)
-
-    return render_template("building_photos.html", urls=urls)
 
 
 @app.route('/buildings')
@@ -113,13 +232,14 @@ def buildings_list():
 
     if bldg_search:
         search_results = get_bldg_query(bldg_search)
-        for term in search_results:
-            if term is None:
-                search_results.remove(None)
-            bldgs.append(term)
-        return render_template("buildings_list.html", bldgs=bldgs)
+        if search_results:
+            for result in search_results:
+                if result is None:
+                    search_results.remove(None)
+                bldgs.append(result)
+            return render_template("buildings_list.html", bldgs=bldgs)
 
-        if len(search_results) == 0:
+        else:
             flash("Sorry, your search {} returned no results.".format(bldg_search))
             return redirect('/dashboard')
 
@@ -157,6 +277,7 @@ def handle_register():
         return redirect('/')
     else:
         add_user(current_username, current_password)
+        session['current_user'] = current_username
         flash("Welcome. You are now a registered user, %s! Please make yourself at home." % (current_username))
         return redirect('/dashboard')
 
@@ -173,8 +294,10 @@ def switch_user():
 def logout_user():
     """User logout, automatically called if user switch."""
 
-    flash("Thanks for playing. You have been logged out.")
-    return redirect('/dashboard')
+    current_user = session['current_user']
+    flash("Thanks for playing, %s. You have been logged out." % current_user)
+    del session['current_user']
+    return redirect('/')
 
 
 @app.route('/map')
@@ -220,6 +343,7 @@ def dendogram_data():
     return jsonify(dendrogram)
 
 
+# GEOJSON ROUTE
 @app.route('/bldg_geojson.geojson')
 def bldg_data():
     """Return data from buildings table as GEOJSON."""
@@ -264,6 +388,7 @@ def bldg_data():
     return jsonify(bldg_geojson)
 
 
+# JSON ROUTE FOR BAR CHART
 @app.route('/bldg_barchart.json/<int:bldg_id>')
 def bldg_barchart(bldg_id):
     """Return data from buildings table for barchart."""
@@ -283,11 +408,15 @@ def bldg_barchart(bldg_id):
     labels = ["average"]
     labels.append(bldg.building_name)
 
-    backgroundColor = ['rgba(255, 99, 132, 0.2)',
-                       'rgba(54, 162, 235, 0.2)']
-    borderColor = ['rgba(255,99,132,1)',
-                   'rgba(54, 162, 235, 1)']
-    borderWidth = 1
+    avg_color = '#f1039a'
+    bldg_color = '#f0ab68'
+    border_color = '#bbbbbb'
+
+    backgroundColor = [avg_color,
+                       bldg_color]
+    borderColor = [border_color,
+                   border_color]
+    borderWidth = 3
 
     datasets = [
         {
@@ -318,7 +447,7 @@ def show_bldg_details(bldg_id):
     #     url_m = photo['url_m']
     #     urls_m.append(url_m)
 
-    url_m = photos[0]['url_m']
+    url_m = photos[5]['url_m']
 
     bldg_feature = {}
 
@@ -353,6 +482,70 @@ def show_bldg_details(bldg_id):
     return jsonify(bldg_feature)
 
 
+# JSON FOR FLICKR PHOTO OF BLDG
+@app.route('/flickr_filter.json')
+def flickr_filter():
+    """Returns a random Flickr image url to display photo of bldg."""
+
+    bldg_id = request.args.get('bldg_id')
+
+    bldg = Building.query.get(bldg_id)
+    bldg_text = bldg.building_name.replace(' ', '')
+    bldg_text = bldg_text.lower()
+
+    bldg_photos = flickr.find({'$text': {'$search': bldg_text}})
+    count = bldg_photos.count()
+
+    if count:
+        i = get_randint(0, count-1)
+        photo = bldg_photos[i]
+        photo_url = photo['url_s']
+        owner = photo['ownername']
+        title = photo['title']
+        description = photo['description']['_content']
+        description = description.rstrip()
+        photo = {"url_s": photo_url,
+                 "ownername": owner,
+                 "photo_title": title,
+                 "descript": description,
+                 }
+
+    else:
+        photo = None
+
+    bldg_flickr = {"properties": {"bldg_id": bldg.bldg_id,
+                                  "photo": photo,
+                                  },
+                   }
+
+    return jsonify(bldg_flickr)
+
+
+# def filter_photos():
+#     """Perform an initial filter on photo results to extract quality photos in location."""
+
+    # data = flickr.load_file()
+    # bldg_photo_totals, bldgs_photos = flickr.return_photos(data, bldgs)
+    # urls = flickr.filter_photos(bldg_photo_totals, bldgs_photos)
+
+#     # bldg_tags = []
+
+#     urls = []
+
+#     for bldg_grp in photos:
+#         # for photo in bldg_grp:
+#         if len(bldg_grp) > 0:
+#             my_randint = get_randint(0, len(bldg_grp)-1)
+#             url = bldg_grp[my_randint]['url_s']
+#             urls.append(url)
+#         else:
+#             continue
+
+#     # raise Exception
+
+#     return urls
+
+
 # @app.route('/photos')
 # def get_photos():
 
@@ -382,6 +575,94 @@ def user_curates():
         queried_photos.append(photo)
 
     return render_template("curated_photos.html", query=queried_photos)
+
+
+# @app.route('/flickr_data.json')
+# def flickr_data():
+#     """Combines JSON file data, including image urls, into one file for all bldgs."""
+
+#     bldgs = Building.query.all()
+
+#     combine_flickr_data(bldgs)
+
+#     return None
+
+
+# HELPER FUNCTIONS #
+####################################################################
+"""All functions database."""
+
+
+def add_user(username, password):
+    """Called when a new user registers."""
+
+    user = User(username=username,
+                password=password)
+
+    db.session.add(user)
+    db.session.commit()
+
+
+def add_card(user_id, bldg_id):
+    """Called when a user saves a new card."""
+
+    card = Card(user_id=user_id,
+                bldg_id=bldg_id)
+
+    db.session.add(card)
+    db.session.commit()
+
+
+def avg_bldg_height():
+    """Queries database for average building height."""
+
+    avg = db.session.query(func.avg(Building.height_ft).label('average')).scalar()
+
+    return avg
+
+
+# @app.route('/sort_field')
+# def sort_field(field_id):
+#     """Return refreshed list of buildings after sorting field."""
+
+#     sort_field(field_id)
+
+#     return render_template("buildings_list.html", bldgs=bldgs)
+
+
+# def sort_field():
+#     """Orders query results in descending order."""
+
+#     bldgs = db.session.query(Building).all()
+
+#     bldgs_desc = bldgs.order_by(desc(Building.completed_yr))
+#     # bldgs_desc = bldgs.order_by(desc(Building.floors))
+
+#     return bldgs_desc
+
+
+def get_randint(low, high):
+    """Obtain a random integer between low and high, inclusive, for use in any function."""
+
+    my_randint = randint(low, high)
+
+    return my_randint
+
+
+def get_randsample(high, n):
+    """Obtain n random integers between 0 high, exclusive, for use in any function."""
+
+    my_randsample = sample(range(high), n)
+
+    return my_randsample
+
+
+if __name__ == "__main__":
+    import doctest
+
+    result = doctest.testmod()
+    if not result.failed:
+        print "ALL TESTS PASSED. GOOD WORK!"
 
 
 ####################################################################
