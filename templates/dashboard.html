@@ -7,7 +7,8 @@
 
 {% block content %}
 
-<div class='container'>
+<div class='container-fluid dashboard'>
+  <div class='container'>
 
 <br>
 
@@ -18,12 +19,20 @@
 {% if collection_html is defined %}
 {% for row_html in collection_html %}
 <div class="row">
+
 {% for card_html in row_html %}
+<div class="col-md-3">
+  <div class='jumbotron card'>
+    <span id='details-close' class='glyphicon glyphicon-remove'></span>
 {{ card_html }}
+  </div>
+</div>
 {% endfor %}
+
 </div><br><br>
 {% endfor %}
 {% endif %}
+
 
 <!-- <div class="col-md-3">
   <div class="card card-block card-collectible">
@@ -121,7 +130,7 @@
 </div>
 </div>
 
-
+</div>
 </div>
 
     <script src='http://code.jquery.com/jquery.js'></script>

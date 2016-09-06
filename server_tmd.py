@@ -87,13 +87,13 @@ def dashboard():
 
         card_collection = assemble_card_row(card_bldg)
 
-        empty_card_html = Markup('<div class="col-md-3"><div class="card card-block carte-blanche"><h3 class="card-title"><a href="#create">Create your card.</a></h3><p class="card-text"></p><a href="#" class="btn btn-info"></a></div></div>')
+        empty_card_html = Markup('<h3 class="card-title"><a href="#create">Create your card.</a></h3><p class="card-text"></p><a href="#" class="btn btn-info"></a>')
 
         collection_html = []
         for card_row in card_collection:
             row_html = []
             for card in card_row:
-                card_html = Markup('<div class="col-md-3"><div class="card card-block card-collectible"><h3 class="card-title"> ' + card[1].building_name + ' </h3><img class="card-img-top thumbnail img-fluid" src=' + 'static/img/splash.jpg' + ' ><p class="card-text"></p><a id="flip-card" data-bldg=' + str(card[0].bldg_id) + ' class="btn btn-info">flip for info</a></div></div>')
+                card_html = Markup('<h3 class="card-title"> ' + card[1].building_name + ' </h3><img class="card-img-top thumbnail img-fluid" src=' + 'static/img/splash.jpg' + ' ><p class="card-text"></p><a id="flip-card" data-bldg=' + str(card[0].bldg_id) + ' class="btn btn-info">flip for info</a>')
                 row_html.append(card_html)
             if len(row_html) < 3:
                 row_html.append(empty_card_html)
@@ -105,6 +105,24 @@ def dashboard():
 
         return render_template("dashboard.html", current_user=current_user, collection_html=collection_html)
 
+# <div class='row'>
+#         <div class='jumbotron' id='wrapper'>
+#             <span id='details-close' class='glyphicon glyphicon-remove'></span>
+#             <h3 id='bldg-name'></h3>
+#             <p id='photo-suggest'></p>
+#             <img id='bldg-img' src='' />
+#             <br>
+#             <div class='photo-properties'>
+#                 <p>photo credits: <span id='photo-ownername'></span>
+#                 <br>title: <span id='photo-title'></span>
+#                 <br>description: <span id='photo-descript'></span></p>
+#             </div>
+#             <div class='bldg-properties'>
+#                 <p>building data: <span id='bldg-info'></span></p>
+#             </div>
+#             <button id='bldg-details' type='submit' class='btn btn-info' data-feature='feature' role='button' value='collect'>collect a card!</button>
+#         </div>
+# </div>
 
 def assemble_card_row(card_bldg):
     """Counts existing cards created by user and groups by threes."""

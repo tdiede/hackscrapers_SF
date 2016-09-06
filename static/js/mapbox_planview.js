@@ -79,7 +79,7 @@ var canvas = map.getCanvasContainer();
 var url_bldgs = '/bldg_geojson.geojson';
 
 // Sets initial radius of generic point.
-var radius = 100;
+var radius = 10;
 
 // Create a generic geojson.
 var geojson = {
@@ -89,7 +89,7 @@ var geojson = {
             'properties': {},
             'geometry': {
                 'type': 'Point',
-                'coordinates': [-122.4937323943661, 37.79881622083343],
+                'coordinates': [-122.50882387161255, 37.80990262140361],
                 }
             }]
         };
@@ -138,21 +138,22 @@ console.log(circle);
 
 // srcFeatures
 $.each(srcFeatures, function (k, v) {
-var pt = {
-  "type": "Feature",
-  "properties": { "marker-color": "blue", "marker-size": "large"},
-  "geometry": {
-    "type": "Point",
-    "coordinates": v.geometry.coordinates
-  }
-};
+    var pt = {"type": "Feature",
+              "properties": {"marker-color": "blue", "marker-size": "large"},
+              "geometry": {"type": "Point",
+                           "coordinates": v.geometry.coordinates}};
 
-var isInside = turf.inside(pt, circle);
-console.log(isInside);
-if (isInside) {
-    console.log(k);
-    map.setPaintProperty('point', 'circle-color', '#000000');
-    }
+    var isInside = turf.inside(pt, circle);
+    // console.log(isInside);
+    if (isInside === true) {
+        // console.log(k);
+        // console.log(v);
+        console.log(this);
+        console.dir(this);
+        this.properties['marker-color'] = '#000000';
+
+        map.setPaintProperty('point', 'circle-color', '#000000');
+        }
 });
 }
 
@@ -205,7 +206,7 @@ map.on('load', function () {
 
 
     // Add data source and layer for buildings.
-    map.addSource('bldgs', {
+    var srcBldgs = map.addSource('bldgs', {
         'type': 'geojson',
         'data': url_bldgs,
     });

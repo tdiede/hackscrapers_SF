@@ -7,11 +7,31 @@ body {
     margin-top: 50px;
 }
 
+.dashboard {
+    background-color: #dfdfdd;
+}
+
+#table-buildings {
+    margin-bottom: 30px;
+}
+
+#table-cities {
+    margin-bottom: 30px;
+}
+
+#searchwrapper {
+    padding: 10px;
+    z-index: 100;
+    position: absolute;
+    top: 10px;
+    left: 50px;
+}
+
 #wrapper {
     padding: 10px;
     z-index: 100;
     position: absolute;
-    top: 300px;
+    bottom: 10px;
     left: 10px;
     max-width: 370px;
     max-height: 370px;
@@ -50,10 +70,12 @@ body {
     height: 25px;
 }
 
-
 .card {
-    height: 300px;
     padding: 10px;
+    height: 300px;
+    max-width: 370px;
+    max-height: 370px;
+    overflow: scroll;
 }
 
 .carte-blanche {
@@ -74,10 +96,11 @@ img {
     border-radius: 5px;
 }
 
-
 .full-w {
-    height: 630px;
+    height: 700px;
+    position: relative;
     padding: 0;
+    margin-bottom: 30px;
 }
 
 /* Mapbox specific items. */
@@ -88,7 +111,7 @@ img {
 }
 
 #bar-chart {
-    height: 550px;
+    height: 100%;
 }
 
 #barChart {

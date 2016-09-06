@@ -54,7 +54,7 @@
     </div>
 
     <div class='row'>
-        <table class="table sortable table-sm table-bordered table-striped table-hover">
+        <table id="table-buildings" class="table sortable table-sm table-bordered table-striped table-hover">
         <thead>
             <tr>
                 <th data-defaultsign='nospan'><span class='glyphicon glyphicon-sort-by-attributes'></span> Rank</th>
@@ -72,7 +72,6 @@
         {% for bldg in bldgs %}
             <tr>
                 <td scope="row">{{ bldg.rank }}</td>
-                <!-- multiple rows don't respond. -->
                 <td class='bldg-name' data-bldg='{{bldg.bldg_id}}'>{{ bldg.building_name }}</td>
                 <td>{{ bldg.completed_yr }}</td>
                 <td>{{ bldg.status }}</td>

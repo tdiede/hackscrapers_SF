@@ -26,17 +26,17 @@
 
         <div class='col-md-8 full-w'>
             <div id='map-mapbox' ></div>
-        </div>
 
-        <div class='col-md-4'>
-            <div>
-                <br>
+            <div class='jumbotron' id='searchwrapper'>
                 <form>
                     <input id='radius' type='text' placeholder='radius' name='radius'>
                     <button id='update-radius' type='submit' class='btn btn-info' data-radius='radius' role='button' value='search'>search!</button>
                 </form>
-                <br>
             </div>
+
+        </div>
+
+        <div class='col-md-4 full-w'>
 
             <div id='bar-chart'>
                 <canvas id="barChart"></canvas>
@@ -45,6 +45,7 @@
             </div>
 
         </div>
+
 
         <div class='jumbotron collapse' id='wrapper'>
             <span id='details-close' class='glyphicon glyphicon-remove'></span>
