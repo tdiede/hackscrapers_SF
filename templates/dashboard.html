@@ -102,11 +102,12 @@
         </table>
 
 <form id='create-card' action='/create_card.json'>
-  <button id='data-bldg-id' data-bldg='' type='submit' class='btn btn-info' value='create'>create!</button>
+  <input type='text' name='comments' placeholder='enter your thoughts' value='comments'/>
+  <button id='create-card' data-bldg='' data-comments='comments' type='submit' class='btn btn-info' value='create'>create!</button>
 </form>
 
 <form id='save-card' action='/save_card.json'>
-  <button id='data-card-id' data-card='' type='submit' class='btn btn-info' value='save'>save!</button>
+  <button id='save-card' data-bldg='' data-url='' type='submit' class='btn btn-info' value='save'>save!</button>
 </form>
 
 </div>

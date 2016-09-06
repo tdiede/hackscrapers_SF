@@ -87,13 +87,13 @@ def dashboard():
 
         card_collection = assemble_card_row(card_bldg)
 
-        empty_card_html = Markup('<h3 class="card-title"><a href="#create">Create your card.</a></h3><p class="card-text"></p><a href="#" class="btn btn-info"></a>')
+        empty_card_html = Markup('<h3>Create your card.</h3><button href="#create" class="btn btn-info"></button>')
 
         collection_html = []
         for card_row in card_collection:
             row_html = []
             for card in card_row:
-                card_html = Markup('<h3 class="card-title"> ' + card[1].building_name + ' </h3><img class="card-img-top thumbnail img-fluid" src=' + 'static/img/splash.jpg' + ' ><p class="card-text"></p><a id="flip-card" data-bldg=' + str(card[0].bldg_id) + ' class="btn btn-info">flip for info</a>')
+                card_html = Markup('<h3> ' + card[1].building_name + ' </h3><img src=' + str(card[0].card_img) + 'alt="static/img/splash.jpg"><p class="card-text"></p><a id="flip-card" data-bldg=' + str(card[0].bldg_id) + ' class="btn btn-info">flip for info</a>')
                 row_html.append(card_html)
             if len(row_html) < 3:
                 row_html.append(empty_card_html)
@@ -105,24 +105,6 @@ def dashboard():
 
         return render_template("dashboard.html", current_user=current_user, collection_html=collection_html)
 
-# <div class='row'>
-#         <div class='jumbotron' id='wrapper'>
-#             <span id='details-close' class='glyphicon glyphicon-remove'></span>
-#             <h3 id='bldg-name'></h3>
-#             <p id='photo-suggest'></p>
-#             <img id='bldg-img' src='' />
-#             <br>
-#             <div class='photo-properties'>
-#                 <p>photo credits: <span id='photo-ownername'></span>
-#                 <br>title: <span id='photo-title'></span>
-#                 <br>description: <span id='photo-descript'></span></p>
-#             </div>
-#             <div class='bldg-properties'>
-#                 <p>building data: <span id='bldg-info'></span></p>
-#             </div>
-#             <button id='bldg-details' type='submit' class='btn btn-info' data-feature='feature' role='button' value='collect'>collect a card!</button>
-#         </div>
-# </div>
 
 def assemble_card_row(card_bldg):
     """Counts existing cards created by user and groups by threes."""
@@ -179,38 +161,6 @@ def search_bldgs():
     else:
         # flash("Your search returned no results.")
         return redirect('/dashboard')
-
-
-@app.route('/create_card.json')
-def create_card():
-    """User selects photo to put on card."""
-
-    bldg_id = request.args.get('bldg_id')
-
-    bldg = {'bldg_id': int(bldg_id)}
-
-    return jsonify(bldg)
-
-
-@app.route('/save_card.json')
-def save_card():
-    """Saves new card to user profile and database."""
-
-    current_user = session['current_user']
-
-    user = User.query.filter_by(username=current_user).one()
-    user_id = user.user_id
-    # bldg_id = request.form.get('bldg_id')
-
-    bldg_id = 26
-
-    duplicate_card = Card.query.filter_by(user_id=user_id).filter_by(bldg_id=bldg_id).first()
-    if duplicate_card:
-        flash("You already have that card %d!" % duplicate_card.card_id)
-        return redirect('/dashboard')
-    else:
-        add_card(user_id, bldg_id)
-        return jsonify(new_card)
 
 
 # def refresh_dashboard():
@@ -530,10 +480,10 @@ def flickr_filter():
     if count:
         i = get_randint(0, count-1)
         photo = bldg_photos[i]
-        photo_url = photo['url_s']
-        owner = photo['ownername']
-        title = photo['title']
-        description = photo['description']['_content']
+        photo_url = photo.get('url_s')
+        owner = photo.get('ownername')
+        title = photo.get('title')
+        description = photo['description'].get('_content')
         description = description.rstrip()
         photo = {"url_s": photo_url,
                  "ownername": owner,
@@ -550,6 +500,49 @@ def flickr_filter():
                    }
 
     return jsonify(bldg_flickr)
+
+
+@app.route('/create_card.json')
+def create_card():
+    """User selects photo to put on card."""
+
+    # bldg_id = request.args.get('bldg_id')
+    # comments = request.form.get('comments')
+
+    bldg_id = 7
+    comments = "hi"
+
+    bldg_flickr = flickr_filter()
+    # card_img = bldg_flickr['properties']['photo']['url_s']
+
+    # bldg_card = {'bldg_id': int(bldg_id),
+    #              'comments': comments,
+    #              'card_img': card_img,
+    #              }
+
+    return jsonify(bldg_flickr)
+
+
+@app.route('/save_card.json')
+def save_card(bldg_id=1, comments='comments'):
+    """Saves new card to user profile and database."""
+
+    current_user = session['current_user']
+
+    user = User.query.filter_by(username=current_user).one()
+    user_id = user.user_id
+    bldg_id = request.form.get('bldg_id')
+
+    duplicate_card = Card.query.filter_by(user_id=user_id).filter_by(bldg_id=bldg_id).first()
+    if duplicate_card:
+        flash("You already have that card %d!" % duplicate_card.card_id)
+        return redirect('/dashboard')
+    else:
+        add_card(user_id, bldg_id, card_img, comments)
+
+        new_card = "<h3 id='bldg-name'></h3><p id='photo-suggest'></p><img id='bldg-img' src='' /><br><div class='photo-properties'><p>photo credits: <span id='photo-ownername'></span><br>title: <span id='photo-title'></span><br>description: <span id='photo-descript'></span></p></div><div class='bldg-properties'><p>building data: <span id='bldg-info'></span></p></div><button id='bldg-details' type='submit' class='btn btn-info' data-feature='feature' role='button' value='collect'>collect a card!</button>"
+
+        return jsonify(new_card)
 
 
 # def filter_photos():
@@ -634,11 +627,13 @@ def add_user(username, password):
     db.session.commit()
 
 
-def add_card(user_id, bldg_id):
+def add_card(user_id, bldg_id, card_img, comments):
     """Called when a user saves a new card."""
 
     card = Card(user_id=user_id,
-                bldg_id=bldg_id)
+                bldg_id=bldg_id,
+                card_img=card_img,
+                comments=comments)
 
     db.session.add(card)
     db.session.commit()

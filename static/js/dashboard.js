@@ -3,12 +3,11 @@
 
 // $( document ).ready(function);
 
-$('.carte-blanche .btn').hide();
 $('#search-table').hide();
 
 
 
-$('.carte-blanche .card-title').on('click', function (e) {
+$('.carte-blanche .btn').on('click', function (e) {
     $('#create').scrollTop(this.hash);
 });
 
@@ -46,6 +45,9 @@ $('#search-bldg').on('submit', submitData);
 function showPhotos (result) {
     console.log(result);
 }
+
+
+
 
 function submitBldg (e) {
     e.preventDefault();
