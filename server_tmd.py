@@ -87,7 +87,7 @@ def dashboard():
 
         card_collection = assemble_card_row(card_bldg)
 
-        empty_card_html = Markup('<h3>Create your card.</h3><button href="#create" class="btn btn-info"></button>')
+        empty_card_html = Markup('<h3>Create your card.</h3><button href="#create" class="carte-blanche btn btn-info"></button>')
 
         collection_html = []
         for card_row in card_collection:

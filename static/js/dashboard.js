@@ -5,8 +5,6 @@
 
 $('#search-table').hide();
 
-
-
 $('.carte-blanche .btn').on('click', function (e) {
     $('#create').scrollTop(this.hash);
 });
@@ -26,8 +24,6 @@ function populateTable (result) {
     $('#data-bldg-id').attr('data-bldg', result.bldg_id);
 }
 
-
-
 function submitData (e) {
     e.preventDefault();
     var searchTerms = $('#search-terms').val();
@@ -37,8 +33,9 @@ function submitData (e) {
     $.get(url, populateTable);
 }
 
-
 $('#search-bldg').on('submit', submitData);
+
+
 
 
 
@@ -56,7 +53,7 @@ function submitBldg (e) {
     console.log(number);
     console.log(url);
     $.get(url, showPhotos);
-    $('#data-card-id').attr('data-card', result.card_id);
+    // $('#data-card-id').attr('data-card', result.card_id);
 }
 
 $('#create-card').on('submit', submitBldg);
