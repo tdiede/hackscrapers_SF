@@ -292,10 +292,10 @@ map.on('click', function (e) {
 
 
 
-
+$('#bar-chart').hide();
 
 // BarChart from chart.js to display bldg height comparison.
-function createChart(bldgData) {
+function createChart (bldgData) {
     var options = { responsive: true };
     var ctx_bar = $("#barChart").get(0).getContext("2d");
     var myBarChart = new Chart(ctx_bar, {type: 'bar',
@@ -304,7 +304,8 @@ function createChart(bldgData) {
     $('#barLegend').html(myBarChart.generateLegend());
 }
 
-function showChart(evt) {
+function showChart (e) {
+    $('#bar-chart').show();
     var bldg_id = $('#bldg-details').data('feature');
     $.get('/bldg_barchart.json/'+bldg_id, createChart);
 }

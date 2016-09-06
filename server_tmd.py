@@ -408,15 +408,16 @@ def bldg_barchart(bldg_id):
     labels = ["average"]
     labels.append(bldg.building_name)
 
-    avg_color = '#f1039a'
-    bldg_color = '#f0ab68'
-    border_color = '#bbbbbb'
+    avg_color = 'rgba(255,155,0,0.6)'
+    bldg_color = 'rgba(255,0,0,0.8)'
+    border_avg_color = 'rgba(255,155,0,1.0)'
+    border_bldg_color = 'rgba(255,0,0,1.0)'
 
     backgroundColor = [avg_color,
                        bldg_color]
-    borderColor = [border_color,
-                   border_color]
-    borderWidth = 3
+    borderColor = [border_avg_color,
+                   border_bldg_color]
+    borderWidth = 2
 
     datasets = [
         {

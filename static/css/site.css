@@ -60,16 +60,22 @@ footer {
 img {
     max-width: 100%;
     height: auto;
-    border-radius: 7px;
+    border-radius: 5px;
 }
 
 /* Mapbox specific items. */
 
 #map-mapbox {
-    height: 800px;
+    height: 100%;
+}
+
+canvas #barChart {
+    height: 200px;
+    width: 100%;
 }
 
 .full-w {
+    height: 800px;
     padding: 0;
 }
 
