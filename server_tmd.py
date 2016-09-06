@@ -398,30 +398,42 @@ def bldg_barchart(bldg_id):
 
     bldg = Building.query.get(bldg_id)
 
+    #Get tallest building in dataset.
+    tallest = Building.query.filter_by(rank=1).one()
+
     # Get buildings average data.
     avg = avg_bldg_height()
 
     data = []
-    data.append(avg)
     data.append(bldg.height_ft)
+    data.append(tallest.height_ft)
+    data.append(int(avg))
 
-    labels = ["average"]
+    labels = []
     labels.append(bldg.building_name)
+    labels.append(tallest.building_name + " (tallest)")
+    labels.append("San Francisco average (of 130 buildings)")
 
-    avg_color = 'rgba(255,155,0,0.6)'
-    bldg_color = 'rgba(255,0,0,0.8)'
-    border_avg_color = 'rgba(255,155,0,1.0)'
-    border_bldg_color = 'rgba(255,0,0,1.0)'
+    bldg_color = 'rgba(255,0,0,0.6)'
+    bldg_border = 'rgba(255,0,0,1.0)'
 
-    backgroundColor = [avg_color,
-                       bldg_color]
-    borderColor = [border_avg_color,
-                   border_bldg_color]
+    tallest_color = 'rgba(255,155,0,0.6)'
+    tallest_border = 'rgba(255,155,0,1.0)'
+
+    avg_color = 'rgba(255,155,205,0.6)'
+    avg_border = 'rgba(255,155,205,1.0)'
+
+    backgroundColor = [bldg_color,
+                       tallest_color,
+                       avg_color]
+    borderColor = [bldg_border,
+                   tallest_border,
+                   avg_border]
     borderWidth = 2
 
     datasets = [
         {
-            'label': "Compare to San Francisco average bldg height (this dataset)",
+            'label': '',
             'backgroundColor': backgroundColor,
             'borderColor': borderColor,
             'borderWidth': borderWidth,

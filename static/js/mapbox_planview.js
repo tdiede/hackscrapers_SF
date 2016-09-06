@@ -7,8 +7,6 @@ var isDragging;
 // Checks if this flag is active, listens for a mousedown event.
 var isCursorOverPoint;
 
-var radius = 200;
-
 var srcFeatures = [];
 
 var layers = [{
@@ -41,8 +39,9 @@ var style = {
     "layers": layers,
     };
 
+
 // Setting initial coordinates, zoom, pitch, bearing.
-var coord = [-122.43767443655646, 37.75799046891847];
+var coord = [-122.43805537700867, 37.771823592326754];
 var zoom = 11.85;
 var pitch = 0;
 var bearing = 0;
@@ -71,19 +70,16 @@ if (!mapboxgl.supported()) {
 
 // map.setStyle(lightStyle);  // if want to change at future point.
 
-
 var nav = new mapboxgl.Navigation({position: 'top-left'});
 map.addControl(nav);
 
+var canvas = map.getCanvasContainer();
 
-
-
-
+// Pulls in bldg geojson data.
 var url_bldgs = '/bldg_geojson.geojson';
 
-
-
-var canvas = map.getCanvasContainer();
+// Sets initial radius of generic point.
+var radius = 100;
 
 // Create a generic geojson.
 var geojson = {
@@ -93,7 +89,7 @@ var geojson = {
             'properties': {},
             'geometry': {
                 'type': 'Point',
-                'coordinates': [-122.3887323943661, 37.79971622083343],
+                'coordinates': [-122.4937323943661, 37.79881622083343],
                 }
             }]
         };
@@ -124,6 +120,40 @@ function onMove(e) {
     // x, y coordinates of the mousemove event relative to top-left corner of map
     // e.lngLat is the longitude, latitude geographical position of the event
     console.log(e.lngLat);
+
+    checkInside(lngLat);
+
+}
+
+function checkInside(lngLat) {
+
+var center = geojson.features[0].geometry.coordinates;  // lngLat
+var radius_mi = 0.5;
+var steps = 10;
+var units = 'miles';
+
+// Turf.js creates circle around event center point.
+var circle = turf.circle(center, radius_mi, steps, units);
+console.log(circle);
+
+// srcFeatures
+$.each(srcFeatures, function (k, v) {
+var pt = {
+  "type": "Feature",
+  "properties": { "marker-color": "blue", "marker-size": "large"},
+  "geometry": {
+    "type": "Point",
+    "coordinates": v.geometry.coordinates
+  }
+};
+
+var isInside = turf.inside(pt, circle);
+console.log(isInside);
+if (isInside) {
+    console.log(k);
+    map.setPaintProperty('point', 'circle-color', '#000000');
+    }
+});
 }
 
 function onUp(e) {
@@ -145,7 +175,7 @@ map.on('load', function () {
         'source': 'point',
         'paint': {
             'circle-radius': radius,
-            'circle-color': '#3887be',
+            'circle-color': '#98a7be',
             'circle-opacity': 0.5,
             },
         });
@@ -162,7 +192,7 @@ map.on('load', function () {
                 isCursorOverPoint = true;
                 map.dragPan.disable();
             } else {
-                map.setPaintProperty('point', 'circle-color', '#3887be');
+                map.setPaintProperty('point', 'circle-color', '#98a7be');
                 canvas.style.cursor = '';
                 isCursorOverPoint = false;
                 map.dragPan.enable();
@@ -188,6 +218,7 @@ map.on('load', function () {
         'source': 'bldgs',
         'layout': {
             'icon-image': 'marker-15',
+            'icon-size': 1,
             'icon-padding': 1,
             'text-field': '{building_name}',
             'text-font': ['Open Sans Regular', 'Arial Unicode MS Regular'],
@@ -281,9 +312,11 @@ map.on('click', function (e) {
 
     var marker = markers[0];
     console.log(marker.properties.bldg_id);
+
     getPhoto(marker);
     showInfo(marker);
 
+    showChart(marker);
 
     // Defines how clicking around the map re-positions the map.
     map.flyTo({center: markers[0].geometry.coordinates, zoom: zoom+2.5, speed: 0.4, curve: 1});
@@ -292,23 +325,76 @@ map.on('click', function (e) {
 
 
 
+
+
+
+
+
+
+
+
+
 $('#bar-chart').hide();
 
 // BarChart from chart.js to display bldg height comparison.
 function createChart (bldgData) {
-    var options = { responsive: true };
+    var options = { responsive: true, maintainAspectRatio: false, events: [],
+                    scales: {
+                        xAxes: [{
+                            barThickness: 20,
+                            display: true,
+                            gridLines: {
+                                zeroLineWidth: 0,
+                                zeroLineColor: 'rgba(0, 0, 0, 0)'
+                                },
+                            ticks: {
+                                display: false
+                                }
+                            }],
+                        yAxes: [{
+                            gridLines: {
+                                zeroLineWidth: 2,
+                                zeroLineColor: 'rgba(0, 0, 0, 0.25)'
+                            },
+                            ticks: {
+                                max: 1100,
+                                min: 0,
+                                stepSize: 100
+                                }
+                            }]
+                        },
+                    title: {
+                        display: true,
+                        position: 'bottom',
+                        text: 'BUILDING HEIGHT (FT)',
+                        fontStyle: 'normal'
+                        },
+                    tooltips: {
+                        enabled: true,
+                        backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                        caretSize: 0,
+                        cornerRadius: 0
+                        },
+                    legend: {
+                        display: true,
+                        mode: 'label',
+                        position: 'top',
+                        labels: {
+                            boxWidth: 0
+                            }
+                        }
+                    };
     var ctx_bar = $("#barChart").get(0).getContext("2d");
     var myBarChart = new Chart(ctx_bar, {type: 'bar',
                                          data: bldgData,
                                          options: options});
-    $('#barLegend').html(myBarChart.generateLegend());
+    // $('#barLegend').html(myBarChart.generateLegend());
 }
 
-function showChart (e) {
+function showChart (marker) {
     $('#bar-chart').show();
-    var bldg_id = $('#bldg-details').data('feature');
+    var bldg_id = marker.properties.bldg_id;
     $.get('/bldg_barchart.json/'+bldg_id, createChart);
 }
 
 // $('#bldg_details').on('click', showChart);
-$('#map-mapbox').on('click', showChart);

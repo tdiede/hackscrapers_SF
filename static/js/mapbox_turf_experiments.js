@@ -81,42 +81,42 @@
 
 
 
-    // var bufferLayer = turf.buffer(pt, 2, 'miles');
-    // var result = turf.featurecollection([bufferLayer, center]);
+// var bufferLayer = turf.buffer(pt, 2, 'miles');
+// var result = turf.featurecollection([bufferLayer, center]);
 
-    // var radius = 0.5;
-    // var steps = 10;
-    // var units = 'miles';
+// var radius = 0.5;
+// var steps = 10;
+// var units = 'miles';
 
-    // // Turf.js creates circle around event center point.
-    // var circle = turf.circle(center, radius, steps, units);
+// // Turf.js creates circle around event center point.
+// var circle = turf.circle(center, radius, steps, units);
 
-    // //=features
-    // $.each(srcFeatures, function (k, v) {
-    //     var pt = {
-    //       "type": "Feature",
-    //       "properties": {
-    //         "marker-color": "#0f0888"
-    //       },
-    //       "geometry": {
-    //         "type": "Point",
-    //         "coordinates": v.geometry.coordinates
-    //       }
-    //     };
-    //     var isInside = turf.inside(pt, circle);
-    //     console.log(isInside);
-    //     if (isInside) {console.log(k);}
-    // });
-
-
+// //=features
+// $.each(srcFeatures, function (k, v) {
+// var pt = {
+//   "type": "Feature",
+//   "properties": {
+//     "marker-color": "#0f0888"
+//   },
+//   "geometry": {
+//     "type": "Point",
+//     "coordinates": v.geometry.coordinates
+//   }
+// };
+// var isInside = turf.inside(pt, circle);
+// console.log(isInside);
+// if (isInside) {console.log(k);}
+// });
 
 
 
-//     // // Displays Mapbox GL popup with bldg rank data.
-//     // var popup = new mapboxgl.Popup()
-//     //     .setLngLat(map.unproject(e.point))
-//     //     .setHTML(feature.properties.rank)
-//     //     .addTo(map);
+
+
+// // Displays Mapbox GL popup with bldg rank data.
+// var popup = new mapboxgl.Popup()
+//     .setLngLat(map.unproject(e.point))
+//     .setHTML(feature.properties.rank)
+//     .addTo(map);
 
 
 

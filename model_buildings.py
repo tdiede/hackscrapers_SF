@@ -112,6 +112,8 @@ class Card(db.Model):
     card_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_id = db.Column(db.Integer)
     bldg_id = db.Column(db.Integer, db.ForeignKey('buildings.bldg_id'), nullable=False)
+    card_img = db.Column(db.String(256))
+    comments = db.Column(db.String(256))
 
     # Define relationship to user.
     user = db.relationship("User",

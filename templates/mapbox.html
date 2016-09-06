@@ -23,13 +23,12 @@
 <div class='container-fluid'>
 
     <div class='row'>
+
         <div class='col-md-8 full-w'>
-
             <div id='map-mapbox' ></div>
-
         </div>
-        <div class='col-md-4'>
 
+        <div class='col-md-4'>
             <div>
                 <br>
                 <form>
@@ -41,26 +40,32 @@
 
             <div id='bar-chart'>
                 <canvas id="barChart"></canvas>
-                <div id="barLegend" class="chart-legend"></div>
-            </div>
-
-            <div class='jumbotron collapse' id='placeholder'>
                 <br>
-                <span id='details-close' class='glyphicon glyphicon-remove'></span>
-                <h4 id='bldg-name'></h4>
-                    <img id='bldg-img' src='' />
-                    <p id='photo-suggest'></p>
-                    <p class='photo-properties' id='photo-title'></p>
-                    <h6 class='photo-properties'>BY</h6>
-                    <p class='photo-properties' id='photo-ownername'></p>
-                    <p class='photo-properties' id='photo-descript'></p>
-                    <p id='bldg-info'></p>
-                    <p><a id='bldg-details' class='btn btn-info' data-toggle='collapse' data-feature='feature' role='button'>collect a card!</a></p>
-                <br>
+                <!-- <div id="barLegend"></div> -->
             </div>
 
         </div>
+
+        <div class='jumbotron collapse' id='wrapper'>
+            <span id='details-close' class='glyphicon glyphicon-remove'></span>
+            <h3 id='bldg-name'></h3>
+            <p id='photo-suggest'></p>
+            <img id='bldg-img' src='' />
+            <br>
+            <div class='photo-properties'>
+                <p>photo credits: <span id='photo-ownername'></span>
+                <br>title: <span id='photo-title'></span>
+                <br>description: <span id='photo-descript'></span></p>
+            </div>
+            <div class='bldg-properties'>
+                <p>building data: <span id='bldg-info'></span></p>
+            </div>
+            <button id='bldg-details' type='submit' class='btn btn-info' data-feature='feature' role='button' value='collect'>collect a card!</button>
+        </div>
+
+
     </div>
+
 </div>
 
 <script src='../static/js/mapbox_planview.js'></script>

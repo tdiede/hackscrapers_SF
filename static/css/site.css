@@ -7,10 +7,31 @@ body {
     margin-top: 50px;
 }
 
-.jumbotron {
-    padding: 0;
+#wrapper {
+    padding: 10px;
+    z-index: 100;
+    position: absolute;
+    top: 300px;
+    left: 10px;
+    max-width: 370px;
+    max-height: 370px;
+    overflow: scroll;
 }
 
+.jumbotron {
+    padding: 0;
+    background-color: rgba(230,230,230,0.6);
+    border: white solid 2px;
+}
+
+.jumbotron h3, .jumbotron p, .jumbotron span {
+    font-size: 11pt;
+    color: #333333;
+}
+
+.jumbotron .photo-properties {
+    max-width: 350px;
+}
 
 /* Style our navbar. */
 
@@ -23,18 +44,7 @@ body {
     cursor: pointer;
 }
 
-
-/* The footer always appears at the bottom of the browser window. */
-
-footer {
-    background-color: #333333;
-    position: fixed;
-    bottom: 0;
-    width: 100%;  /* required because fixed position */
-}
-
 /* Size icon down. */
-
 .icon {
     width: 25px;
     height: 25px;
@@ -49,39 +59,42 @@ footer {
 .carte-blanche {
     /*border: 2px dashed #dddddd;*/
     border-radius: 7px;
-    background-color: #dddddd;
+    background-color: #efefee;
 }
 
 .card-collectible {
-    border-radius: 7px;
-    background-color: #999999;
+    border-radius: 5px;
+    background-color: #dddddd;
 }
 
 img {
     max-width: 100%;
     height: auto;
+    max-height: 200px;
     border-radius: 5px;
 }
 
-/* Mapbox specific items. */
-
-#map-mapbox {
-    height: 100%;
-}
-
-canvas #barChart {
-    height: 200px;
-    width: 100%;
-}
 
 .full-w {
-    height: 800px;
+    height: 630px;
     padding: 0;
 }
 
-.placeholder {
-    border: 3px solid #d9534f;
-    min-height: 20em;
+/* Mapbox specific items. */
+#map-mapbox {
+    height: 100%;
+    z-index: 0;
+    position: relative;
+}
+
+#bar-chart {
+    height: 550px;
+}
+
+#barChart {
+    background-color: #efefee;
+    height: 100%;
+    width: auto;
 }
 
 a {
@@ -98,4 +111,12 @@ a {
 
 .horizontalLine {
     border-top: thin solid #bbbbbb;
+}
+
+/* The footer always appears at the bottom of the browser window. */
+footer {
+    background-color: #333333;
+    position: fixed;
+    bottom: 0;
+    width: 100%;  /* required because fixed position */
 }
