@@ -12,7 +12,7 @@
 
 <br>
 
-<h2>USER DASHBOARD | WELCOME {{ current_user }}! COLLECT 'EM ALL!</h2>
+<h3>USER DASHBOARD | WELCOME {{ current_user }}! COLLECT 'EM ALL!</h3>
 
 <br>
 
@@ -52,21 +52,13 @@
   </div> -->
 
 
-
-<br>
-<br>
-
-<br>
-<br>
-
-<div class='row'>
-<div id='create'>
-  <a href='/buildings'>View table of all buildings.</a><br>
-  Search for a building.
-  <form id='search-bldg' action='/search_bldg.json'>
-    <input id='search-terms' type='text' placeholder='building' name='building'>
-    <button type='submit' class='btn btn-info' value='search'>search!</button>
-  </form>
+<div class='row' id='create'>
+  <span>STEP 1: Search for a building.</span>
+    <form id='search-bldg' action='/search_bldg.json'>
+      <input id='search-terms' type='text' placeholder='building name' name='building'>
+      <button type='submit' class='btn btn-info' value='search'>search!</button>
+    </form>
+</div>
 
 <br>
 <br>
@@ -100,38 +92,60 @@
             </tr>
         </tbody>
         </table>
+</div>
 
-<form id='create-card' action='/create_card.json'>
-  <input type='text' name='comments' placeholder='enter your thoughts' value='comments'/>
-  <button id='create-card' data-bldg-id='' data-comments='comments' type='submit' class='btn btn-info' value='create'>create!</button>
-</form>
+<br>
+<br>
+
+<div class='row collapse' id='create-form'>
+  <span>STEP 2: Find a photo you like.</span>
+  <form id='create-card' action='/create_card.json'>
+    <input type='text' name='comments' placeholder='enter your thoughts' value='comments'/>
+    <button id='data-bldg-id' data-bldg-id='' data-comments='comments' type='submit' class='btn btn-info' value='create'>create!</button>
+  </form>
+</div>
+
+<br>
+<br>
+
+<div class='row collapse' id='new-card'>
+<div class='col-md-3 col-md-offset-6 full-w'>
+
+  <div class='jumbotron card' id='new-card'>
+      <span id='details-close' class='glyphicon glyphicon-remove'></span>
+      <h3 id='bldg-name'></h3>
+      <p id='photo-suggest'></p>
+      <div id='bldg-img'></div>
+      <br>
+      <div class='photo-properties'>
+          <p>photo credits: <span id='photo-ownername'></span>
+          <br>title: <span id='photo-title'></span>
+          <br>description: <span id='photo-descript'></span></p>
+      </div>
+      <div class='bldg-properties'>
+          <p>building data: <span id='bldg-info'></span></p>
+      </div>
+      <button id='bldg-details' type='submit' class='btn btn-info' data-feature='feature' role='button' value='collect'>collect a card!</button>
+  </div>
+
+</div>
+</div>
+
+
+<p>Don't like the photo? Click create! again!</p>
+
+
+
 
 <form id='save-card' action='/save_card.json'>
   <button id='save-card' data-bldg-id='' data-url='' type='submit' class='btn btn-info' value='save'>save!</button>
 </form>
 
-</div>
-
-
 
 <br>
 <br>
 
-<br>
-<br>
-
-<br>
-<br>
-
-<br>
-<br>
-
-<br>
-<br>
-</div>
-</div>
-
-</div>
+  </div>
 </div>
 
     <script src='http://code.jquery.com/jquery.js'></script>

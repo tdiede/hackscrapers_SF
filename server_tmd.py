@@ -477,14 +477,14 @@ def flickr_filter():
     bldg_photos = flickr.find({'$text': {'$search': bldg_text}})
     count = bldg_photos.count()
 
-    if count:
+    if count > 0:
         i = get_randint(0, count-1)
         photo = bldg_photos[i]
         photo_url = photo.get('url_s')
         owner = photo.get('ownername')
         title = photo.get('title')
-        description = photo['description'].get('_content')
-        description = description.rstrip()
+        raw_description = photo['description'].get('_content')
+        description = raw_description.rstrip().lstrip()
         photo = {"url_s": photo_url,
                  "ownername": owner,
                  "photo_title": title,
@@ -506,21 +506,32 @@ def flickr_filter():
 def create_card():
     """User selects photo to put on card."""
 
-    # bldg_id = request.args.get('bldg_id')
-    # comments = request.form.get('comments')
-
-    bldg_id = 7
-    comments = "hi"
+    bldg_id = request.args.get('bldg_id')
+    comments = request.form.get('comments')
 
     bldg_flickr = flickr_filter()
-    # card_img = bldg_flickr['properties']['photo']['url_s']
+    r = bldg_flickr.response
+    f = r.pop()
+    photo = json.loads(f)
+    photo_properties = photo['properties']['photo']
 
-    # bldg_card = {'bldg_id': int(bldg_id),
-    #              'comments': comments,
-    #              'card_img': card_img,
-    #              }
+    owner = photo_properties.get('ownername')
+    title = photo_properties.get('title')
+    description = photo_properties.get('descript')
 
-    return jsonify(bldg_flickr)
+    card_img = photo_properties.get('url_s')
+
+    bldg_card = {'metadata': {'ownername': owner,
+                              'photo_title': title,
+                              'descript': description,
+                              },
+                 'card': {'bldg_id': int(bldg_id),
+                          'comments': comments,
+                          'card_img': card_img,
+                          }
+                 }
+
+    return jsonify(bldg_card)
 
 
 @app.route('/save_card.json')

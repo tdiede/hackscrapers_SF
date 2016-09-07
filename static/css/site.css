@@ -5,6 +5,7 @@ body {
     background-size: cover;
     color: #bbbbbb;
     margin-top: 50px;
+    margin-bottom: 30px;
 }
 
 .dashboard {
@@ -95,6 +96,11 @@ img {
     height: auto;
     max-height: 200px;
     border-radius: 5px;
+}
+
+#bldg-img {
+    height: 200px;
+    width: 200px;
 }
 
 .full-w {
