@@ -4,17 +4,23 @@
 // $( document ).ready(function);
 
 $('#search-table').hide();
-$('#create-form').hide();
+$('#find-photo').hide();
 $('#new-card').hide();
+$('#new-card-phront').hide();
+$('#create-card').hide();
+$('#comment-card').hide();
+$('#save-card').hide();
 
-$('.carte-blanche .btn').on('click', function (e) {
-    $('#create').scrollTop(this.hash);
-});
+$('.bldg-properties').hide();
 
+// $('#collect-card').on('click', function (e) {
+//     console.log(this);
+//     $('#create').scrollTop(this.hash);
+// });
 
 function populateTable (result) {
     $('#search-table').show();
-    $('#create-form').show();
+    $('#find-photo').show();
     $('#rank').html(result.rank);
     $('#name').html(result.building_name);
     $('#year').html(result.completed_yr);
@@ -30,55 +36,81 @@ function populateTable (result) {
 function submitData (e) {
     e.preventDefault();
     var searchTerms = $('#search-terms').val();
-    var url = '/search_bldg.json?building=' + searchTerms;
-    console.log(searchTerms);
-    console.log(url);
-    $.get(url, populateTable);
+    if (searchTerms === '') {
+        alert('You seem to be missing something!');
+    } else {
+        var url = '/search_bldg.json?building=' + searchTerms;
+        console.log(searchTerms);
+        console.log(url);
+        $.get(url, populateTable);
+    }
 }
 
 $('#search-bldg').on('submit', submitData);
 
-
-
-
-
-
-
 function showPhoto (result) {
     console.log(result);
-    $('#new-card').show();
-    if (result.card.card_img === null) {
+    $('#new-card-phront').show();
+    $('#create-card').show();
+    if (result.properties.photo.url_s === null || result.properties.photo.url_s === undefined) {
         $('#bldg-img').css({'background-image': 'url()'});
         $('#photo-suggest').html("No photo found. Maybe you should go snap it!");
         $('.photo-properties').hide();
     } else {
-        $('#bldg-img').css({'background-image': 'url(' + result.card.card_img + ')', 'background-size': 'cover'});
+        $('#bldg-img').css({'background-image': 'url(' + result.properties.photo.url_s + ')', 'background-size': 'cover'});
         $('#photo-suggest').html('');
         $('.photo-properties').show();
-        $('#photo-title').html(result.metadata.photo_title);
-        $('#photo-ownername').html(result.metadata.ownername);
-        $('#photo-descript').html(result.metadata.descript);
+        $('#photo-title').html(result.properties.photo.photo_title);
+        $('#photo-ownername').html(result.properties.photo.ownername);
+        $('#photo-descript').html(result.properties.photo.descript);
     }
 }
 
 function submitBldg (e) {
     e.preventDefault();
     var number = $('#data-bldg-id').data();
-    var url = '/create_card.json?bldg_id=' + number.bldg;
+    var url = '/flickr_filter.json?bldg_id=' + number.bldg;
     console.log(number);
     console.log(url);
     $.get(url, showPhoto);
     // $('#data-card-id').attr('data-card', result.card_id);
 }
 
-$('#create-card').on('submit', submitBldg);
+$('#find-photo').on('submit', submitBldg);
 
 
 
 
+function previewCard (result) {
+    console.log(result);
+    $('#new-card').show();
+    $('#save-card').show();
+    $('.bldg-properties').show();
+    $('#bldg-name').html(result.building.properties.building_name);
+    $('#bldg-info').html("<br> Rank: " + result.building.properties.rank + " in SF." +
+                         "<br> Height: " + result.building.properties.height_ft + " ft tall!" +
+                         "<br> Material: " + result.building.properties.material + " construction." +
+                         "<br> Use: " + result.building.properties.use + " use.").append();
+}
 
 
 function submitCard (e) {
+    e.preventDefault();
+    var number = $('#data-bldg-id').data();
+    var url = '/create_card.json?bldg_id=' + number.bldg;
+    console.log(number);
+    console.log(url);
+    $.get(url, previewCard);
+    // $('#data-card-id').attr('data-card', result.card_id);
+}
+
+$('#create-card').on('submit', submitCard);
+
+
+
+
+
+function submitSave (e) {
     e.preventDefault();
     var number = $('#data-card-id').data();
     var url = '/save_card.json?card_id=' + number.card;
@@ -87,5 +119,5 @@ function submitCard (e) {
     $.get(url, showPhoto);
 }
 
-$('#save-card').on('submit', submitCard);
+$('#save-card').on('submit', submitSave);
 

@@ -87,7 +87,7 @@ def dashboard():
 
         card_collection = assemble_card_row(card_bldg)
 
-        empty_card_html = Markup('<h3>Create your card.</h3><button href="#create" class="carte-blanche btn btn-info"></button>')
+        empty_card_html = Markup('<h3>Create your card.</h3>')
 
         collection_html = []
         for card_row in card_collection:
@@ -420,18 +420,6 @@ def show_bldg_details(bldg_id):
 
     bldg = Building.query.get(bldg_id)
 
-    photos = flickr.find({'$text': {'$search': bldg.building_name}})
-
-    # urls_m = []
-
-    # for photo in photos:
-    #     url_m = photo['url_m']
-    #     urls_m.append(url_m)
-
-    url_m = photos[5]['url_m']
-
-    bldg_feature = {}
-
     coordinates_list = [bldg.lng, bldg.lat]
 
     bldg_feature = {"type": "Feature",
@@ -455,15 +443,24 @@ def show_bldg_details(bldg_id):
                         "material": bldg.material,
                         "use": bldg.use,
                         },
-                    "photos": {
-                        "url_m": url_m,
-                        },
                     }
 
     return jsonify(bldg_feature)
 
 
-# JSON FOR FLICKR PHOTO OF BLDG
+def query_photo(bldg_id):
+    """Queries MongoDB for photo by bldg_id. Returns bldg_photos cursor object."""
+
+    bldg = Building.query.get(bldg_id)
+    bldg_text = bldg.building_name.replace(' ', '')
+    bldg_text = bldg_text.lower()
+
+    bldg_photos = flickr.find({'$text': {'$search': bldg_text}})
+
+    return bldg_photos
+
+
+# JSON FOR FLICKR PHOTO OF BLDG -- USED FOR MAP!
 @app.route('/flickr_filter.json')
 def flickr_filter():
     """Returns a random Flickr image url to display photo of bldg."""
@@ -471,78 +468,90 @@ def flickr_filter():
     bldg_id = request.args.get('bldg_id')
 
     bldg = Building.query.get(bldg_id)
-    bldg_text = bldg.building_name.replace(' ', '')
-    bldg_text = bldg_text.lower()
 
-    bldg_photos = flickr.find({'$text': {'$search': bldg_text}})
+    bldg_photos = query_photo(bldg_id)
     count = bldg_photos.count()
 
+    # if not count:
+    #     flash('This building does not have any Flickr photos.')
+    #     return redirect('/dashboard')
     if count > 0:
         i = get_randint(0, count-1)
         photo = bldg_photos[i]
+
         photo_url = photo.get('url_s')
         owner = photo.get('ownername')
         title = photo.get('title')
         raw_description = photo['description'].get('_content')
         description = raw_description.rstrip().lstrip()
-        photo = {"url_s": photo_url,
-                 "ownername": owner,
-                 "photo_title": title,
-                 "descript": description,
-                 }
+
+        photo_metadata = {"url_s": photo_url,
+                          "ownername": owner,
+                          "photo_title": title,
+                          "descript": description,
+                          }
 
     else:
         photo = None
 
     bldg_flickr = {"properties": {"bldg_id": bldg.bldg_id,
-                                  "photo": photo,
+                                  "photo": photo_metadata,
                                   },
                    }
 
     return jsonify(bldg_flickr)
 
 
+    # bldg_flickr = flickr_filter()
+    # r = bldg_flickr.response
+    # f = r.pop()
+    # photo = json.loads(f)
+    # photo_properties = photo['properties']['photo']
+
+        # bldg_photo = {'metadata': {'ownername': owner,
+        #                            'photo_title': title,
+        #                            'descript': description,
+        #                            },
+        #               'card': {'bldg_id': int(bldg_id),
+        #                        'card_img': url_s, 'card_img': card_img,
+        #                        }
+        #               }
+
+
 @app.route('/create_card.json')
 def create_card():
-    """User selects photo to put on card."""
+    """User selects photo and comment to put on card, previews card."""
 
     bldg_id = request.args.get('bldg_id')
-    comments = request.form.get('comments')
+
+    bldg_feature = show_bldg_details(bldg_id)
+    r = bldg_feature.response
+    f = r.pop()
+    feature = json.loads(f)
 
     bldg_flickr = flickr_filter()
-    r = bldg_flickr.response
-    f = r.pop()
-    photo = json.loads(f)
-    photo_properties = photo['properties']['photo']
+    p = bldg_flickr.response
+    h = p.pop()
+    flickr = json.loads(h)
 
-    owner = photo_properties.get('ownername')
-    title = photo_properties.get('title')
-    description = photo_properties.get('descript')
+    comments = request.form.get('comments')
 
-    card_img = photo_properties.get('url_s')
-
-    bldg_card = {'metadata': {'ownername': owner,
-                              'photo_title': title,
-                              'descript': description,
-                              },
-                 'card': {'bldg_id': int(bldg_id),
-                          'comments': comments,
-                          'card_img': card_img,
-                          }
-                 }
+    bldg_card = {'building': feature,
+                 'photo': flickr,
+                 'comments': comments}
 
     return jsonify(bldg_card)
 
 
 @app.route('/save_card.json')
-def save_card(bldg_id=1, comments='comments'):
+def save_card():
     """Saves new card to user profile and database."""
 
     current_user = session['current_user']
 
     user = User.query.filter_by(username=current_user).one()
     user_id = user.user_id
-    bldg_id = request.form.get('bldg_id')
+    bldg_id = request.args.get('bldg_id')
 
     duplicate_card = Card.query.filter_by(user_id=user_id).filter_by(bldg_id=bldg_id).first()
     if duplicate_card:

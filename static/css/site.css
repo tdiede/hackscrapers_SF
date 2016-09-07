@@ -12,6 +12,11 @@ body {
     background-color: #dfdfdd;
 }
 
+.side-padding {
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
 #table-buildings {
     margin-bottom: 30px;
 }
@@ -72,11 +77,14 @@ body {
     height: 25px;
 }
 
-.card {
+#new-card {
+    position: absolute;
+    right: 200px;
     padding: 10px;
-    height: 300px;
-    max-width: 370px;
-    max-height: 370px;
+    height: 400px;
+    min-width: 220px;
+    max-width: 300px;
+    max-height: 600px;
     overflow: scroll;
 }
 
@@ -101,6 +109,7 @@ img {
 #bldg-img {
     height: 200px;
     width: 200px;
+    /*margin: 0 auto;*/
 }
 
 .full-w {

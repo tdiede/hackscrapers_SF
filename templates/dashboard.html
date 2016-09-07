@@ -7,8 +7,7 @@
 
 {% block content %}
 
-<div class='container-fluid dashboard'>
-  <div class='container'>
+<div class='container-fluid side-padding'>
 
 <br>
 
@@ -33,6 +32,8 @@
 {% endfor %}
 {% endif %}
 
+<!-- <button href='#create' id='collect-card' class='btn btn-info' role='button'>collect a card!</button> -->
+<!-- <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br> -->
 
 <!-- <div class="col-md-3">
   <div class="card card-block card-collectible">
@@ -50,7 +51,6 @@
       <a href="#" class="btn btn-info"></a>
     </div>
   </div> -->
-
 
 <div class='row' id='create'>
   <span>STEP 1: Search for a building.</span>
@@ -95,57 +95,67 @@
 </div>
 
 <br>
+
+      <div class='jumbotron collapse' id='new-card'>
+          <span id='details-close' class='glyphicon glyphicon-remove'></span>
+          <h3 id='bldg-name'></h3>
+          <br>
+          <div class='photo-properties'>
+              <p>photo credits: <span id='photo-ownername'></span>
+              <br>title: <span id='photo-title'></span>
+              <br>description: <span id='photo-descript'></span></p>
+          </div>
+          <div class='bldg-properties'>
+              <p>building data: <span id='bldg-info'></span></p>
+          </div>
+      </div>
+
 <br>
 
-<div class='row collapse' id='create-form'>
+<div class='row'>
+
+  <form id='find-photo' action='/flickr_filter.json'>
   <span>STEP 2: Find a photo you like.</span>
-  <form id='create-card' action='/create_card.json'>
-    <input type='text' name='comments' placeholder='enter your thoughts' value='comments'/>
-    <button id='data-bldg-id' data-bldg-id='' data-comments='comments' type='submit' class='btn btn-info' value='create'>create!</button>
+   <p>Don't like the photo? Keep clicking until you find what you're looking for!</p>
+    <button id='data-bldg-id' data-bldg-id='' type='submit' class='btn btn-info' value='find'>find!</button>
   </form>
-</div>
 
-<br>
-<br>
+      <div class="col-md-offset-2">
+        <div id='new-card-phront'>
+            <p id='photo-suggest'></p>
+            <div id='bldg-img'></div>
+        </div>
 
-<div class='row collapse' id='new-card'>
-<div class='col-md-3 col-md-offset-6 full-w'>
+        <br>
 
-  <div class='jumbotron card' id='new-card'>
-      <span id='details-close' class='glyphicon glyphicon-remove'></span>
-      <h3 id='bldg-name'></h3>
-      <p id='photo-suggest'></p>
-      <div id='bldg-img'></div>
-      <br>
-      <div class='photo-properties'>
-          <p>photo credits: <span id='photo-ownername'></span>
-          <br>title: <span id='photo-title'></span>
-          <br>description: <span id='photo-descript'></span></p>
+        <form id='create-card' action='/create_card.json'>
+        <span>STEP 3: Preview.</span>
+        <p>See how it looks.</p>
+          <button id='data-bldg-id' data-bldg-id='' type='submit' class='btn btn-info' value='create'>create!</button>
+        </form>
+
+        <br>
+
+        <form id='comment-card' action='/comment_card.json'>
+        <span>STEP 4: Comment.</span>
+          <input type='text' placeholder='enter your thoughts' name='comments'/>
+          <button id='data-bldg-id' data-bldg-id='' type='submit' class='btn btn-info' value='comment'>comment!</button>
+        </form>
       </div>
-      <div class='bldg-properties'>
-          <p>building data: <span id='bldg-info'></span></p>
-      </div>
-      <button id='bldg-details' type='submit' class='btn btn-info' data-feature='feature' role='button' value='collect'>collect a card!</button>
-  </div>
 
 </div>
-</div>
 
-
-<p>Don't like the photo? Click create! again!</p>
-
+<br>
+<br>
 
 
 
-<form id='save-card' action='/save_card.json'>
-  <button id='save-card' data-bldg-id='' data-url='' type='submit' class='btn btn-info' value='save'>save!</button>
-</form>
+<button id='save-card' data-bldg-id='' data-url='' type='submit' class='btn btn-info' value='save'>save!</button>
 
 
 <br>
 <br>
 
-  </div>
 </div>
 
     <script src='http://code.jquery.com/jquery.js'></script>
