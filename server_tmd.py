@@ -553,16 +553,18 @@ def save_card():
     user_id = user.user_id
     bldg_id = request.args.get('bldg_id')
 
+    card_img = request.args.get('url')
+    comments = "I love this!"
+
     duplicate_card = Card.query.filter_by(user_id=user_id).filter_by(bldg_id=bldg_id).first()
+
     if duplicate_card:
         flash("You already have that card %d!" % duplicate_card.card_id)
-        return redirect('/dashboard')
+
     else:
         add_card(user_id, bldg_id, card_img, comments)
 
-        new_card = "<h3 id='bldg-name'></h3><p id='photo-suggest'></p><img id='bldg-img' src='' /><br><div class='photo-properties'><p>photo credits: <span id='photo-ownername'></span><br>title: <span id='photo-title'></span><br>description: <span id='photo-descript'></span></p></div><div class='bldg-properties'><p>building data: <span id='bldg-info'></span></p></div><button id='bldg-details' type='submit' class='btn btn-info' data-feature='feature' role='button' value='collect'>collect a card!</button>"
-
-        return jsonify(new_card)
+    return redirect('/dashboard')
 
 
 # def filter_photos():

@@ -18,6 +18,10 @@ $('.bldg-properties').hide();
 //     $('#create').scrollTop(this.hash);
 // });
 
+
+var currentURL = '';
+
+
 function populateTable (result) {
     $('#search-table').show();
     $('#find-photo').show();
@@ -63,6 +67,7 @@ function showPhoto (result) {
         $('#photo-title').html(result.properties.photo.photo_title);
         $('#photo-ownername').html(result.properties.photo.ownername);
         $('#photo-descript').html(result.properties.photo.descript);
+        currentURL = result.properties.photo.url_s;
     }
 }
 
@@ -81,6 +86,7 @@ $('#find-photo').on('submit', submitBldg);
 
 
 
+// Generates the preview.
 function previewCard (result) {
     console.log(result);
     $('#new-card').show();
@@ -93,7 +99,7 @@ function previewCard (result) {
                          "<br> Use: " + result.building.properties.use + " use.").append();
 }
 
-
+// Allows user to preview card.
 function submitCard (e) {
     e.preventDefault();
     var number = $('#data-bldg-id').data();
@@ -108,16 +114,28 @@ $('#create-card').on('submit', submitCard);
 
 
 
-
-
+// Saves card to collection.
 function submitSave (e) {
     e.preventDefault();
-    var number = $('#data-card-id').data();
-    var url = '/save_card.json?card_id=' + number.card;
+    var number = $('#data-bldg-id').data();
+    console.log(currentURL);
+    // var img = $('#data-url').data('url', result.properties.photo.url_s);
+    var url = '/save_card.json?bldg_id=' + number.bldg + '&url=' + currentURL;
     console.log(number);
     console.log(url);
-    $.get(url, showPhoto);
+    $.get(url, function (result) {
+        alert("You now have added a card to your collection!");
+        $.get('/dashboard');
+    });
 }
 
 $('#save-card').on('submit', submitSave);
 
+
+
+
+function removeCard (e) {
+    alert('Are you sure you want to remove this card from your collection?');
+}
+
+$('#details-close').on('click', removeCard);

@@ -11,7 +11,7 @@
 
 <br>
 
-<h3>USER DASHBOARD | WELCOME {{ current_user }}! COLLECT 'EM ALL!</h3>
+<h3>WELCOME {{ current_user }}! COLLECT 'EM ALL!</h3>
 
 <br>
 
@@ -54,6 +54,7 @@
 
 <div class='row' id='create'>
   <span>STEP 1: Search for a building.</span>
+  <p>Try "Salesforce" if you don't have another in mind.</p>
     <form id='search-bldg' action='/search_bldg.json'>
       <input id='search-terms' type='text' placeholder='building name' name='building'>
       <button type='submit' class='btn btn-info' value='search'>search!</button>
@@ -99,24 +100,21 @@
       <div class='jumbotron collapse' id='new-card'>
           <span id='details-close' class='glyphicon glyphicon-remove'></span>
           <h3 id='bldg-name'></h3>
-          <br>
+          <div class='bldg-properties'>
+            <p>building data: <span id='bldg-info'></span></p>
+          </div>
           <div class='photo-properties'>
               <p>photo credits: <span id='photo-ownername'></span>
               <br>title: <span id='photo-title'></span>
               <br>description: <span id='photo-descript'></span></p>
           </div>
-          <div class='bldg-properties'>
-              <p>building data: <span id='bldg-info'></span></p>
-          </div>
       </div>
-
-<br>
 
 <div class='row'>
 
   <form id='find-photo' action='/flickr_filter.json'>
   <span>STEP 2: Find a photo you like.</span>
-   <p>Don't like the photo? Keep clicking until you find what you're looking for!</p>
+  <p>Don't like the photo? Keep clicking until you find what you're looking for!</p>
     <button id='data-bldg-id' data-bldg-id='' type='submit' class='btn btn-info' value='find'>find!</button>
   </form>
 
@@ -148,10 +146,9 @@
 <br>
 <br>
 
-
-
-<button id='save-card' data-bldg-id='' data-url='' type='submit' class='btn btn-info' value='save'>save!</button>
-
+<form id='save-card' action='/save_card.json' method='post'>
+  <button id='data-bldg-id' data-bldg-id='' type='submit' class='btn btn-info' value='save'>save!</button>
+</form>
 
 <br>
 <br>
