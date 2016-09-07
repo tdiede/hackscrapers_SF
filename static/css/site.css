@@ -9,7 +9,7 @@ body {
 }
 
 .dashboard {
-    background-color: #dfdfdd;
+    background-color: #efefee;
 }
 
 .side-padding {
@@ -45,8 +45,10 @@ body {
     overflow: scroll;
 }
 
-.jumbotron {
+.container-fluid .jumbotron {
     padding: 0;
+    padding-left: 0;
+    padding-right: 0;
     background-color: rgba(230,230,230,0.6);
     border: white solid 2px;
 }
@@ -99,7 +101,7 @@ body {
     background-color: #dddddd;
 }
 
-img {
+map img {
     max-width: 100%;
     height: auto;
     max-height: 200px;
@@ -112,11 +114,24 @@ img {
     /*margin: 0 auto;*/
 }
 
+#card {
+    height: 300px;
+    z-index: 1;
+}
+
+/*#card-img {
+    width: auto;
+    height: 80%;
+    max-height: 300px;
+    vertical-align: text-bottom;
+    z-index: -1;
+}*/
+
 .full-w {
-    height: 700px;
+    height: 730px;
     position: relative;
     padding: 0;
-    margin-bottom: 30px;
+    /*margin-bottom: 30px;*/
 }
 
 /* Mapbox specific items. */
@@ -155,6 +170,7 @@ a {
 
 /* The footer always appears at the bottom of the browser window. */
 footer {
+    height: 30px;
     background-color: #333333;
     position: fixed;
     bottom: 0;

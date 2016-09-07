@@ -61,7 +61,10 @@
             <div class='bldg-properties'>
                 <p>building data: <span id='bldg-info'></span></p>
             </div>
-            <button id='bldg-details' type='submit' class='btn btn-info' data-feature='feature' role='button' value='collect'>collect this card!</button>
+
+            <form id='save-card' action='/save_card.json' method='post'>
+                <button id='data-bldg-id' data-bldg='' type='submit' class='btn btn-info' value='collect'>collect this card!</button>
+            </form>
         </div>
 
 

@@ -87,21 +87,24 @@ def dashboard():
 
         card_collection = assemble_card_row(card_bldg)
 
-        empty_card_html = Markup('<h3>Create your card.</h3>')
+        # empty_card_html = Markup('<h3>Create a new card.</h3>')
 
         collection_html = []
         for card_row in card_collection:
             row_html = []
             for card in card_row:
-                card_html = Markup('<h3> ' + card[1].building_name + ' </h3><img src=' + str(card[0].card_img) + 'alt="static/img/splash.jpg"><p class="card-text"></p><a id="flip-card" data-bldg=' + str(card[0].bldg_id) + ' class="btn btn-info">flip for info</a>')
+                card_html = []
+                card_html.append(card[1].building_name)
+                card_html.append(card[0].card_img)
+                card_html.append(str(card[0].bldg_id))
                 row_html.append(card_html)
-            if len(row_html) < 3:
-                row_html.append(empty_card_html)
+            # if len(row_html) < 3:
+            #     row_html.append(empty_card_html)
             collection_html.append(row_html)
-        if len(collection_html) % 3 == 0:
-            row_html = []
-            row_html.append(empty_card_html)
-            collection_html.append(row_html)
+        # if len(collection_html) % 3 == 0:
+        #     row_html = []
+        #     row_html.append(empty_card_html)
+        #     collection_html.append(row_html)
 
         return render_template("dashboard.html", current_user=current_user, collection_html=collection_html)
 

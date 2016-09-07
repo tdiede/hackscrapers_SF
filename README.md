@@ -31,4 +31,4 @@ Hackscrapers SF encourages San Francisco residents to get to know the skyline of
 Therese Diede is a Full-Stack Software Engineer in San Francisco, CA.
 
 
-![Background](static/img/splash.jpg)
+![Background](static/img/map_shot.png)

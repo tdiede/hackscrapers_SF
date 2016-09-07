@@ -254,6 +254,8 @@ $('#update-radius').on('click', updateRadius);
 // Treating bldg markers.
 // Displaying more information on click.
 
+var currentURL = '';
+
 function showPhoto (result) {
     console.log(result);
     if (result.properties.photo === null) {
@@ -262,6 +264,7 @@ function showPhoto (result) {
         $('.photo-properties').hide();
     } else {
         $('#bldg-img').attr('src', result.properties.photo.url_s);
+        currentURL = result.properties.photo.url_s;
         $('#photo-suggest').html('');
         $('.photo-properties').show();
         $('#photo-title').html(result.properties.photo.photo_title);
@@ -291,8 +294,26 @@ function showInfo (marker) {
                          "<br> Height: " + marker.properties.height_ft + " ft tall!" +
                          "<br> Material: " + marker.properties.material + " construction." +
                          "<br> Use: " + marker.properties.use + " use.").append();
-    $('#bldg-details').data('feature', marker.properties.bldg_id);
+    $('#data-bldg-id').data('bldg', marker.properties.bldg_id);
 }
+
+// Saves card to collection.
+function submitSave (e) {
+    e.preventDefault();
+    var number = $('#data-bldg-id').data('bldg');
+    var url = '/save_card.json?bldg_id=' + number + '&url=' + currentURL;
+    $.get(url, function (result) {
+        alert("You now have added a card to your collection!");
+        $.get('/dashboard');
+    });
+}
+
+$('#save-card').on('submit', submitSave);
+
+
+
+
+
 
 // When user moves mouse over map,
 // indicate symbols are clickable,

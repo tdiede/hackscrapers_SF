@@ -13,9 +13,10 @@ $('#save-card').hide();
 
 $('.bldg-properties').hide();
 
+
 // $('#collect-card').on('click', function (e) {
 //     console.log(this);
-//     $('#create').scrollTop(this.hash);
+//     $('#create').scrollTop(this).hash;
 // });
 
 

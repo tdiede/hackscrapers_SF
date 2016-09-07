@@ -7,11 +7,11 @@
 
 {% block content %}
 
-<div class='container-fluid side-padding'>
+<div class='container-fluid side-padding dashboard'>
 
 <br>
 
-<h3>WELCOME {{ current_user }}! COLLECT 'EM ALL!</h3>
+<h3>CARD COLLECTION</h3><!-- <h3>COLLECT 'EM ALL!</h3> -->
 
 <br>
 
@@ -20,37 +20,46 @@
 <div class="row">
 
 {% for card_html in row_html %}
+
 <div class="col-md-3">
-  <div class='jumbotron card'>
+  <div class="jumbotron" id="card">
     <span id='details-close' class='glyphicon glyphicon-remove'></span>
-{{ card_html }}
+    <h3 class="card-title">{{ card_html[0] }}</h3>
+    <img id="bldg-img" src="{{ card_html[1] }}" alt="../static/img/splash.jpg">
+    <!-- <p class="card-text"></p> -->
+    <!-- <a id="flip-card" data-bldg="{{ card_html[2] }}" class="btn btn-info">flip!</a> -->
+    <br>
   </div>
 </div>
+
 {% endfor %}
 
-</div><br><br>
+</div>
 {% endfor %}
 {% endif %}
 
-<!-- <button href='#create' id='collect-card' class='btn btn-info' role='button'>collect a card!</button> -->
-<!-- <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br> -->
+<br><br><br><br>
+<br><br><br><br>
 
 <!-- <div class="col-md-3">
   <div class="card card-block card-collectible">
     <h3 class="card-title">{ bldg.building_name }</h3>
-    <img class="card-img-top thumbnail img-fluid" src="static/img/splash.jpg" alt="Card image cap">
+    <img class="card-img-top thumbnail img-fluid" src="../static/img/splash.jpg" alt="Card image cap">
     <p class="card-text"></p>
     <a id="flip-card" data-bldg="{bldg.bldg_id}" class="btn btn-info">flip for info</a>
   </div>
 </div> -->
 
-<!--   <div class="col-md-3">
-    <div class="card card-block carte-blanche">
-      <h3 class="card-title"><a href="#create">Create your card.</a></h3>
-      <p class="card-text"></p>
-      <a href="#" class="btn btn-info"></a>
-    </div>
-  </div> -->
+<div class='row'>
+<div class="col-md-3">
+<!--   <div class="card card-block carte-blanche">
+    <h3 class="card-title"><a href="#create">Create a new card.</a></h3> -->
+    <a href='#create' id='collect-card' class='btn btn-info' role='button'>collect a card!</a>
+<!--   </div> -->
+</div>
+</div>
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 <div class='row' id='create'>
   <span>STEP 1: Search for a building.</span>
