@@ -5,8 +5,6 @@ Hackscrapers SF encourages San Francisco residents to get to know the skyline of
 
 ## Table of Contents
 * [Technologies Used](#technologiesused)
-<!-- * [How it works](#how) -->
-<!-- * [Version 2.0](#v2) -->
 * [Author](#author)
 
 
