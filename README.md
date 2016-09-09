@@ -5,8 +5,8 @@ Hackscrapers SF encourages San Francisco residents to get to know the skyline of
 
 ## Table of Contents
 * [Technologies Used](#technologiesused)
-* [How it works](#how)
-* [Version 2.0](#v2)
+<!-- * [How it works](#how) -->
+<!-- * [Version 2.0](#v2) -->
 * [Author](#author)
 
 
@@ -20,8 +20,9 @@ Hackscrapers SF encourages San Francisco residents to get to know the skyline of
 * AJAX + JSON
 * HTML + CSS
 * Bootstrap
-* Mapbox API
 * Google Places API
+* Mapbox API
+* Turf.js
 * Flickr API
 * Chart.js
 * D3.js

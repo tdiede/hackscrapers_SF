@@ -58,11 +58,13 @@ function showPhoto (result) {
     $('#new-card-phront').show();
     $('#create-card').show();
     if (result.properties.photo.url_s === null || result.properties.photo.url_s === undefined) {
-        $('#bldg-img').css({'background-image': 'url()'});
+        // $('#bldg-img').css({'background-image': 'url()'});
+        $('#bldg-img-src').attr('src', '');
         $('#photo-suggest').html("No photo found. Maybe you should go snap it!");
         $('.photo-properties').hide();
     } else {
-        $('#bldg-img').css({'background-image': 'url(' + result.properties.photo.url_s + ')', 'background-size': 'cover'});
+        // $('#bldg-img').css({'background-image': 'url(' + result.properties.photo.url_s + ')', 'background-size': 'cover'});
+        $('#bldg-img-src').attr('src', result.properties.photo.url_s);
         $('#photo-suggest').html('');
         $('.photo-properties').show();
         $('#photo-title').html(result.properties.photo.photo_title);
