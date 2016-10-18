@@ -23,12 +23,12 @@ print "createdb buildings"
 
 
 def load_buildings():
-    """Load buildings from SFbldgs into database."""
+    """Load buildings from SFbldgs.csv into database."""
 
     print "Buildings"
 
     # Delete all rows in table, so if we need to run this a second time,
-    # we won't be trying to add duplicate users
+    # we won't be trying to add duplicates.
     Building.query.delete()
     Tenant.query.delete()
 
