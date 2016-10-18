@@ -23,9 +23,11 @@ from sqlalchemy.sql import func, desc
 
 from random import randint, sample
 
+import os
 
+FLASK_SECRET_KEY = os.environ.get("FLASK_SECRET_KEY", "ABCDEF")
 app = Flask(__name__)
-app.secret_key = 'jfsajweWlkakNjakswpclI_fictitious'
+app.secret_key = FLASK_SECRET_KEY
 app.jinja_env.undefined = StrictUndefined
 
 
@@ -708,6 +710,11 @@ def get_randsample(high, n):
     return my_randsample
 
 
+@app.route("/error")
+def error():
+    raise Exception("Error!")
+
+
 if __name__ == "__main__":
     import doctest
 
@@ -723,12 +730,13 @@ if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
     # point that we invoke the DebugToolbarExtension
     # app.debug = True
-
-    app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+    # app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
     connect_to_db(app)
 
     # Use the DebugToolbar
-    DebugToolbarExtension(app)
+    # DebugToolbarExtension(app)
 
-    app.run(host='0.0.0.0')
+    PORT = int(os.environ.get("PORT", 5000))
+    DEBUG = "NO_DEBUG" not in os.environ
+    app.run(host="0.0.0.0", port=PORT, debug=DEBUG)
