@@ -25,9 +25,13 @@ from random import randint, sample
 
 import os
 
-FLASK_SECRET_KEY = os.environ.get("FLASK_SECRET_KEY", "ABCDEF")
+
 app = Flask(__name__)
-app.secret_key = FLASK_SECRET_KEY
+SECRET_KEY = os.environ.get("FLASK_SECRET_KEY", "ABCDEF")
+app.secret_key = SECRET_KEY
+
+connect_to_db(app, os.environ.get("DATABASE_URL"))
+
 app.jinja_env.undefined = StrictUndefined
 
 
