@@ -26,7 +26,7 @@ flickr = mydb.flickr
 #     pprint.pprint(each)
 
 # Create compound index for text fields.
-flickr.create_index([("tags", pymongo.TEXT), ("description.content", pymongo.TEXT), ("title", pymongo.TEXT)])
+flickr.create_index([("tags", TEXT), ("description.content", TEXT), ("title", TEXT)])
 
 
 def total_photos():
