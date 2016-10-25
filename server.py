@@ -9,7 +9,7 @@ from flask import (Flask, render_template, redirect, request, session, flash, js
 from model import connect_to_db, db
 from model import Building, City, User, Card
 
-# from flickr import flickr_search
+from flickr import flickr_search
 from mongodb import flickr, total_photos
 
 import json
