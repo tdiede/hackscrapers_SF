@@ -28,8 +28,8 @@ def load_buildings():
 
     # Delete all rows in table, so if we need to run this a second time,
     # we won't be trying to add duplicates.
-    # Building.query.delete()
-    # Tenant.query.delete()
+    Building.query.delete()
+    Tenant.query.delete()
 
     bldg_count = 0
 
@@ -137,7 +137,7 @@ def load_cities():
 
     # Delete all rows in table, so if we need to run this a second time,
     # we won't be trying to add duplicate users
-    # City.query.delete()
+    City.query.delete()
 
     # Read data file and insert data
     for row in open("seed_data/GLBcities.csv"):
@@ -165,7 +165,7 @@ if __name__ == "__main__":
 
     # In case tables haven't been created, create them
     # db.drop_all()
-    # db.create_all()
+    db.create_all()
 
     # Import different types of data
     load_cities()
