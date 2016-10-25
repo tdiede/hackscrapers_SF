@@ -78,21 +78,21 @@ def total_photos():
 
 # # This function was run once, and now the database collection has documents.
 # # 16MB is the limit for BSON document size.
-# def load_jsons():
-#     """Opens JSON files and reads data into f, loads into doc."""
+def load_jsons():
+    """Opens JSON files and reads data into f, loads into doc."""
 
-#     flickr.drop()
+    flickr.drop()
 
-#     for file in os.listdir('json/'):
-#         if file.endswith('.json'):
-#             print "processing ", file
-#             filename = os.path.join('json/', file)
-#             f = open(filename, 'r')
-#             json_file = json.load(f)
-#             bldg_photos = json_file['photos']['photo']
-#             for bldg_photo in bldg_photos:
-#                 flickr.insert(bldg_photo)
-#             f.close()
+    for file in os.listdir('json/'):
+        if file.endswith('.json'):
+            print "processing ", file
+            filename = os.path.join('json/', file)
+            f = open(filename, 'r')
+            json_file = json.load(f)
+            bldg_photos = json_file['photos']['photo']
+            for bldg_photo in bldg_photos:
+                flickr.insert(bldg_photo)
+            f.close()
 
 
 # # If I were to use Flask-MongoAlchemy...
