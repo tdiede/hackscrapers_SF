@@ -1,8 +1,7 @@
 Flask==0.10.1
 Flask-DebugToolbar==0.10.0
 Flask-SQLAlchemy==2.0
-flask_sqlalchemy
-Jinja2==2.7.3
+Jinja2==2.8
 MarkupSafe==0.23
 SQLAlchemy==1.0.3
 Werkzeug==0.10.4
