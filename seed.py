@@ -161,10 +161,11 @@ def load_cities():
 
 
 if __name__ == "__main__":
-    connect_to_db(app)
+
+    connect_to_db(app, os.environ.get("DATABASE_URL"))
 
     # In case tables haven't been created, create them
-    # db.drop_all()
+    db.drop_all()
     db.create_all()
 
     # Import different types of data
