@@ -15,10 +15,10 @@ sys.setdefaultencoding('UTF8')
 import os
 
 # Whenever seeding, drop existing database and create a new database.
-os.system("dropdb buildings")
-print "dropdb buildings"
-os.system("createdb buildings")
-print "createdb buildings"
+# os.system("dropdb buildings")
+# print "dropdb buildings"
+# os.system("createdb buildings")
+# print "createdb buildings"
 
 
 def load_buildings():
@@ -165,7 +165,7 @@ if __name__ == "__main__":
 
     # In case tables haven't been created, create them
     # db.drop_all()
-    db.create_all()
+    # db.create_all()
 
     # Import different types of data
     load_cities()
