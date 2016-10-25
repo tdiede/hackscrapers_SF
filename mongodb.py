@@ -26,7 +26,7 @@ flickr = mydb.flickr
 #     pprint.pprint(each)
 
 # Create compound index for text fields.
-flickr.create_index([("tags", 'text'), ("description.content", 'text'), ("title", 'text')])
+# flickr.create_index([("tags", 'text'), ("description.content", 'text'), ("title", 'text')])
 
 
 def total_photos():
