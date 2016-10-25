@@ -1,15 +1,19 @@
-from pymongo import MongoClient, errors, TEXT
-
 import os
+import sys
+
+import pymongo
+
 import json
 import pprint
 
 
+MONGODB_URI = os.getenv('MONGOLAB_URI', 'mongodb://localhost:27017')
+
 # Connection to Mongo DB
 try:
-    client = MongoClient()
+    client = pymongo.MongoClient(MONGODB_URI)
     print "Connected to MongoDB!"
-except errors.ConnectionFailure, e:
+except pymongo.errors.ConnectionFailure, e:
     print "Could not connect to MongoDB."
 
 # MongoClient('localhost', port=27017)
@@ -22,7 +26,7 @@ flickr = mydb.flickr
 #     pprint.pprint(each)
 
 # Create compound index for text fields.
-flickr.create_index([("tags", TEXT), ("description.content", TEXT), ("title", TEXT)])
+flickr.create_index([("tags", pymongo.TEXT), ("description.content", pymongo.TEXT), ("title", pymongo.TEXT)])
 
 
 def total_photos():

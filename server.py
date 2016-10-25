@@ -10,7 +10,7 @@ from model import connect_to_db, db
 from model import Building, City, User, Card
 
 # from flickr import flickr_search
-# from mongodb import flickr, total_photos
+from mongodb import flickr, total_photos
 
 import json
 
