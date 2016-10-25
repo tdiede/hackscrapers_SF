@@ -22,8 +22,6 @@ from random import randint, sample
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY", "abcdef")
 
-connect_to_db(app, os.environ.get("DATABASE_URL"))
-
 # Normally, if you use an undefined variable in Jinja2, it fails silently.
 # This is horrible. Fix this so that, instead, it raises an error.
 # from jinja2 import StrictUndefined
