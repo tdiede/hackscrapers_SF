@@ -7,7 +7,7 @@ import json
 import pprint
 
 
-MONGODB_URI = os.getenv('MONGOLAB_URI', 'mongodb://localhost:27017')
+MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb://localhost:27017')
 
 # Connection to Mongo DB
 try:
