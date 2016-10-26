@@ -10,16 +10,23 @@ import pprint
 MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb://localhost:27017')
 
 # Connection to Mongo DB
+# MongoClient('localhost', port=27017)
 try:
     client = pymongo.MongoClient(MONGODB_URI)
     print "Connected to MongoDB!"
 except pymongo.errors.ConnectionFailure, e:
     print "Could not connect to MongoDB."
 
-# MongoClient('localhost', port=27017)
-
 mydb = client.mydb
-flickr = mydb.flickr
+flickr_db = mydb.flickr
+
+
+def total_photos():
+
+    total_photos = flickr_db.find({}).count()
+
+    return total_photos
+
 
 # cursor = flickr_responses.find({})
 # for each in cursor:
@@ -27,13 +34,6 @@ flickr = mydb.flickr
 
 # Create compound index for text fields.
 # flickr.create_index([("tags", 'text'), ("description.content", 'text'), ("title", 'text')])
-
-
-def total_photos():
-
-    total_photos = flickr.find({}).count()
-
-    return total_photos
 
 
 # def count_tags():
@@ -74,26 +74,7 @@ def total_photos():
 #     return idx
 
 
-##############################################################################
-
-# # This function was run once, and now the database collection has documents.
-# # 16MB is the limit for BSON document size.
-def load_jsons():
-    """Opens JSON files and reads data into f, loads into doc."""
-
-    flickr.drop()
-
-    for file in os.listdir('json/'):
-        if file.endswith('.json'):
-            print "processing ", file
-            filename = os.path.join('json/', file)
-            f = open(filename, 'r')
-            json_file = json.load(f)
-            bldg_photos = json_file['photos']['photo']
-            for bldg_photo in bldg_photos:
-                flickr.insert(bldg_photo)
-            f.close()
-
+##################################################################
 
 # # If I were to use Flask-MongoAlchemy...
 # def connect_to_mongo(app, db_uri='library'):

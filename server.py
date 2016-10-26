@@ -184,19 +184,6 @@ def search_bldgs():
 #     return render_template("dashboard.html", current_user=current_user, cards=cards, card_html=card_html, empty_card_html=empty_card_html)
 
 
-# # # Only called once to generate files.
-# # # Another function populates database.
-@app.route('/gen_flickr_files')
-def gen_flickr_files():
-    """Calls Flickr API for photo search. Saves JSON data files for each bldg."""
-
-    bldgs = db.session.query(Building).options(db.joinedload('city')).all()
-
-    flickr_search(bldgs)
-
-    return None
-
-
 @app.route('/buildings')
 def buildings_list():
     """Return list of buildings."""

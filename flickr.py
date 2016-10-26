@@ -9,30 +9,24 @@ import os
 import requests
 import json
 
-# INSTAGRAM_CLIENT_ID = os.environ['INSTAGRAM_CLIENT_ID']
-# INSTAGRAM_CLIENT_SECRET = os.environ['INSTAGRAM_CLIENT_SECRET']
+from model import db
+from model import Building
+
+from mongodb import flickr_db
+
 
 FLICKR_KEY = os.environ['FLICKR_KEY']
 FLICKR_SECRET = os.environ['FLICKR_SECRET']
 
 
-# def slice_list(bldgs):
-#     """Slices list of buildings to make an appropriate FLICKR API call."""
-
-#     length = len(bldgs)
-
-#     bldg_subsets = []
-
-#     for i in range(0, length, 20):
-#         bldg_subset = bldgs[i:i+20]
-#         bldg_subsets.append(bldg_subset)
-
-#     return bldg_subsets
+# Drop existing flickr_db database to re-populate.
+flickr_db.drop()
 
 
-# Once called, no need to call again.
 def flickr_search(bldgs):
     """Makes request to FLICKR API, given bldg tags. Saves file for each bldg, each page 500 results max."""
+
+    bldgs = db.session.query(Building).options(db.joinedload('city')).all()
 
     flickr_per_page_limit = 500
 
@@ -67,7 +61,7 @@ def flickr_search(bldgs):
             # JSON dictionary.
             data = json.loads(content)
 
-            save_file(data, bldg, page)
+            load_jsons(data)
 
             page_count = int(data['photos']['pages'])
 
@@ -80,58 +74,11 @@ def flickr_search(bldgs):
             page += 1
 
 
-def save_file(data, bldg, page):
-    """Dumps JSON data result into file."""
+# 16MB is the limit for BSON document size.
+def load_jsons(data):
+    """Inserts JSON data into MongoDB collection as a document."""
 
-    f = open('json/flckrdata_'+str(bldg.bldg_id)+'_'+str(page)+'.json', 'w')
-    json.dump(data, f)
-    f.close()
-
-
-# # Cannot combine this many files, or files of this size. Fails.
-# def combine_flickr_data(bldgs):
-#     """Loads JSON data from files and combines into one file for all bldgs."""
-
-#     photos_data = {}
-
-#     for bldg in bldgs:
-#         for file in os.listdir('json/'+str(bldg.bldg_id)):
-#             if file.endswith('.json'):
-#                 f = open('json/'+str(bldg.bldg_id)+'/'+file, 'r')
-#                 data = json.load(f)
-#                 photos_data[bldg.bldg_id] = data
-#                 f.close()
-
-#     f = open('json/flckrdata_bldgs.json', 'w')
-#     json.dump(photos_data, f)
-#     f.close()
-
-
-# def load_file():
-#     """Loads combined JSON data file to read."""
-
-#     f = open('json/flckrdata_bldgs.json', 'r')
-#     data = json.load(f)
-
-#     return data
-
-
-# def get_image_urls(idx):
-
-#     bldg_urls = []
-#     urls = []
-
-#     for i in idx:
-#         idx_photo = data['photos']['photo'][i]['id']
-#         # idx_user = data['photos']['photo'][i]['owner']
-#         idx_farm = data['photos']['photo'][i]['farm']
-#         idx_server = data['photos']['photo'][i]['server']
-#         idx_secret = data['photos']['photo'][i]['secret']
-#         # url = 'https://www.flickr.com/photos/' + idx_user + '/' + idx_photo
-#         url = 'https://farm'+str(idx_farm)+'.staticflickr.com/'+idx_server+'/'+idx_photo+'_'+idx_secret+'_s.jpg'
-#         # url = 'https://farm'+str(idx_farm)+'.staticflickr.com/'+idx_server+'/'+idx_photo+'_'+idx_secret+'_q.jpg'
-#         bldg_urls.append(url)
-
-#         urls.append(bldg_urls)
-
-#     return urls
+    bldg_photos = data['photos']['photo']
+    for bldg_photo in bldg_photos:
+        flickr_db.insert(bldg_photo)
+        print "inserted"
