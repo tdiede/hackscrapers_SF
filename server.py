@@ -152,6 +152,14 @@ def buildings_list():
     return render_template("buildings_list.html", bldgs=bldgs)
 
 
+@app.route('/bldg/<int:bldg_id>')
+def show_bldg_details(bldg_id):
+    """When user clicks on name of building, show building photo and details."""
+
+    bldg = bldg_feature(bldg_id)
+    return render_template("building_details.html", bldg=bldg)
+
+
 @app.route('/map')
 def display_map():
     """Page where user can see map and map data."""
@@ -159,6 +167,67 @@ def display_map():
 
 
 ### JSON ROUTES ###
+
+# JSON ROUTE FOR GENERIC DISPLAY OF BUILDING
+@app.route('/bldg_feature.json/<int:bldg_id>')
+def bldg_feature(bldg_id):
+    """Returns JSON to represent SINGLE BLDG RECORD."""
+
+    bldg = Building.query.get(bldg_id)
+
+    photo_metadata = bldg_flickr(bldg_id)
+
+    bldg_feature = {bldg.bldg_id: {"place_id": bldg.place_id,
+                                   "rank": bldg.rank,
+                                   "status": bldg.status,
+                                   "building_name": bldg.building_name,
+                                   "lat": bldg.lat,
+                                   "lng": bldg.lng,
+                                   "city": bldg.city_id,
+                                   "height_m": bldg.height_m,
+                                   "height_ft": bldg.height_ft,
+                                   "floors": bldg.floors,
+                                   "completed_yr": bldg.completed_yr,
+                                   "material": bldg.material,
+                                   "use": bldg.use,
+                                   "photo_metadata": photo_metadata
+                                   },
+                    }
+
+    return jsonify(bldg_feature)
+
+
+# JSON ROUTE FOR FLICKR PHOTO URL
+@app.route('/bldg_flickr.json/<int:bldg_id>')
+def bldg_flickr(bldg_id):
+    """Returns a random Flickr image url from SINGLE BLDG RECORD."""
+
+    cursor_bldg_photos = find_photos(bldg_id)
+    count = cursor_bldg_photos.count()
+
+    if count > 0:
+        i = get_randint(0, count-1)
+        photo = cursor_bldg_photos[i]
+
+        url_s = photo.get('url_s')
+        ownername = photo.get('ownername')
+        title = photo.get('title')
+        raw_description = photo['description'].get('_content')
+        description = raw_description.rstrip().lstrip()
+
+        photo_metadata = {"url_s": url_s,
+                          "ownername": ownername,
+                          "title": title,
+                          "description": description,
+                          }
+
+    else:
+        photo_metadata = {bldg_id: {"result": 'This building does not have any tagged Flickr photos.'}}
+        flash('This building does not have any tagged Flickr photos.')
+        photo = None
+
+    return json.dumps(photo_metadata)
+
 
 # GEOJSON ROUTE FOR MAP
 @app.route('/bldgs.geojson')
@@ -257,67 +326,6 @@ def bldg_barchart(bldg_id):
     return jsonify(bldg_barchart)
 
 
-# JSON ROUTE FOR GENERIC DISPLAY OF BUILDING
-@app.route('/bldg/<int:bldg_id>')
-def show_bldg_details(bldg_id):
-    """When user clicks on name of building, show building photo and details."""
-
-    bldg = Building.query.get(bldg_id)
-
-    photo_metadata = bldg_flickr(bldg_id)
-
-    bldg_feature = {bldg.bldg_id: {"place_id": bldg.place_id,
-                                   "rank": bldg.rank,
-                                   "status": bldg.status,
-                                   "building_name": bldg.building_name,
-                                   "lat": bldg.lat,
-                                   "lng": bldg.lng,
-                                   "city": bldg.city_id,
-                                   "height_m": bldg.height_m,
-                                   "height_ft": bldg.height_ft,
-                                   "floors": bldg.floors,
-                                   "completed_yr": bldg.completed_yr,
-                                   "material": bldg.material,
-                                   "use": bldg.use,
-                                   "photo_metadata": photo_metadata
-                                   },
-                    }
-
-    return jsonify(bldg_feature)
-
-
-# JSON ROUTE FOR FLICKR PHOTO URL
-@app.route('/bldg_flickr.json/<int:bldg_id>')
-def bldg_flickr(bldg_id):
-    """Returns a random Flickr image url from SINGLE BLDG RECORD."""
-
-    cursor_bldg_photos = find_photos(bldg_id)
-    count = cursor_bldg_photos.count()
-
-    if count > 0:
-        i = get_randint(0, count-1)
-        photo = cursor_bldg_photos[i]
-
-        url_s = photo.get('url_s')
-        ownername = photo.get('ownername')
-        title = photo.get('title')
-        raw_description = photo['description'].get('_content')
-        description = raw_description.rstrip().lstrip()
-
-        photo_metadata = {"url_s": url_s,
-                          "ownername": ownername,
-                          "title": title,
-                          "description": description,
-                          }
-
-    else:
-        photo_metadata = {bldg_id: {"result": 'This building does not have any tagged Flickr photos.'}}
-        flash('This building does not have any tagged Flickr photos.')
-        photo = None
-
-    return json.dumps(photo_metadata)
-
-
 @app.route('/create_card.json')
 def create_card():
     """User selects photo and comment to put on card, previews card."""
@@ -367,19 +375,33 @@ def save_card():
     return redirect('/dashboard')
 
 
-### HELPER FUNCTIONS ###
+# HELPER FUNCTIONS ################
+"""All general helper functions."""
 
-def assemble_card_row(card_bldg):
-    """Counts existing cards created by user and groups by threes."""
 
-    card_collection = []
-    i = 0
-    while (i <= len(card_bldg)/3):
-        card_row = card_bldg[i*3:i+3]
-        card_collection.append(card_row)
-        i += 1
+def get_randint(low, high):
+    """Obtain a random integer between low and high, inclusive, for use in any function."""
 
-    return card_collection
+    my_randint = randint(low, high)
+    return my_randint
+
+
+def get_randsample(high, n):
+    """Obtain n random integers between 0 high, exclusive, for use in any function."""
+
+    my_randsample = sample(range(high), n)
+    return my_randsample
+
+
+# HELPER FUNCTIONS ####################
+"""All functions querying database."""
+
+
+def avg_bldg_height():
+    """Queries buildings database for average building height."""
+
+    avg = db.session.query(func.avg(Building.height_ft).label('average')).scalar()
+    return avg
 
 
 def find_photos(bldg_id):
@@ -393,9 +415,8 @@ def find_photos(bldg_id):
     return cursor_bldg_photos
 
 
-# HELPER FUNCTIONS #
-####################################################################
-"""All functions database."""
+# HELPER FUNCTIONS ####################
+"""All functions adding to database."""
 
 
 def add_user(username, password):
@@ -420,14 +441,19 @@ def add_card(user_id, bldg_id, card_img, comments):
     db.session.commit()
 
 
-####################################################################
+#################################
 
-def avg_bldg_height():
-    """Queries database for average building height."""
+def assemble_card_row(card_bldg):
+    """Counts existing cards created by user and groups by threes."""
 
-    avg = db.session.query(func.avg(Building.height_ft).label('average')).scalar()
+    card_collection = []
+    i = 0
+    while (i <= len(card_bldg)/3):
+        card_row = card_bldg[i*3:i+3]
+        card_collection.append(card_row)
+        i += 1
 
-    return avg
+    return card_collection
 
 
 # def refresh_dashboard():
@@ -462,22 +488,6 @@ def avg_bldg_height():
 #     # bldgs_desc = bldgs.order_by(desc(Building.floors))
 
 #     return bldgs_desc
-
-
-def get_randint(low, high):
-    """Obtain a random integer between low and high, inclusive, for use in any function."""
-
-    my_randint = randint(low, high)
-
-    return my_randint
-
-
-def get_randsample(high, n):
-    """Obtain n random integers between 0 high, exclusive, for use in any function."""
-
-    my_randsample = sample(range(high), n)
-
-    return my_randsample
 
 
 ####################################################################
