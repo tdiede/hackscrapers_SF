@@ -61,7 +61,7 @@ def flickr_search(bldgs):
             # JSON dictionary.
             data = json.loads(content)
 
-            load_jsons(data)
+            load_json(data)
 
             page_count = int(data['photos']['pages'])
 
@@ -75,7 +75,7 @@ def flickr_search(bldgs):
 
 
 # 16MB is the limit for BSON document size.
-def load_jsons(data):
+def load_json(data):
     """Inserts JSON data into MongoDB collection as a document."""
 
     bldg_photos = data['photos']['photo']
