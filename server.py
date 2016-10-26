@@ -2,17 +2,20 @@
 
 import os
 
-from flask import (Flask, render_template, redirect, request, session, flash, jsonify, Markup)
-
-from model import connect_to_db, db
-from model import Building, City, User, Card
-
-from mongodb import db as mongo
+from flask import (Flask, render_template, redirect, request, session, flash, jsonify)
 
 import json
 
-from sqlalchemy.sql import func, desc
+from model import connect_to_db, db
+from model import Building, User, Card
 
+from mongodb import db as mongo
+flickr = mongo['flickr']
+# Create compound index for text fields.
+flickr.create_index([("tags", 'text'), ("description.content", 'text'), ("title", 'text')])
+
+
+from sqlalchemy.sql import func
 from random import randint, sample
 
 
@@ -149,115 +152,25 @@ def buildings_list():
     return render_template("buildings_list.html", bldgs=bldgs)
 
 
-@app.route('/cities')
-def cities_list():
-    """Return list of cities."""
-
-    cities = City.query.all()
-    return render_template("cities_list.html", cities=cities)
-
-
 @app.route('/map')
 def display_map():
     """Page where user can see map and map data."""
     return render_template("mapbox.html")
 
 
-@app.route('/dendrogram')
-def display_dendogram():
-    """Page where user can see dendrogram and dendrogram data."""
-    return render_template("dendrogram.html")
-
-
 ### JSON ROUTES ###
 
-@app.route('/search_bldg.json')
-def search_bldgs():
-    """Queries database for building(s) searched by user and returns a json."""
-
-    search_results = []
-    bldg_response = {}
-
-    # Search terms entered by user
-    search_terms = request.args.get('building')
-    if search_terms:
-        search = search_terms.split(" ")
-    else:
-        # flash("Your search is empty.")
-        return redirect('/dashboard')
-
-    for term in search:
-        # if term.lower() != "building" and term.lower() != "tower":  # Hope to exclude these terms from search. Better way?
-        bldg_match = db.session.query(Building).filter(Building.building_name.ilike('%'+term+'%')).all()
-        search_results.extend(bldg_match)
-
-    if search_results:
-        for bldg in search_results:
-            bldg_response = {'bldg_id': bldg.bldg_id,
-                             'place_id': bldg.place_id,
-                             'rank': bldg.rank,
-                             'status': bldg.status,
-                             'building_name': bldg.building_name,
-                             'lat': bldg.lat,
-                             'lng': bldg.lng,
-                             'city': bldg.city_id,
-                             'height_m': bldg.height_m,
-                             'height_ft': bldg.height_ft,
-                             'floors': bldg.floors,
-                             'completed_yr': bldg.completed_yr,
-                             'material': bldg.material,
-                             'use': bldg.use}
-
-        return jsonify(bldg_response)
-
-    else:
-        # flash("Your search returned no results.")
-        return redirect('/dashboard')
-
-
-@app.route('/dendrogram.json')
-def dendogram_data():
-    """Return data from buildings table for use in dendogram, JSON."""
-
-    cities = City.query.filter_by(city="San Francisco").first()
-    bldgs = Building.query.all()
-
-    buildings = {}
-    buildings_list = []
-
-    for bldg in bldgs:
-
-        tenants = {}
-        tenants_list = []
-
-        for tenant in bldg.tenants:
-            tenants = {"name": tenant.tenant}
-            tenants_list.append(tenants)
-
-        buildings = {"name": bldg.building_name,
-                     "children": tenants_list}
-        buildings_list.append(buildings)
-
-    dendrogram = {"name": cities.city,
-                  "children": buildings_list}
-
-    return jsonify(dendrogram)
-
-
-# GEOJSON ROUTE
-@app.route('/bldg_geojson.geojson')
-def bldg_data():
-    """Return data from buildings table as GEOJSON."""
+# GEOJSON ROUTE FOR MAP
+@app.route('/bldgs.geojson')
+def create_bldgs_geojson():
+    """Return ALL BLDGS RECORDS from buildings table as GEOJSON."""
 
     bldgs = Building.query.all()
 
-    bldg_geojson = {}
     features = []
-
     for bldg in bldgs:
 
         coordinates_list = [bldg.lng, bldg.lat]
-
         bldg_feature = {"type": "Feature",
                         "geometry": {
                             "type": "Point",
@@ -292,43 +205,40 @@ def bldg_data():
 # JSON ROUTE FOR BAR CHART
 @app.route('/bldg_barchart.json/<int:bldg_id>')
 def bldg_barchart(bldg_id):
-    """Return data from buildings table for barchart."""
+    """Return SINGLE BLDG RECORD from buildings table AS JSON for Chart.js."""
 
-    # Get the bldg_id for the building in question (AJAX).
-    # bldg = request.args.get(bldg_id)
-
-    bldg = Building.query.get(bldg_id)
+    current_bldg = Building.query.get(bldg_id)
 
     #Get tallest building in dataset.
-    tallest = Building.query.filter_by(rank=1).one()
+    tallest_bldg = Building.query.filter_by(rank=1).one()
 
     # Get buildings average data.
     avg = avg_bldg_height()
 
     data = []
-    data.append(bldg.height_ft)
-    data.append(tallest.height_ft)
+    data.append(current_bldg.height_ft)
+    data.append(tallest_bldg.height_ft)
     data.append(int(avg))
 
     labels = []
-    labels.append(bldg.building_name)
-    labels.append(tallest.building_name + " (tallest)")
+    labels.append(current_bldg.building_name)
+    labels.append(tallest_bldg.building_name + " (tallest)")
     labels.append("San Francisco average (of 130 buildings)")
 
-    bldg_color = 'rgba(255,0,0,0.6)'
-    bldg_border = 'rgba(255,0,0,1.0)'
+    current_bldg_color = 'rgba(255,0,0,0.6)'
+    current_bldg_border = 'rgba(255,0,0,1.0)'
 
-    tallest_color = 'rgba(255,155,0,0.6)'
-    tallest_border = 'rgba(255,155,0,1.0)'
+    tallest_bldg_color = 'rgba(255,155,0,0.6)'
+    tallest_bldg_border = 'rgba(255,155,0,1.0)'
 
     avg_color = 'rgba(255,155,205,0.6)'
     avg_border = 'rgba(255,155,205,1.0)'
 
-    backgroundColor = [bldg_color,
-                       tallest_color,
+    backgroundColor = [current_bldg_color,
+                       tallest_bldg_color,
                        avg_color]
-    borderColor = [bldg_border,
-                   tallest_border,
+    borderColor = [current_bldg_border,
+                   tallest_bldg_border,
                    avg_border]
     borderWidth = 2
 
@@ -347,96 +257,65 @@ def bldg_barchart(bldg_id):
     return jsonify(bldg_barchart)
 
 
+# JSON ROUTE FOR GENERIC DISPLAY OF BUILDING
 @app.route('/bldg/<int:bldg_id>')
 def show_bldg_details(bldg_id):
-    """When user clicks on name of building, show building details."""
+    """When user clicks on name of building, show building photo and details."""
 
     bldg = Building.query.get(bldg_id)
 
-    coordinates_list = [bldg.lng, bldg.lat]
+    photo_metadata = bldg_flickr(bldg_id)
 
-    bldg_feature = {"type": "Feature",
-                    "geometry": {
-                        "type": "Point",
-                        "coordinates": coordinates_list,
-                        },
-                    "properties": {
-                        "bldg_id": bldg.bldg_id,
-                        "place_id": bldg.place_id,
-                        "rank": bldg.rank,
-                        "status": bldg.status,
-                        "building_name": bldg.building_name,
-                        "lat": bldg.lat,
-                        "lng": bldg.lng,
-                        "city": bldg.city_id,
-                        "height_m": bldg.height_m,
-                        "height_ft": bldg.height_ft,
-                        "floors": bldg.floors,
-                        "completed_yr": bldg.completed_yr,
-                        "material": bldg.material,
-                        "use": bldg.use,
-                        },
+    bldg_feature = {bldg.bldg_id: {"place_id": bldg.place_id,
+                                   "rank": bldg.rank,
+                                   "status": bldg.status,
+                                   "building_name": bldg.building_name,
+                                   "lat": bldg.lat,
+                                   "lng": bldg.lng,
+                                   "city": bldg.city_id,
+                                   "height_m": bldg.height_m,
+                                   "height_ft": bldg.height_ft,
+                                   "floors": bldg.floors,
+                                   "completed_yr": bldg.completed_yr,
+                                   "material": bldg.material,
+                                   "use": bldg.use,
+                                   "photo_metadata": photo_metadata
+                                   },
                     }
 
     return jsonify(bldg_feature)
 
 
-# JSON FOR FLICKR PHOTO OF BLDG -- USED FOR MAP!
-@app.route('/flickr_filter.json')
-def flickr_filter():
-    """Returns a random Flickr image url to display photo of bldg."""
+# JSON ROUTE FOR FLICKR PHOTO URL
+@app.route('/bldg_flickr.json/<int:bldg_id>')
+def bldg_flickr(bldg_id):
+    """Returns a random Flickr image url from SINGLE BLDG RECORD."""
 
-    bldg_id = request.args.get('bldg_id')
+    cursor_bldg_photos = find_photos(bldg_id)
+    count = cursor_bldg_photos.count()
 
-    bldg = Building.query.get(bldg_id)
-
-    bldg_photos = query_photo(bldg_id)
-    count = bldg_photos.count()
-
-    # if not count:
-    #     flash('This building does not have any Flickr photos.')
-    #     return redirect('/dashboard')
     if count > 0:
         i = get_randint(0, count-1)
-        photo = bldg_photos[i]
+        photo = cursor_bldg_photos[i]
 
-        photo_url = photo.get('url_s')
-        owner = photo.get('ownername')
+        url_s = photo.get('url_s')
+        ownername = photo.get('ownername')
         title = photo.get('title')
         raw_description = photo['description'].get('_content')
         description = raw_description.rstrip().lstrip()
 
-        photo_metadata = {"url_s": photo_url,
-                          "ownername": owner,
-                          "photo_title": title,
-                          "descript": description,
+        photo_metadata = {"url_s": url_s,
+                          "ownername": ownername,
+                          "title": title,
+                          "description": description,
                           }
 
     else:
+        photo_metadata = {bldg_id: {"result": 'This building does not have any tagged Flickr photos.'}}
+        flash('This building does not have any tagged Flickr photos.')
         photo = None
 
-    bldg_flickr = {"properties": {"bldg_id": bldg.bldg_id,
-                                  "photo": photo_metadata,
-                                  },
-                   }
-
-    return jsonify(bldg_flickr)
-
-
-    # bldg_flickr = flickr_filter()
-    # r = bldg_flickr.response
-    # f = r.pop()
-    # photo = json.loads(f)
-    # photo_properties = photo['properties']['photo']
-
-        # bldg_photo = {'metadata': {'ownername': owner,
-        #                            'photo_title': title,
-        #                            'descript': description,
-        #                            },
-        #               'card': {'bldg_id': int(bldg_id),
-        #                        'card_img': url_s, 'card_img': card_img,
-        #                        }
-        #               }
+    return json.dumps(photo_metadata)
 
 
 @app.route('/create_card.json')
@@ -503,73 +382,15 @@ def assemble_card_row(card_bldg):
     return card_collection
 
 
-# def refresh_dashboard():
-#     """After user creates and saves card, refresh dashboard."""
-
-#     cards = Card.query.filter_by(user_id=user_id).all()
-#     print cards
-
-#     card_html, empty_card_html = refresh_dashboard()
-
-#     bldg = Building.query.filter_by(bldg_id=bldg_id).one()
-
-#     flash("New card for {} has now been added to your collection!".format(bldg.building_name))
-#     return render_template("dashboard.html", current_user=current_user, cards=cards, card_html=card_html, empty_card_html=empty_card_html)
-
-
-def query_photo(bldg_id):
-    """Queries MongoDB for photo by bldg_id. Returns bldg_photos cursor object."""
+def find_photos(bldg_id):
+    """Queries MongoDB for photos by bldg_id. Returns bldg_photos cursor object."""
 
     bldg = Building.query.get(bldg_id)
-    bldg_text = bldg.building_name.replace(' ', '')
-    bldg_text = bldg_text.lower()
+    name = bldg.building_name.replace(' ', '').lower()
+    print name
 
-    bldg_photos = flickr.find({'$text': {'$search': bldg_text}})
-
-    return bldg_photos
-
-
-# def filter_photos():
-#     """Perform an initial filter on photo results to extract quality photos in location."""
-
-    # data = flickr.load_file()
-    # bldg_photo_totals, bldgs_photos = flickr.return_photos(data, bldgs)
-    # urls = flickr.filter_photos(bldg_photo_totals, bldgs_photos)
-
-#     # bldg_tags = []
-
-#     urls = []
-
-#     for bldg_grp in photos:
-#         # for photo in bldg_grp:
-#         if len(bldg_grp) > 0:
-#             my_randint = get_randint(0, len(bldg_grp)-1)
-#             url = bldg_grp[my_randint]['url_s']
-#             urls.append(url)
-#         else:
-#             continue
-
-#     # raise Exception
-
-#     return urls
-
-
-@app.route('/user_curates', methods=['GET'])
-def user_curates():
-
-    user_query = "night skyscraper"
-    # user_query = request.args.get['user_query']
-    user_terms = user_query.split(' ')
-
-    queried_photos = []
-
-    # for term in user_terms:
-    photos = flickr.find({'$text': {'$search': {'$all': user_terms}}})
-    for photo in photos:
-        queried_photos.append(photo)
-
-    return render_template("curated_photos.html", query=queried_photos)
-
+    cursor_bldg_photos = flickr.find({'$text': {'$search': name}})
+    return cursor_bldg_photos
 
 
 # HELPER FUNCTIONS #
@@ -599,12 +420,28 @@ def add_card(user_id, bldg_id, card_img, comments):
     db.session.commit()
 
 
+####################################################################
+
 def avg_bldg_height():
     """Queries database for average building height."""
 
     avg = db.session.query(func.avg(Building.height_ft).label('average')).scalar()
 
     return avg
+
+
+# def refresh_dashboard():
+#     """After user creates and saves card, refresh dashboard."""
+
+#     cards = Card.query.filter_by(user_id=user_id).all()
+#     print cards
+
+#     card_html, empty_card_html = refresh_dashboard()
+
+#     bldg = Building.query.filter_by(bldg_id=bldg_id).one()
+
+#     flash("New card for {} has now been added to your collection!".format(bldg.building_name))
+#     return render_template("dashboard.html", current_user=current_user, cards=cards, card_html=card_html, empty_card_html=empty_card_html)
 
 
 # @app.route('/sort_field')

@@ -19,8 +19,10 @@ try:
 except pymongo.errors.ConnectionFailure:
     print "Could not connect to MongoDB."
 
-db = client.get_default_database()
-
+try:
+    db = client.get_default_database()
+except pymongo.errors.ConfigurationError:
+    db = client.db
 
 #####################################################
 
