@@ -5,7 +5,6 @@
 # CURATION TOOL. MACHINE LEARNING.
 
 import os
-import sys
 
 import requests
 import json
@@ -13,7 +12,7 @@ import json
 from model import db
 from model import Building
 
-from mongodb import db
+from mongodb import db as mongo
 
 
 FLICKR_KEY = os.environ['FLICKR_KEY']
@@ -21,12 +20,12 @@ FLICKR_SECRET = os.environ['FLICKR_SECRET']
 
 
 # Drop existing flickr collection.
-db.drop_collection('flickr')
+mongo.drop_collection('flickr')
 # Create or recreate flickr collection.
-flickr = db['flickr']
+flickr = mongo['flickr']
 
 
-def flickr_search(bldgs):
+def flickr_search():
     """Makes request to FLICKR API, given bldg tags. Saves file for each bldg, each page 500 results max."""
 
     bldgs = db.session.query(Building).options(db.joinedload('city')).all()
@@ -64,7 +63,7 @@ def flickr_search(bldgs):
             # JSON dictionary.
             data = json.loads(content)
 
-            load_json(data)
+            insert(data)
 
             page_count = int(data['photos']['pages'])
 
@@ -78,21 +77,19 @@ def flickr_search(bldgs):
 
 
 # 16MB is the limit for BSON document size.
-def load_json(data):
-    """Inserts JSON data into MongoDB collection as a document."""
+def insert(data):
+    """Inserts Flickr result (JSON) into MongoDB collection: each photo metadata as a document."""
 
     bldg_photos = data['photos']['photo']
     for bldg_photo in bldg_photos:
-        mongodb.flickr.insert(bldg_photo)
+        flickr.insert(bldg_photo)
         print "inserted"
 
 
+# def total_photos():
 
-def total_photos():
-
-    total_photos = flickr.find({}).count()
-
-    return total_photos
+#     total_photos = flickr.find({}).count()
+#     return total_photos
 
 
 # cursor = flickr_responses.find({})

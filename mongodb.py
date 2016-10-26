@@ -20,7 +20,6 @@ except pymongo.errors.ConnectionFailure:
     print "Could not connect to MongoDB."
 
 db = client.get_default_database()
-print db.collection_names()
 
 
 #####################################################
