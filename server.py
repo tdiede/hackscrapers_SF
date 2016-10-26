@@ -1,13 +1,13 @@
 """Python/Flask server: provides web interface for browsing skyscrapers."""
 
-
 import os
 
 from flask import (Flask, render_template, redirect, request, session, flash, jsonify, Markup)
-# from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db
 from model import Building, City, User, Card
+
+from mongodb import db as mongo
 
 import json
 
@@ -33,7 +33,6 @@ def error():
 @app.route('/')
 def index():
     """Web app begins with login splash page."""
-
     return render_template("login.html")
 
 
@@ -59,13 +58,45 @@ def handle_login():
         return redirect('/register')
 
 
-@app.route('/homepage')
-def homepage():
-    """Return homepage (dashboard)."""
+@app.route('/register')
+def user_register():
+    """User register form."""
+    return render_template("register.html")
 
-    current_user = session.get('current_user')
 
-    return render_template("homepage.html", current_user=current_user)
+@app.route('/register', methods=['POST'])
+def handle_register():
+    """Action for register form; user entered into database."""
+
+    current_username = request.form['username']
+    current_password = request.form['password']
+
+    if User.query.filter_by(username=current_username).first():  # Checks to see if user is registered.
+        flash("You're already registered. Please login.")
+        return redirect('/')
+    else:
+        add_user(current_username, current_password)
+        session['current_user'] = current_username
+        flash("Welcome. You are now a registered user, %s! Please make yourself at home." % (current_username))
+        return redirect('/dashboard')
+
+
+@app.route('/switch_user', methods=['POST'])
+def switch_user():
+    """User login form, when called to switch user."""
+
+    flash("Switch user.")
+    return redirect('/login')
+
+
+@app.route('/logout', methods=['POST'])
+def logout_user():
+    """User logout, automatically called if user switch."""
+
+    current_user = session['current_user']
+    flash("Thanks for playing, %s. You have been logged out." % current_user)
+    del session['current_user']
+    return redirect('/')
 
 
 @app.route('/dashboard')
@@ -110,18 +141,35 @@ def dashboard():
         return render_template("dashboard.html", current_user=current_user, collection_html=collection_html)
 
 
-def assemble_card_row(card_bldg):
-    """Counts existing cards created by user and groups by threes."""
+@app.route('/buildings')
+def buildings_list():
+    """Return list of buildings."""
 
-    card_collection = []
-    i = 0
-    while (i <= len(card_bldg)/3):
-        card_row = card_bldg[i*3:i+3]
-        card_collection.append(card_row)
-        i += 1
+    bldgs = Building.query.all()
+    return render_template("buildings_list.html", bldgs=bldgs)
 
-    return card_collection
 
+@app.route('/cities')
+def cities_list():
+    """Return list of cities."""
+
+    cities = City.query.all()
+    return render_template("cities_list.html", cities=cities)
+
+
+@app.route('/map')
+def display_map():
+    """Page where user can see map and map data."""
+    return render_template("mapbox.html")
+
+
+@app.route('/dendrogram')
+def display_dendogram():
+    """Page where user can see dendrogram and dendrogram data."""
+    return render_template("dendrogram.html")
+
+
+### JSON ROUTES ###
 
 @app.route('/search_bldg.json')
 def search_bldgs():
@@ -165,112 +213,6 @@ def search_bldgs():
     else:
         # flash("Your search returned no results.")
         return redirect('/dashboard')
-
-
-# def refresh_dashboard():
-#     """After user creates and saves card, refresh dashboard."""
-
-#     cards = Card.query.filter_by(user_id=user_id).all()
-#     print cards
-
-#     card_html, empty_card_html = refresh_dashboard()
-
-#     bldg = Building.query.filter_by(bldg_id=bldg_id).one()
-
-#     flash("New card for {} has now been added to your collection!".format(bldg.building_name))
-#     return render_template("dashboard.html", current_user=current_user, cards=cards, card_html=card_html, empty_card_html=empty_card_html)
-
-
-@app.route('/buildings')
-def buildings_list():
-    """Return list of buildings."""
-
-    bldg_search = request.args.get('building')
-
-    bldgs = []
-
-    if bldg_search:
-        search_results = get_bldg_query(bldg_search)
-        if search_results:
-            for result in search_results:
-                if result is None:
-                    search_results.remove(None)
-                bldgs.append(result)
-            return render_template("buildings_list.html", bldgs=bldgs)
-
-        else:
-            flash("Sorry, your search {} returned no results.".format(bldg_search))
-            return redirect('/dashboard')
-
-    else:
-        bldgs = Building.query.all()
-
-    return render_template("buildings_list.html", bldgs=bldgs)
-
-
-@app.route('/cities')
-def cities_list():
-    """Return list of cities."""
-
-    cities = City.query.all()
-
-    return render_template("cities_list.html", cities=cities)
-
-
-@app.route('/register')
-def user_register():
-    """User register form."""
-
-    return render_template("register.html")
-
-
-@app.route('/register', methods=['POST'])
-def handle_register():
-    """Action for register form; user entered into database."""
-
-    current_username = request.form['username']
-    current_password = request.form['password']
-
-    if User.query.filter_by(username=current_username).first():  # Checks to see if user is registered.
-        flash("You're already registered. Please login.")
-        return redirect('/')
-    else:
-        add_user(current_username, current_password)
-        session['current_user'] = current_username
-        flash("Welcome. You are now a registered user, %s! Please make yourself at home." % (current_username))
-        return redirect('/dashboard')
-
-
-@app.route('/switch_user')
-def switch_user():
-    """User login form, when called to switch user."""
-
-    flash("Switch user.")
-    return redirect('/login')
-
-
-@app.route('/logout')
-def logout_user():
-    """User logout, automatically called if user switch."""
-
-    current_user = session['current_user']
-    flash("Thanks for playing, %s. You have been logged out." % current_user)
-    del session['current_user']
-    return redirect('/')
-
-
-@app.route('/map')
-def display_map():
-    """Page where user can see map and map data."""
-
-    return render_template("mapbox.html")
-
-
-@app.route('/dendrogram')
-def display_dendogram():
-    """Page where user can see dendrogram and dendrogram data."""
-
-    return render_template("dendrogram.html")
 
 
 @app.route('/dendrogram.json')
@@ -439,18 +381,6 @@ def show_bldg_details(bldg_id):
     return jsonify(bldg_feature)
 
 
-def query_photo(bldg_id):
-    """Queries MongoDB for photo by bldg_id. Returns bldg_photos cursor object."""
-
-    bldg = Building.query.get(bldg_id)
-    bldg_text = bldg.building_name.replace(' ', '')
-    bldg_text = bldg_text.lower()
-
-    bldg_photos = flickr.find({'$text': {'$search': bldg_text}})
-
-    return bldg_photos
-
-
 # JSON FOR FLICKR PHOTO OF BLDG -- USED FOR MAP!
 @app.route('/flickr_filter.json')
 def flickr_filter():
@@ -558,6 +488,47 @@ def save_card():
     return redirect('/dashboard')
 
 
+### HELPER FUNCTIONS ###
+
+def assemble_card_row(card_bldg):
+    """Counts existing cards created by user and groups by threes."""
+
+    card_collection = []
+    i = 0
+    while (i <= len(card_bldg)/3):
+        card_row = card_bldg[i*3:i+3]
+        card_collection.append(card_row)
+        i += 1
+
+    return card_collection
+
+
+# def refresh_dashboard():
+#     """After user creates and saves card, refresh dashboard."""
+
+#     cards = Card.query.filter_by(user_id=user_id).all()
+#     print cards
+
+#     card_html, empty_card_html = refresh_dashboard()
+
+#     bldg = Building.query.filter_by(bldg_id=bldg_id).one()
+
+#     flash("New card for {} has now been added to your collection!".format(bldg.building_name))
+#     return render_template("dashboard.html", current_user=current_user, cards=cards, card_html=card_html, empty_card_html=empty_card_html)
+
+
+def query_photo(bldg_id):
+    """Queries MongoDB for photo by bldg_id. Returns bldg_photos cursor object."""
+
+    bldg = Building.query.get(bldg_id)
+    bldg_text = bldg.building_name.replace(' ', '')
+    bldg_text = bldg_text.lower()
+
+    bldg_photos = flickr.find({'$text': {'$search': bldg_text}})
+
+    return bldg_photos
+
+
 # def filter_photos():
 #     """Perform an initial filter on photo results to extract quality photos in location."""
 
@@ -583,20 +554,6 @@ def save_card():
 #     return urls
 
 
-# @app.route('/photos')
-# def get_photos():
-
-#     bldgs = Building.query.all()
-
-#     photos_bldgs = []
-
-#     for bldg in bldgs:
-#         photos = create_photos_by_bldg(bldg.bldg_id)
-#         photos_bldgs.append(photos)
-
-#     return pprint.pprint(photos_bldgs)
-
-
 @app.route('/user_curates', methods=['GET'])
 def user_curates():
 
@@ -613,16 +570,6 @@ def user_curates():
 
     return render_template("curated_photos.html", query=queried_photos)
 
-
-# @app.route('/flickr_data.json')
-# def flickr_data():
-#     """Combines JSON file data, including image urls, into one file for all bldgs."""
-
-#     bldgs = Building.query.all()
-
-#     combine_flickr_data(bldgs)
-
-#     return None
 
 
 # HELPER FUNCTIONS #
@@ -658,13 +605,6 @@ def avg_bldg_height():
     avg = db.session.query(func.avg(Building.height_ft).label('average')).scalar()
 
     return avg
-
-
-def query_bldgs():
-
-    bldgs = db.session.query(Building).options(db.joinedload('city')).all()
-
-    return bldgs
 
 
 # @app.route('/sort_field')
@@ -703,25 +643,22 @@ def get_randsample(high, n):
     return my_randsample
 
 
-if __name__ == "__main__":
-    import doctest
-
-    result = doctest.testmod()
-    if not result.failed:
-        print "ALL TESTS PASSED. GOOD WORK!"
-
-
 ####################################################################
 
 if __name__ == "__main__":
-    # We have to set debug=True here, at the point we invoke the DebugToolbarExtension.
     # app.debug = True
     # app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+    # from flask_debugtoolbar import DebugToolbarExtension
     # DebugToolbarExtension(app)
+
+    # import doctest
+    # result = doctest.testmod()
+    # if not result.failed:
+    #     print "ALL TESTS PASSED. GOOD WORK!"
 
     connect_to_db(app, os.environ.get("DATABASE_URL"))
 
-    # Create the tables we need from our models (if they don't already exist).
+    # Create the tables we need from our models.
     db.create_all()
 
     DEBUG = "NO_DEBUG" not in os.environ
