@@ -13,7 +13,7 @@ import json
 from model import db
 from model import Building
 
-import mongodb
+from mongodb import db
 
 
 FLICKR_KEY = os.environ['FLICKR_KEY']
@@ -21,7 +21,7 @@ FLICKR_SECRET = os.environ['FLICKR_SECRET']
 
 
 # Drop existing flickr collection.
-mongodb.db.drop_collection('flickr')
+db.drop_collection('flickr')
 # Create or recreate flickr collection.
 flickr = db['flickr']
 
