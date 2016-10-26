@@ -8,19 +8,19 @@ MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb://localhost:27017')
 
 # Connection to Mongo DB
 # MongoClient('localhost', port=27017)
-if __name__ == '__main__':
+# if __name__ == '__main__':
 
-    try:
-        client = pymongo.MongoClient(MONGODB_URI,
-                                     connectTimeoutMS=30000,
-                                     socketTimeoutMS=None,
-                                     socketKeepAlive=True)
-        print "Connected to MongoDB!"
-    except pymongo.errors.ConnectionFailure:
-        print "Could not connect to MongoDB."
+try:
+    client = pymongo.MongoClient(MONGODB_URI,
+                                 connectTimeoutMS=30000,
+                                 socketTimeoutMS=None,
+                                 socketKeepAlive=True)
+    print "Connected to MongoDB!"
+except pymongo.errors.ConnectionFailure:
+    print "Could not connect to MongoDB."
 
-    db = client.get_default_database()
-    print db.collection_names()
+db = client.get_default_database()
+print db.collection_names()
 
 
 #####################################################
