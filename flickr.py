@@ -9,7 +9,7 @@ import os
 import requests
 import json
 
-from server import query_bldgs
+import server
 
 # from model import db, connect_to_db
 # from model import Building
@@ -30,7 +30,7 @@ flickr = mongo['flickr']
 def flickr_search():
     """Makes request to FLICKR API, given bldg tags. Saves file for each bldg, each page 500 results max."""
 
-    bldgs = query_bldgs()
+    bldgs = server.query_bldgs()
 
     flickr_per_page_limit = 500
 
