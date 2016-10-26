@@ -11,8 +11,8 @@ import json
 
 import server
 
-# from model import db, connect_to_db
-# from model import Building
+from model import db, connect_to_db
+from model import Building
 
 from mongodb import db as mongo
 
