@@ -12,7 +12,7 @@ import json
 from model import db
 from model import Building
 
-from mongodb import flickr
+import mongodb
 
 
 FLICKR_KEY = os.environ['FLICKR_KEY']
@@ -20,7 +20,7 @@ FLICKR_SECRET = os.environ['FLICKR_SECRET']
 
 
 # Drop existing flickr database to re-populate.
-flickr.drop()
+mongodb.flickr.drop()
 
 
 def flickr_search(bldgs):
@@ -80,5 +80,5 @@ def load_jsons(data):
 
     bldg_photos = data['photos']['photo']
     for bldg_photo in bldg_photos:
-        flickr.insert(bldg_photo)
+        mongodb.flickr.insert(bldg_photo)
         print "inserted"
