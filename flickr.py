@@ -9,7 +9,9 @@ import os
 import requests
 import json
 
-from model import db
+from server import app
+
+from model import db, connect_to_db
 from model import Building
 
 from mongodb import db as mongo
@@ -18,6 +20,8 @@ from mongodb import db as mongo
 FLICKR_KEY = os.environ['FLICKR_KEY']
 FLICKR_SECRET = os.environ['FLICKR_SECRET']
 
+# Connect to buildings database for bldgs query.
+connect_to_db(app, os.environ.get("DATABASE_URL"))
 
 # Drop existing flickr collection.
 mongo.drop_collection('flickr')
