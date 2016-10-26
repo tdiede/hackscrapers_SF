@@ -1,10 +1,6 @@
 import os
-import sys
 
 import pymongo
-
-import json
-import pprint
 
 
 MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb://localhost:27017')
@@ -27,60 +23,7 @@ if __name__ == '__main__':
     print db.collection_names()
 
 
-def total_photos():
-
-    total_photos = flickr.find({}).count()
-
-    return total_photos
-
-
-# cursor = flickr_responses.find({})
-# for each in cursor:
-#     pprint.pprint(each)
-
-# Create compound index for text fields.
-# flickr.create_index([("tags", 'text'), ("description.content", 'text'), ("title", 'text')])
-
-
-# def count_tags():
-
-#     flickr.aggregate([ {'$group': {'_id': '$tags', 'count': {'$sum': 1}}} ])
-#     flickr.aggregate([ {'$group': {'_id': '$text', 'count': {'$sum': 1}}}, {'$sort': { 'count': 1}} ])
-#     flickr.aggregate([ {'$match': { 'tags': 'building' } }, {'$group': {'_id': '$tags', 'count': {'$sum': 1}}}, {'$sort': { 'count': 1}} ])
-
-
-######################################
-
-# def get_random_image(results_count):
-#     """Get one random image."""
-
-#     flickr_per_page_limit = 500
-
-#     if results_count > flickr_per_page_limit:
-#         i = get_randint(0, flickr_per_page_limit-1)
-#     else:
-#         i = get_randint(0, results_count-1)
-
-#     return i
-
-
-# def get_random_images(results_count):
-#     """Get a random sample of n images."""
-
-#     flickr_per_page_limit = 500
-#     n = 2  # Must be less than 500, or flickr_per_page_limit.
-
-#     if results_count > flickr_per_page_limit:
-#         idx = get_randsample(flickr_per_page_limit, n)
-#     elif results_count > n:
-#         idx = get_randsample(results_count, n)
-#     else:
-#         idx = get_randsample(results_count, results_count)
-
-#     return idx
-
-
-##################################################################
+#####################################################
 
 # # If I were to use Flask-MongoAlchemy...
 # def connect_to_mongo(app, db_uri='library'):
