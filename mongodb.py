@@ -18,12 +18,12 @@ except pymongo.errors.ConnectionFailure, e:
     print "Could not connect to MongoDB."
 
 mydb = client.mydb
-flickr_db = mydb.flickr
+flickr = mydb.flickr
 
 
 def total_photos():
 
-    total_photos = flickr_db.find({}).count()
+    total_photos = flickr.find({}).count()
 
     return total_photos
 
