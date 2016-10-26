@@ -12,7 +12,7 @@ MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb://localhost:27017')
 
 # Connection to Mongo DB
 # MongoClient('localhost', port=27017)
-def main(args):
+if __name__ == '__main__':
 
     try:
         client = pymongo.MongoClient(MONGODB_URI,
@@ -25,16 +25,6 @@ def main(args):
 
     db = client.get_default_database()
     print db.collection_names()
-
-    flickr = db['flickr']
-
-    db.drop_collection('flickr')
-
-    client.close()
-
-
-if __name__ == '__main__':
-    main(sys.argv[1:])
 
 
 def total_photos():
