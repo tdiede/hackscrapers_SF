@@ -663,6 +663,13 @@ def avg_bldg_height():
     return avg
 
 
+def query_bldgs():
+
+    bldgs = db.session.query(Building).options(db.joinedload('city')).all()
+
+    return bldgs
+
+
 # @app.route('/sort_field')
 # def sort_field(field_id):
 #     """Return refreshed list of buildings after sorting field."""

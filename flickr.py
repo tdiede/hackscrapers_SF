@@ -9,10 +9,10 @@ import os
 import requests
 import json
 
-from server import app
+from server import query_bldgs
 
-from model import db, connect_to_db
-from model import Building
+# from model import db, connect_to_db
+# from model import Building
 
 from mongodb import db as mongo
 
@@ -20,8 +20,6 @@ from mongodb import db as mongo
 FLICKR_KEY = os.environ['FLICKR_KEY']
 FLICKR_SECRET = os.environ['FLICKR_SECRET']
 
-# Connect to buildings database for bldgs query.
-connect_to_db(app, os.environ.get("DATABASE_URL"))
 
 # Drop existing flickr collection.
 mongo.drop_collection('flickr')
@@ -32,7 +30,7 @@ flickr = mongo['flickr']
 def flickr_search():
     """Makes request to FLICKR API, given bldg tags. Saves file for each bldg, each page 500 results max."""
 
-    bldgs = db.session.query(Building).options(db.joinedload('city')).all()
+    bldgs = query_bldgs()
 
     flickr_per_page_limit = 500
 
@@ -67,7 +65,7 @@ def flickr_search():
             # JSON dictionary.
             data = json.loads(content)
 
-            insert(data)
+            insert_photos(data)
 
             page_count = int(data['photos']['pages'])
 
@@ -81,7 +79,7 @@ def flickr_search():
 
 
 # 16MB is the limit for BSON document size.
-def insert(data):
+def insert_photos(data):
     """Inserts Flickr result (JSON) into MongoDB collection: each photo metadata as a document."""
 
     bldg_photos = data['photos']['photo']
