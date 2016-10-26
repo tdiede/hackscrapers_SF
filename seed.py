@@ -8,12 +8,10 @@ from model import (Building, City, Tenant)  # my model file for buildings
 from google_places import (get_google_places, extract_geo, extract_names)  # my google places api file
 
 import sys
-
 reload(sys)  # Reload does the trick!
 sys.setdefaultencoding('UTF8')
 
 import os
-
 # Whenever seeding, drop existing database and create a new database.
 # os.system("dropdb buildings")
 # print "dropdb buildings"

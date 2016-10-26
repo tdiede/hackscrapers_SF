@@ -4,19 +4,21 @@
 
 # CURATION TOOL. MACHINE LEARNING.
 
-import os
+from server import app
+
+from model import connect_to_db, db
+from model import (Building)  # my model file for buildings
+
+from mongodb import db as mongo
 
 import requests
 import json
 
-import server
+import sys
+reload(sys)  # Reload does the trick!
+sys.setdefaultencoding('UTF8')
 
-from model import db, connect_to_db
-from model import Building
-
-from mongodb import db as mongo
-
-
+import os
 FLICKR_KEY = os.environ['FLICKR_KEY']
 FLICKR_SECRET = os.environ['FLICKR_SECRET']
 
@@ -27,10 +29,15 @@ mongo.drop_collection('flickr')
 flickr = mongo['flickr']
 
 
+if __name__ == "__main__":
+
+    connect_to_db(app, os.environ.get("DATABASE_URL"))
+
+
 def flickr_search():
     """Makes request to FLICKR API, given bldg tags. Saves file for each bldg, each page 500 results max."""
 
-    bldgs = server.query_bldgs()
+    bldgs = db.session.query(Building).options(db.joinedload('city')).all()
 
     flickr_per_page_limit = 500
 
