@@ -17,7 +17,9 @@
     {{ bldg.lat }} <br>
     {{ bldg.lng }} <br>
     {{ photos.url_s }} <br>
-<img src='{{ photos.url_s }}'></img>
+    {% for photo in photos %}
+<img src='{{ photo.url_s }}'></img>
+{% endfor %}
 </p>
 
 

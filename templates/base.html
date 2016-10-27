@@ -14,7 +14,7 @@
     <!-- my favicon -->
     <link rel="icon" 
       type="image/png" 
-      href="/static/img/x.png">
+      href="/static/img/code-break.png">
 
     {% block title %} put your title here {% endblock %}
 
@@ -25,31 +25,38 @@
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container-fluid">
 
-    <div class="navbar-header">
-      <a class="navbar-brand" href='/dashboard'>DASHBOARD</a>
-    </div>
-
     <ul class="nav navbar-nav">
       <li><a href='/buildings'>
-            <span><span class='glyphicon glyphicon-th-list'></span> &nbsp TABLE</span>
+            <span>TABLE</span>
           </a>
       </li>
       <li><a href='/map'>
-            <span><span class='glyphicon glyphicon-map-marker'></span> &nbsp MAP</span>
+            <span>MAP</span>
           </a>
       </li>
     </ul>
 
+    {% if current_user %}
+
     <ul class="nav navbar-nav navbar-right">
       <li><a href='/dashboard'>
-            <span><span class='glyphicon glyphicon-th'></span> &nbsp CARDS</span>
+            <span>CARDS</span>
           </a>
       </li>
-      <li><a href='/logout'>
-            <span><span class='glyphicon glyphicon-user'></span> &nbsp LOGOUT<!-- {% if current_user is defined %} {{ current_user}} {% endif %} --></span>
+
+      <li><form action='/logout' method='POST'>
+            <input type='submit' value='LOGOUT'></input>
+          </form>
+      </li>
+
+      <li><a>
+            <span>{{ current_user }}</span>
           </a>
       </li>
+
     </ul>
+
+    {% endif %}
 
   </div>
 </nav>

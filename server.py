@@ -84,21 +84,13 @@ def handle_register():
         return redirect('/dashboard')
 
 
-@app.route('/switch_user', methods=['POST'])
-def switch_user():
-    """User login form, when called to switch user."""
-
-    flash("Switch user.")
-    return redirect('/login')
-
-
 @app.route('/logout', methods=['POST'])
-def logout_user():
-    """User logout, automatically called if user switch."""
+def process_logout():
+    """Identifies user session to be deleted. Deletes user session. Redirects."""
 
     current_user = session['current_user']
-    flash("Thanks for playing, %s. You have been logged out." % current_user)
     del session['current_user']
+    flash("Thanks for playing, %s. You are now logged out." % current_user)
     return redirect('/')
 
 
@@ -158,8 +150,14 @@ def show_bldg_details(bldg_id):
 
     bldg = Building.query.get(bldg_id)
 
-    photos = json.loads(bldg_flickr(bldg_id))
+    photo_metadata = bldg_flickr(bldg_id)
 
+    photos = []
+    for result in photo_metadata.response:
+        photo = json.loads(result)
+        photos.append(photo)
+
+    # raise Exception
     return render_template("building_details.html", bldg=bldg, photos=photos)
 
 
@@ -171,32 +169,37 @@ def display_map():
 
 ### JSON ROUTES ###
 
-# JSON ROUTE FOR GENERIC DISPLAY OF BUILDING
-@app.route('/bldg_feature.json/<int:bldg_id>')
-def bldg_feature(bldg_id):
-    """Returns JSON to represent SINGLE BLDG RECORD."""
+# # JSON ROUTE FOR GENERIC DISPLAY OF BUILDING
+# @app.route('/bldg_feature.json/<int:bldg_id>')
+# def bldg_feature(bldg_id):
+#     """Returns JSON to represent SINGLE BLDG RECORD."""
 
-    bldg = Building.query.get(bldg_id)
+#     bldg = Building.query.get(bldg_id)
 
-    photo_metadata = json.loads(bldg_flickr(bldg_id))
+#     photo_metadata = bldg_flickr(bldg_id)
 
-    bldg_feature = {"place_id": bldg.place_id,
-                    "rank": bldg.rank,
-                    "status": bldg.status,
-                    "building_name": bldg.building_name,
-                    "lat": bldg.lat,
-                    "lng": bldg.lng,
-                    "city": bldg.city_id,
-                    "height_m": bldg.height_m,
-                    "height_ft": bldg.height_ft,
-                    "floors": bldg.floors,
-                    "completed_yr": bldg.completed_yr,
-                    "material": bldg.material,
-                    "use": bldg.use,
-                    "photo_metadata": photo_metadata
-                    }
+#     photos = []
+#     for result in photo_metadata.response:
+#         photo = json.loads(result)
+#         photos.append(photo)
 
-    return json.dumps(bldg_feature)
+#     bldg_feature = {"place_id": bldg.place_id,
+#                     "rank": bldg.rank,
+#                     "status": bldg.status,
+#                     "building_name": bldg.building_name,
+#                     "lat": bldg.lat,
+#                     "lng": bldg.lng,
+#                     "city": bldg.city_id,
+#                     "height_m": bldg.height_m,
+#                     "height_ft": bldg.height_ft,
+#                     "floors": bldg.floors,
+#                     "completed_yr": bldg.completed_yr,
+#                     "material": bldg.material,
+#                     "use": bldg.use,
+#                     "photos": photos
+#                     }
+
+#     return jsonify(bldg_feature)
 
 
 # JSON ROUTE FOR FLICKR PHOTO URL
@@ -219,15 +222,17 @@ def bldg_flickr(bldg_id):
 
         photo_metadata = {"url_s": url_s,
                           "ownername": ownername,
-                          "title": title,
-                          "description": description,
+                          "photo_title": title,
+                          "photo_description": description
                           }
 
     else:
-        photo_metadata = {bldg_id: {"result": 'This building does not have any tagged Flickr photos.'}}
-        photo = None
+        photo_metadata = {"not_found": True,
+                          "message": 'This building does not have any tagged Flickr photos.',
+                          "suggestion": 'No photo found. Maybe you should go snap it!'
+                          }
 
-    return json.dumps(photo_metadata)
+    return jsonify(photo_metadata)
 
 
 # GEOJSON ROUTE FOR MAP

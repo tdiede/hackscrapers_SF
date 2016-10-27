@@ -253,30 +253,29 @@ $('#update-radius').on('click', updateRadius);
 
 // Treating bldg markers.
 // Displaying more information on click.
-
 var currentURL = '';
 
 function showPhoto (result) {
     console.log(result);
-    if (result.properties.photo === null) {
+    if (result.not_found === true) {
         $('#bldg-img').attr('src', '');
-        $('#photo-suggest').html("No photo found. Maybe you should go snap it!");
+        $('#photo-suggest').html(result.message);
         $('.photo-properties').hide();
     } else {
-        $('#bldg-img').attr('src', result.properties.photo.url_s);
-        currentURL = result.properties.photo.url_s;
+        $('#bldg-img').attr('src', result.url_s);
+        currentURL = result.url_s;
         $('#photo-suggest').html('');
         $('.photo-properties').show();
-        $('#photo-title').html(result.properties.photo.photo_title);
-        $('#photo-ownername').html(result.properties.photo.ownername);
-        $('#photo-descript').html(result.properties.photo.descript);
+        $('#photo-title').html(result.photo_title);
+        $('#photo-ownername').html(result.ownername);
+        $('#photo-descript').html(result.photo_description);
     }
 }
 
 function getPhoto (marker) {
-    var bldgId = marker.properties.bldg_id;
-    var url = '/flickr_filter.json?bldg_id=' + bldgId;
-    console.log(bldgId);
+    var bldgID = marker.properties.bldg_id;
+    var url = '/bldg_flickr.json/'+bldgID;
+    console.log(bldgID);
     console.log(url);
     $.get(url, showPhoto);
 }
