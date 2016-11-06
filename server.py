@@ -18,6 +18,8 @@ flickr.create_index([("tags", 'text'), ("description.content", 'text'), ("title"
 from sqlalchemy.sql import func
 from random import randint, sample
 
+import bcrypt
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY", "abcdef")
@@ -47,9 +49,13 @@ def handle_login():
     current_password = request.form['password']
 
     user = User.query.filter_by(username=current_username).first()
+    hashed = user.password
 
     if user:  # Checks to see if user is registered.
-        if current_password == user.password:  # Checks to see if user password is correct.
+        # if current_password == user.password:  # Checks to see if user password is correct.
+
+        # Check that an unhashed password matches one that has previously been hashed.
+        if bcrypt.checkpw(current_password, hashed):
             session['current_user'] = current_username
             flash("Logged in as %s" % (current_username))
             return redirect('/dashboard')
@@ -74,11 +80,14 @@ def handle_register():
     current_username = request.form['username']
     current_password = request.form['password']
 
+    # Hash a password for the first time, with a randomly-generated salt.
+    hashed = bcrypt.hashpw(current_password, bcrypt.gensalt())
+
     if User.query.filter_by(username=current_username).first():  # Checks to see if user is registered.
         flash("You're already registered. Please login.")
         return redirect('/')
     else:
-        add_user(current_username, current_password)
+        add_user(current_username, hashed)
         session['current_user'] = current_username
         flash("Welcome. You are now a registered user, %s! Please make yourself at home." % (current_username))
         return redirect('/dashboard')
@@ -170,36 +179,36 @@ def display_map():
 ### JSON ROUTES ###
 
 # # JSON ROUTE FOR GENERIC DISPLAY OF BUILDING
-# @app.route('/bldg_feature.json/<int:bldg_id>')
-# def bldg_feature(bldg_id):
-#     """Returns JSON to represent SINGLE BLDG RECORD."""
+@app.route('/bldg_feature.json/<int:bldg_id>')
+def bldg_feature(bldg_id):
+    """Returns JSON to represent SINGLE BLDG RECORD."""
 
-#     bldg = Building.query.get(bldg_id)
+    bldg = Building.query.get(bldg_id)
 
-#     photo_metadata = bldg_flickr(bldg_id)
+    photo_metadata = bldg_flickr(bldg_id)
 
-#     photos = []
-#     for result in photo_metadata.response:
-#         photo = json.loads(result)
-#         photos.append(photo)
+    photos = []
+    for result in photo_metadata.response:
+        photo = json.loads(result)
+        photos.append(photo)
 
-#     bldg_feature = {"place_id": bldg.place_id,
-#                     "rank": bldg.rank,
-#                     "status": bldg.status,
-#                     "building_name": bldg.building_name,
-#                     "lat": bldg.lat,
-#                     "lng": bldg.lng,
-#                     "city": bldg.city_id,
-#                     "height_m": bldg.height_m,
-#                     "height_ft": bldg.height_ft,
-#                     "floors": bldg.floors,
-#                     "completed_yr": bldg.completed_yr,
-#                     "material": bldg.material,
-#                     "use": bldg.use,
-#                     "photos": photos
-#                     }
+    bldg_feature = {"place_id": bldg.place_id,
+                    "rank": bldg.rank,
+                    "status": bldg.status,
+                    "building_name": bldg.building_name,
+                    "lat": bldg.lat,
+                    "lng": bldg.lng,
+                    "city": bldg.city_id,
+                    "height_m": bldg.height_m,
+                    "height_ft": bldg.height_ft,
+                    "floors": bldg.floors,
+                    "completed_yr": bldg.completed_yr,
+                    "material": bldg.material,
+                    "use": bldg.use,
+                    "photos": photos
+                    }
 
-#     return jsonify(bldg_feature)
+    return jsonify(bldg_feature)
 
 
 # JSON ROUTE FOR FLICKR PHOTO URL
@@ -332,21 +341,13 @@ def bldg_barchart(bldg_id):
     return jsonify(bldg_barchart)
 
 
-@app.route('/create_card.json')
-def create_card():
-    """User selects photo and comment to put on card, previews card."""
+@app.route('/save_card.json')
+def save_card():
+    """Saves card to user profile in the cards database."""
 
-    bldg_id = request.args.get('bldg_id')
-
-    bldg_feature = show_bldg_details(bldg_id)
-    r = bldg_feature.response
-    f = r.pop()
-    feature = json.loads(f)
-
-    bldg_flickr = flickr_filter()
-    p = bldg_flickr.response
-    h = p.pop()
-    flickr = json.loads(h)
+    current_user = session['current_user']
+    user = User.query.filter_by(username=current_user).one()
+    user_id = user.user_id
 
     comments = request.form.get('comments')
 
@@ -354,17 +355,6 @@ def create_card():
                  'photo': flickr,
                  'comments': comments}
 
-    return jsonify(bldg_card)
-
-
-@app.route('/save_card.json')
-def save_card():
-    """Saves new card to user profile and database."""
-
-    current_user = session['current_user']
-
-    user = User.query.filter_by(username=current_user).one()
-    user_id = user.user_id
     bldg_id = request.args.get('bldg_id')
 
     card_img = request.args.get('url')

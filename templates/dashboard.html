@@ -9,11 +9,7 @@
 
 <div class='container-fluid side-padding dashboard'>
 
-<br>
-
-<h3>CARD COLLECTION</h3><!-- <h3>COLLECT 'EM ALL!</h3> -->
-
-<br>
+<!-- <h3>CARD COLLECTION</h3> --><!-- <h3>COLLECT 'EM ALL!</h3> -->
 
 {% if collection_html is defined %}
 {% for row_html in collection_html %}
@@ -165,7 +161,9 @@
 
 </div>
 
-    <script src='http://code.jquery.com/jquery.js'></script>
+    <script src="http://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"></script>
     <script src='../static/js/dashboard.js'></script>
 
 {% endblock %}

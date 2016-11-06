@@ -1,40 +1,40 @@
 "use strict";
 
 
-$('.carousel').hide();
+// $('#current').hide();
 
-function createBuildingDetails(result) {
-    $('.carousel').slideToggle(500);
+function showBuildingDetails(result) {
+    // $('#current').slideToggle(500);
     console.log(result);
-    $('#bldg-info').html(result.properties.building_name + " " + result.properties.material);
-    $('#bldg-img').attr('src', result.photos.url_m);
-    
+    $('#bldg-details').html(result.building_name + " " + result.material);
+
 }
 
-function showBuildingDetails(e) {
-    var bldg_id = $(this).data('bldg');
-    $.get('/bldg/'+bldg_id, createBuildingDetails);
+
+function showBuildingPhoto(result) {
+    console.log(result);
+    $('#bldg-img').attr('src', result.url_s);    
 }
 
-$('.bldg-name').on('click', showBuildingDetails);
+
+
+
+function getBuildingDetails(e) {
+    var bldgID = $(this).data('bldg');
+    var url = '/bldg_feature.json/'+bldgID;
+    var photo = '/bldg_flickr.json/'+bldgID;
+    console.log(bldgID);
+    console.log(url);
+    $.get(url, showBuildingDetails);
+    $.get(photo, showBuildingPhoto);
+}
+
+$('.bldg-row').on('click', getBuildingDetails);
+
+
 
 function hideInfo(feature) {
-    $('.carousel').slideUp(1000);
+    $('#current').slideUp(1000);
 }
 
 $('#details-close').on('click', hideInfo);
-
-
-
-// $('thead')
-//   .awesomeCursor('building', {
-//     color: 'cyan',
-//     size: 32,
-//   });
-
-// function sortField(evt) {
-//     var field_id = $('#sort').data('field');
-//     $.post('/sort_field' + '/' + field_id, );
-// }
-
-// $('#sort').on('click', sortField)
