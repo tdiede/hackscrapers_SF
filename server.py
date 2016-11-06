@@ -489,10 +489,10 @@ def assemble_card_row(card_bldg):
 ####################################################################
 
 if __name__ == "__main__":
-    # app.debug = True
-    # app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-    # from flask_debugtoolbar import DebugToolbarExtension
-    # DebugToolbarExtension(app)
+    app.debug = True
+    app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+    from flask_debugtoolbar import DebugToolbarExtension
+    DebugToolbarExtension(app)
 
     # import doctest
     # result = doctest.testmod()
@@ -504,7 +504,8 @@ if __name__ == "__main__":
     # Create the tables we need from our models.
     db.create_all()
 
-    DEBUG = "NO_DEBUG" not in os.environ
+    # DEBUG = "NO_DEBUG" not in os.environ
     PORT = int(os.environ.get("PORT", 5000))
 
-    app.run(host="0.0.0.0", port=PORT, debug=DEBUG)
+    # debug=DEBUG
+    app.run(host="0.0.0.0", port=PORT)
