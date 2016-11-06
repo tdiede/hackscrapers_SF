@@ -489,8 +489,7 @@ def assemble_card_row(card_bldg):
 ####################################################################
 
 if __name__ == "__main__":
-    app.debug = True
-    app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+
     from flask_debugtoolbar import DebugToolbarExtension
     DebugToolbarExtension(app)
 
@@ -500,12 +499,9 @@ if __name__ == "__main__":
     #     print "ALL TESTS PASSED. GOOD WORK!"
 
     connect_to_db(app, os.environ.get("DATABASE_URL"))
-
-    # Create the tables we need from our models.
     db.create_all()
 
-    # DEBUG = "NO_DEBUG" not in os.environ
+    DEBUG = "NO_DEBUG" not in os.environ
     PORT = int(os.environ.get("PORT", 5000))
 
-    # debug=DEBUG
-    app.run(host="0.0.0.0", port=PORT)
+    app.run(host="0.0.0.0", port=PORT, debug=True)
