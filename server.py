@@ -24,6 +24,9 @@ import bcrypt
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY", "abcdef")
 
+from flask_oauthlib.client import OAuth
+oauth = OAuth(app)
+
 # Normally, if you use an undefined variable in Jinja2, it fails silently.
 # This is horrible. Fix this so that, instead, it raises an error.
 # from jinja2 import StrictUndefined
@@ -52,7 +55,8 @@ def handle_login():
     hashed = user.password
 
     if user:  # Checks to see if user is registered.
-        # if current_password == user.password:  # Checks to see if user password is correct.
+        # # Checks to see if user password is correct (not using bcrypt hashing).
+        # if current_password == user.password:
 
         # Check that an unhashed password matches one that has previously been hashed.
         if bcrypt.checkpw(current_password, hashed):
@@ -80,13 +84,12 @@ def handle_register():
     current_username = request.form['username']
     current_password = request.form['password']
 
-    # Hash a password for the first time, with a randomly-generated salt.
-    hashed = bcrypt.hashpw(current_password, bcrypt.gensalt())
-
-    if User.query.filter_by(username=current_username).first():  # Checks to see if user is registered.
+    if User.query.filter_by(username=current_username).first():  # Checks to see if user is already registered.
         flash("You're already registered. Please login.")
         return redirect('/')
     else:
+        # Hash a password for the first time, with a randomly-generated salt.
+        hashed = bcrypt.hashpw(current_password, bcrypt.gensalt())
         add_user(current_username, hashed)
         session['current_user'] = current_username
         flash("Welcome. You are now a registered user, %s! Please make yourself at home." % (current_username))
@@ -101,48 +104,6 @@ def process_logout():
     del session['current_user']
     flash("Thanks for playing, %s. You are now logged out." % current_user)
     return redirect('/')
-
-
-@app.route('/dashboard')
-def dashboard():
-    """Return user dashboard and profile."""
-
-    if not session:
-        return redirect('/')
-
-    else:
-        current_user = session['current_user']
-        user = User.query.filter_by(username=current_user).one()
-        cards = Card.query.filter_by(user_id=user.user_id).all()
-
-        card_bldg = []
-        for card in cards:
-            bldg = Building.query.filter_by(bldg_id=card.bldg_id).one()
-            match = card, bldg
-            card_bldg.append(match)
-
-        card_collection = assemble_card_row(card_bldg)
-
-        # empty_card_html = Markup('<h3>Create a new card.</h3>')
-
-        collection_html = []
-        for card_row in card_collection:
-            row_html = []
-            for card in card_row:
-                card_html = []
-                card_html.append(card[1].building_name)
-                card_html.append(card[0].card_img)
-                card_html.append(str(card[0].bldg_id))
-                row_html.append(card_html)
-            # if len(row_html) < 3:
-            #     row_html.append(empty_card_html)
-            collection_html.append(row_html)
-        # if len(collection_html) % 3 == 0:
-        #     row_html = []
-        #     row_html.append(empty_card_html)
-        #     collection_html.append(row_html)
-
-        return render_template("dashboard.html", current_user=current_user, collection_html=collection_html)
 
 
 @app.route('/buildings')
@@ -341,36 +302,6 @@ def bldg_barchart(bldg_id):
     return jsonify(bldg_barchart)
 
 
-@app.route('/save_card.json')
-def save_card():
-    """Saves card to user profile in the cards database."""
-
-    current_user = session['current_user']
-    user = User.query.filter_by(username=current_user).one()
-    user_id = user.user_id
-
-    comments = request.form.get('comments')
-
-    bldg_card = {'building': feature,
-                 'photo': flickr,
-                 'comments': comments}
-
-    bldg_id = request.args.get('bldg_id')
-
-    card_img = request.args.get('url')
-    comments = "I love this!"
-
-    duplicate_card = Card.query.filter_by(user_id=user_id).filter_by(bldg_id=bldg_id).first()
-
-    if duplicate_card:
-        flash("You already have that card %d!" % duplicate_card.card_id)
-
-    else:
-        add_card(user_id, bldg_id, card_img, comments)
-
-    return redirect('/dashboard')
-
-
 # HELPER FUNCTIONS ################
 """All general helper functions."""
 
@@ -437,55 +368,6 @@ def add_card(user_id, bldg_id, card_img, comments):
     db.session.commit()
 
 
-#################################
-
-def assemble_card_row(card_bldg):
-    """Counts existing cards created by user and groups by threes."""
-
-    card_collection = []
-    i = 0
-    while (i <= len(card_bldg)/3):
-        card_row = card_bldg[i*3:i+3]
-        card_collection.append(card_row)
-        i += 1
-
-    return card_collection
-
-
-# def refresh_dashboard():
-#     """After user creates and saves card, refresh dashboard."""
-
-#     cards = Card.query.filter_by(user_id=user_id).all()
-#     print cards
-
-#     card_html, empty_card_html = refresh_dashboard()
-
-#     bldg = Building.query.filter_by(bldg_id=bldg_id).one()
-
-#     flash("New card for {} has now been added to your collection!".format(bldg.building_name))
-#     return render_template("dashboard.html", current_user=current_user, cards=cards, card_html=card_html, empty_card_html=empty_card_html)
-
-
-# @app.route('/sort_field')
-# def sort_field(field_id):
-#     """Return refreshed list of buildings after sorting field."""
-
-#     sort_field(field_id)
-
-#     return render_template("buildings_list.html", bldgs=bldgs)
-
-
-# def sort_field():
-#     """Orders query results in descending order."""
-
-#     bldgs = db.session.query(Building).all()
-
-#     bldgs_desc = bldgs.order_by(desc(Building.completed_yr))
-#     # bldgs_desc = bldgs.order_by(desc(Building.floors))
-
-#     return bldgs_desc
-
-
 ####################################################################
 
 if __name__ == "__main__":
@@ -504,4 +386,4 @@ if __name__ == "__main__":
     DEBUG = "NO_DEBUG" not in os.environ
     PORT = int(os.environ.get("PORT", 5000))
 
-    app.run(host="0.0.0.0", port=PORT, debug=True)
+    app.run(host="0.0.0.0", port=PORT, debug=DEBUG)
