@@ -41,28 +41,22 @@ def oauth():
     session['current_oauth_token'] = oauth_token
     print oauth_token
 
-    oauth_url = oauth_flickr.follow_link_to_authorize()
+    oauth_url = oauth_flickr.follow_link()
     print oauth_url
 
     return redirect(oauth_url)
 
 
-# @app.route("/callback")
-# def callback():
+@app.route("/callback")
+def callback():
 
-# #     http://www.example.com/
-# # ?oauth_token=72157626737672178-022bbd2f4c2f3432
-# # &oauth_verifier=5d1b96a26b494074
-#     print "hi"
+    print "hi"
 
-#     # print session['current_oauth_token']
-#     dd = oauth_flickr.fetch_access_token()
-#     print dd
-#     # print access_token
+    # print session['current_oauth_token']
+    dd = oauth_flickr.fetch_access_token()
+    print dd
 
-#     # print request
-
-#     # return request
+    # return request
 
 
 @app.route("/error")
