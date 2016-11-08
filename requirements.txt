@@ -6,7 +6,6 @@ enum34==1.1.6
 Flask==0.10.1
 Flask-DebugToolbar==0.10.0
 Flask-SQLAlchemy==2.0
-flickrapi==2.1.2
 heroku==0.1.4
 httplib2==0.9.2
 idna==2.1
@@ -14,7 +13,7 @@ ipaddress==1.0.17
 itsdangerous==0.24
 Jinja2==2.8
 MarkupSafe==0.23
-oauth2==1.9.0.post1
+oauth2===unknown
 oauthlib==2.0.0
 pkg-resources==0.0.0
 psycopg2==2.6.2
@@ -24,7 +23,6 @@ pymongo==3.3.0
 pyOpenSSL==16.0.0
 python-dateutil==1.5
 python-google-places==1.2.0
-python-oauth2==1.0.0
 queuelib==1.4.2
 requests==2.11.0
 requests-oauthlib==0.7.0
