@@ -24,8 +24,6 @@ import bcrypt
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY", "abcdef")
 
-from flask_oauthlib.client import OAuth
-oauth = OAuth(app)
 
 # Normally, if you use an undefined variable in Jinja2, it fails silently.
 # This is horrible. Fix this so that, instead, it raises an error.
