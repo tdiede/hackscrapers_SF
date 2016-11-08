@@ -20,6 +20,8 @@ from random import randint, sample
 
 import bcrypt
 
+import oauth_flickr
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY", "abcdef")
@@ -31,6 +33,38 @@ app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY", "abcdef")
 # app.jinja_env.undefined = StrictUndefined
 
 
+@app.route("/oauth")
+def oauth():
+
+    request_token = oauth_flickr.fetch_request_token()
+    oauth_token = request_token['oauth_token']
+    session['current_oauth_token'] = oauth_token
+    print oauth_token
+
+    oauth_url = oauth_flickr.follow_link_to_authorize()
+    print oauth_url
+
+    return redirect(oauth_url)
+
+
+# @app.route("/callback")
+# def callback():
+
+# #     http://www.example.com/
+# # ?oauth_token=72157626737672178-022bbd2f4c2f3432
+# # &oauth_verifier=5d1b96a26b494074
+#     print "hi"
+
+#     # print session['current_oauth_token']
+#     dd = oauth_flickr.fetch_access_token()
+#     print dd
+#     # print access_token
+
+#     # print request
+
+#     # return request
+
+
 @app.route("/error")
 def error():
     raise Exception("Error!")
@@ -38,7 +72,13 @@ def error():
 
 @app.route('/')
 def index():
-    """Web app begins with login splash page."""
+    """Web app begins with splash page."""
+    return render_template("splash.html")
+
+
+@app.route('/login')
+def user_login():
+    """User login form."""
     return render_template("login.html")
 
 
@@ -132,7 +172,8 @@ def show_bldg_details(bldg_id):
 @app.route('/map')
 def display_map():
     """Page where user can see map and map data."""
-    return render_template("mapbox.html")
+    bldgs = Building.query.all()
+    return render_template("mapbox.html", bldgs=bldgs)
 
 
 ### JSON ROUTES ###

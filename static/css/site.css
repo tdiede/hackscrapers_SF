@@ -44,3 +44,15 @@ a:hover {
 }
 
 /* Dashboard */
+
+#map-mapbox {
+    height: 800px;
+}
+
+#map-half {
+}
+
+#table-half {
+    padding: 25px;
+    overflow: scroll;
+}

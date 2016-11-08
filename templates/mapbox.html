@@ -13,19 +13,19 @@
     <script src='../static/js/turf.min.js'></script>
     <script src='../static/js/turf_modules.min.js'></script>
 
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js'></script>
+    <link rel="stylesheet" href="../static/css/bootstrap-sortable.css">
+    <link rel="stylesheet" href="/static/css/site.css">
 
 {% endblock %}
 
 {% block content %}
 
-<!-- add hover over markers feature -->
+
 
 <div class='container-fluid'>
-
     <div class='row'>
 
-        <div class='col-md-8 full-w'>
+        <div class='col-md-6' id='map-half'>
             <div id='map-mapbox' ></div>
 
             <div class='jumbotron' id='searchwrapper'>
@@ -34,45 +34,86 @@
                     <button id='update-radius' type='submit' class='btn btn-info' data-radius='radius' role='button' value='search'>search!</button>
                 </form>
             </div>
-
-        </div>
-
-        <div class='col-md-4 full-w'>
-
-            <div id='bar-chart'>
-                <canvas id="barChart"></canvas>
-                <br>
-                <!-- <div id="barLegend"></div> -->
-            </div>
-
         </div>
 
 
-        <div class='jumbotron collapse' id='wrapper'>
-            <span id='details-close' class='glyphicon glyphicon-remove'></span>
-            <h3 id='bldg-name'></h3>
-            <p id='photo-suggest'></p>
-            <img id='bldg-img' src='' />
-            <br>
-            <div class='photo-properties'>
-                <p>photo credits: <span id='photo-ownername'></span>
-                <br>title: <span id='photo-title'></span>
-                <br>description: <span id='photo-descript'></span></p>
-            </div>
-            <div class='bldg-properties'>
-                <p>building data: <span id='bldg-info'></span></p>
-            </div>
+        <div class='col-md-6' id='table-half'>
 
-            <form id='save-card' action='/save_card.json' method='post'>
-                <button id='data-bldg-id' data-bldg='' type='submit' class='btn btn-info' value='collect'>collect this card!</button>
-            </form>
+        <h3>{{ bldgs[0].city.city.upper() }}</h3>
+
+        <table id="table-buildings" class="table sortable table-sm table-bordered table-striped table-hover">
+
+        <thead>
+            <tr>
+                <th data-defaultsign='nospan'><span class='glyphicon glyphicon-sort-by-attributes'></span> Rank</th>
+                <th>Building Name</th>
+                <th data-defaultsign='nospan' id='data-completed_yr'> Year Completed</th>
+                <th>Status</th>
+                <th data-defaultsign='nospan' id='data-floors'> Floors</th>
+                <th data-defaultsign='nospan' id='data-height_ft'> Height (ft)</th>
+                <th data-defaultsign='nospan' id='data-height_m'> Height (m)</th>
+                <th>Material</th>
+                <th>Use</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for bldg in bldgs %}
+            <tr class='bldg-row' data-bldg='{{bldg.bldg_id}}'>
+                <td scope="row">{{ bldg.rank }}</td>
+                <td>{{ bldg.building_name }}</td>
+                <td>{{ bldg.completed_yr }}</td>
+                <td>{{ bldg.status }}</td>
+                <td>{{ bldg.floors }}</td>
+                <td>
+                {% if bldg.height_ft is not none %}
+                    {{ bldg.height_ft }}
+                {% else %}
+                    --
+                {% endif %}</td>
+                <td>
+                {% if bldg.height_m is not none %}
+                    {{ bldg.height_m }}
+                {% else %}
+                    --
+                {% endif %}</td>
+                <td>{{ bldg.material }}</td>
+                <td>{{ bldg.use }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+        </table>
+
         </div>
-
 
     </div>
-
 </div>
 
+
+<div class='jumbotron collapse' id='wrapper'>
+    <span id='details-close' class='glyphicon glyphicon-remove'></span>
+    <h3 id='bldg-name'></h3>
+    <p id='photo-suggest'></p>
+    <img id='bldg-img' src='' />
+    <br>
+    <div class='photo-properties'>
+        <p>photo credits: <span id='photo-ownername'></span>
+        <br>title: <span id='photo-title'></span>
+        <br>description: <span id='photo-descript'></span></p>
+    </div>
+    <div class='bldg-properties'>
+        <p>building data: <span id='bldg-info'></span></p>
+    </div>
+
+    <form id='save-card' action='/save_card.json' method='post'>
+        <button id='data-bldg-id' data-bldg='' type='submit' class='btn btn-info' value='collect'>collect this card!</button>
+    </form>
+</div>
+
+
 <script src='../static/js/mapbox.js'></script>
+<script src='../static/js/bootstrap-sortable.js'></script>
+<script src='../static/js/table.js'></script>
 
 {% endblock %}
