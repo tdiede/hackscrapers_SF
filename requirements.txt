@@ -13,7 +13,6 @@ ipaddress==1.0.17
 itsdangerous==0.24
 Jinja2==2.8
 MarkupSafe==0.23
-oauth2===unknown
 oauthlib==2.0.0
 pkg-resources==0.0.0
 psycopg2==2.6.2
