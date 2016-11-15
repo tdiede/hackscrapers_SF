@@ -14,8 +14,8 @@ authorization_url = u'https://www.flickr.com/services/oauth/authorize'
 access_token_url = u'https://www.flickr.com/services/oauth/access_token'
 
 # This is (also) set in the app settings (under hackcrapers@yahoo.com profile).
-callback_uri = u'http://127.0.0.1:5000/callback'
-# callback_uri = 'https://hackscrapers.herokuapp.com/callback'
+# callback_uri = u'http://127.0.0.1:5000/callback'
+callback_uri = 'https://hackscrapers.herokuapp.com/callback'
 
 
 oauth_session = requests_oauthlib.OAuth1Session(client_key=api_key, client_secret=api_secret,
