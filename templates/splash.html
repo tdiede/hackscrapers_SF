@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>hackscrapers</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/css/site.css">
+
+    <script src="http://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+
+    <!-- my favicon -->
+    <link rel="icon" type="image/png" href="/static/img/code-break.png">
+
+</head>
+<body id="splash">
+
+
+
+<nav id="splash">
+
+  <form action='/login' method='GET'>
+      <button type="submit" class="btn btn-info" value="login">log in</button>
+  </form>
+
+</nav>
+
+  <!-- flash messages display here -->
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="alert alert-info" role="alert">
+      {% for message in messages %}
+        {{ message }}
+      {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+<div class="container splash">
+
+<h3>hackscrapers</h3>
+<h4>Where you explore your city's skyline.</h4>
+
+<br>
+
+<p>Don't have an account yet? Click <a href='/guest'>here</a> to continue as a guest.</p>
+<hr>
+<p>Want access to all features? Sign in with</p>
+<a href='/oauth'><img src="/static/img/flickr-logo_618x187.png" height="20" alt=""></a>
+
+</div>
+
+
+<div class="container-fluid splash">
+<p class="caption">photo credits: <a href='https://www.flickr.com/photos/photographingtravis/20257778185'>Travis Wise</a></p>
+</div>
+
+
+</body>

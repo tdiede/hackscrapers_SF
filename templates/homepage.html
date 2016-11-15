@@ -1,0 +1,232 @@
+{% extends 'base.html' %}
+{% block title %}
+
+    <title>hackscrapers</title>
+
+    <link rel='stylesheet' href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.css' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.js'></script>
+
+    <script src='../static/js/turf.min.js'></script>
+    <script src='../static/js/turf_modules.min.js'></script>
+
+    <link rel="stylesheet" href="../static/css/bootstrap-sortable.css">
+    <link rel="stylesheet" href="/static/css/site.css">
+
+{% endblock %}
+{% block navbar %}
+
+
+
+<nav class="navbar">
+
+    <ul class="nav navbar-nav">
+<!--     <li>
+        <i class="fa fa-2x fa-bars" aria-hidden="true" data-toggle="tooltip" title="navigation"></i>
+    </li> -->
+    <li>
+        <i class="fa fa-2x fa-th" aria-hidden="true" data-toggle="tooltip" title="gallery"></i>
+    </li>
+
+    <li>
+        <div class="dropdown">
+            <i type='button' data-toggle="dropdown" class="fa fa-2x fa-user" aria-hidden="true"></i>
+
+            <ul class="dropdown-menu dropdown-menu-left">
+                <!-- <li>profile</li> -->
+                <!-- <li>settings</li> -->
+                <!-- <li role="separator" class="divider"></li> -->
+                <li>
+                    <form action="/logout" method='POST'><input class='invisible-submit' type="submit" value="{{ username }} : log out"/></form>
+                </li>
+            </ul>
+        </div>
+    </li>
+    </ul>
+
+</nav>
+
+<script>
+
+"use strict";
+
+$('.nav-links').hide();
+
+function toggleIcon(feature) {
+    $('.nav-links').toggle();
+}
+
+$('.fa').on('click', toggleIcon);
+
+</script>
+
+{% endblock %}
+{% block content %}
+
+
+
+<div class='container-fluid'>
+    <div class='row'>
+
+
+
+
+
+                <!-- not visible until clicked! -->
+                <div class='collapse col-md-offset-6 col-md-6 col-s-12 col-xs-12' id='photo-flickr'>
+
+                    <i class="fa fa-lg fa-times" aria-hidden="true"></i><!-- close photo window -->
+                    <i class="fa fa-expand" aria-hidden="true" data-toggle="tooltip" title="expand photo window"></i><!-- explore further -->
+
+                <div class='photo-flickr col-md-6 col-xs-6' id='photo-flickr-front'>
+
+                    <div id='bldg-img-container'>
+                    <!-- <img id='bldg-img' src='' /> -->
+                    </div>
+
+                    <i class="photo-found fa fa-heart" aria-hidden="true"
+                            data-toggle="tooltip" title="add photo to gallery"></i><!-- add to gallery -->
+                    <i class="photo-found fa fa-comment" aria-hidden="true"
+                            data-toggle="tooltip" title="comment on building"></i><!-- make comment -->
+                    <i class="photo-found fa fa-camera" aria-hidden="true"
+                            data-toggle="tooltip" title="upload your photo"></i><!-- contribute your photo -->
+
+                    <p class='fixed-text-center pink-text'><span id='photo-suggest'></span></p>
+
+                </div>
+                <div class='photo-flickr col-md-6 col-xs-6' id='photo-flickr-back'>
+
+                    <h3><i class="fa fa-bookmark" aria-hidden="true"
+                            data-toggle="tooltip" title="bookmark this building"></i> <span id='bldg-name'></span></h3>
+
+                    <h3># <span class='uppercase-text pink-text' id='bldg-rank'></span></h3>
+                    <p>
+                        <span class='uppercase-text pink-text' id='bldg-height-ft'>
+                            </span> FEET [<span class='uppercase-text pink-text' id='bldg-floors'>
+                            </span> FLOORS]<br>
+                        STATUS <span class='uppercase-text pink-text' id='bldg-status'></span><br>
+                        YEAR <span class='uppercase-text pink-text' id='bldg-year-completed'></span><br>
+                        MATERIAL <span class='uppercase-text pink-text' id='bldg-material'></span><br>
+                        USE <span class='uppercase-text pink-text' id='bldg-use'></span>
+                    </p>
+
+                    <p class='photo-properties fixed-text-bottom'>
+                        <span class='pink-text'>photo credits: </span>
+                        <a id='img-url' href='' target='_blank'><span id='photo-ownername'></span></a>
+                    </p>
+
+                </div>
+                </div>
+                <!-- not visible until clicked! -->
+
+
+
+
+        <!-- MAP HALF -->
+        <div class='col-md-6 col-s-12 col-xs-12' id='map-half'>
+            <div id='map-mapbox' ></div>          
+        </div>
+
+
+
+        <!-- TABLE HALF -->
+        <div class='col-md-6 col-s-12 col-xs-12' id='table-half'>
+
+            <table id="table-buildings" class="table sortable table-sm table-striped table-hover">
+
+                <thead>
+                    <tr>
+                        <th class='rank'>RANK</th>
+                        <th class='name'>BUILDING NAME</th>
+                        <th class='height-ft'>FEET</th>
+                        <!-- <th id='height-m'>Meters</th> -->
+                        <th class='floors'>FLOORS</th>
+                        <th class='status'>STATUS</th>
+                        <th class='completed-yr'>YEAR</th>
+                        <th class='material'>MATERIAL</th>
+                        <th class='use'>USE</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for bldg in bldgs %}
+                    <tr class='bldg-row' data-bldg='{{bldg.bldg_id}}'
+                                         data-rank='{{bldg.rank}}' 
+                                         data-name='{{bldg.building_name}}'
+                                         data-feet='{{bldg.height_ft}}'
+                                         data-floors='{{bldg.floors}}'
+                                         data-status='{{bldg.status}}'
+                                         data-year='{{bldg.completed_yr}}'
+                                         data-material='{{bldg.material}}'
+                                         data-use='{{bldg.use}}'>
+                        <td class='rank' scope="row">{{ bldg.rank }}</td>
+                        <td class='name'>{{ bldg.building_name }}</td>
+                        <td  class='height-ft'>
+                            {% if bldg.height_ft is not none %}
+                            {{ bldg.height_ft }}
+                            {% else %}
+                            --
+                            {% endif %}
+                        </td>
+                        <!-- <td id='height-m'>
+                            {% if bldg.height_m is not none %}
+                            {{ bldg.height_m }}
+                            {% else %}
+                            
+                            {% endif %}
+                        </td> -->
+                        <td class='floors'>{{ bldg.floors }}</td>
+                        <td class='status'>{{ bldg.status }}</td>
+                        <td class='completed-yr'>{{ bldg.completed_yr }}</td>
+                        <td class='material'>{{ bldg.material }}</td>
+                        <td class='use'>{{ bldg.use }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+
+
+    </div>
+</div>
+
+
+
+<script src="http://code.jquery.com/jquery-3.1.1.min.js"
+integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+crossorigin="anonymous"></script>
+
+<script src='../static/js/bootstrap-sortable.js'></script>
+<script src='../static/js/mapbox.js'></script>
+
+
+{% endblock %}
+
+
+<!-- <i class="fa fa-flickr" aria-hidden="true"></i>flickr -->
+<!-- <i class="fa fa-thumb-tack" aria-hidden="true"></i>pin -->
+<!-- 
+<form id='save-card' action='/save_card.json' method='post'>
+    <input type='text' placeholder='Add your comments.' name='comments'>
+    <button id='collect-card' data-bldg='' data-url='' type='submit' class='btn btn-info' value='collect'>collect this card!</button>
+</form> -->
+
+
+<!-- photo title -->
+<!-- photo description -->
+
+
+<!-- <div class='jumbotron collapse' id='searchwrapper'>
+    <form>
+        <input id='radius' type='text' placeholder='radius' name='radius'>
+        <button id='update-radius' type='submit' class='btn btn-info' data-radius='radius' role='button' value='search'>search!</button>
+    </form>
+</div> -->
+
+
+
+<!-- <ul class="nav navbar-nav nav-links">
+  <li><a href='/buildings'>TABLE VIEW</a></li>
+  <li><a href='/map'>MAP VIEW</a></li>
+  <li><a href='/dashboard'>CARD COLLECTION</a></li>
+</ul> -->
