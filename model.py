@@ -90,12 +90,11 @@ class User(db.Model):
     def __repr__(self):
         """Show info about user."""
 
-        return "<User user_id=%d username=%s password=%s>" % (self.user_id, self.username, self.password)
+        return "<User username=%s>" % (self.username)
 
-    user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_id = db.Column(db.String(16), primary_key=True)
     username = db.Column(db.String(64), unique=True)
-    password = db.Column(db.String(64))
-    card_id = db.Column(db.Integer, db.ForeignKey('cards.card_id'), nullable=True)
+    oauth_token = db.Column(db.String(64))
 
 
 # Card
@@ -110,7 +109,7 @@ class Card(db.Model):
         return "<Card card_id=%d user_id=%d bldg_id=%d>" % (self.card_id, self.user_id, self.bldg_id)
 
     card_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    user_id = db.Column(db.Integer)
+    user_id = db.Column(db.String(16), db.ForeignKey('users.user_id'), nullable=False)
     bldg_id = db.Column(db.Integer, db.ForeignKey('buildings.bldg_id'), nullable=False)
     card_img = db.Column(db.String(256))
     comments = db.Column(db.String(256))
@@ -135,7 +134,7 @@ def example_data():
 
     user = User(user_id=1,
                 username='me',
-                password='password',
+                oauth_token='72157674926314732-3ae41f6b4442818a',
                 card_id=1)
 
     card = Card(card_id=1,

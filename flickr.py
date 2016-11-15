@@ -30,6 +30,7 @@ if __name__ == "__main__":
     connect_to_db(app, os.environ.get("DATABASE_URL"))
 
 
+# Call this function once, running the file interactively.
 def flickr_search():
     """Makes request to FLICKR API, given bldg tags. Saves file for each bldg, each page 500 results max."""
 

@@ -1,89 +1,36 @@
-{% extends 'base.html' %}
-{% block title %}
+<!DOCTYPE html>
+<html>
+<head>
 
-    <title>Login:SkyscraperGO</title>
+    <title>hackscrapers</title>
 
-{% endblock %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/css/site.css">
 
-{% block content %}
+    <script src="http://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 
+    <!-- my favicon -->
+    <link rel="icon" type="image/png" href="/static/img/code-break.png">
 
-
-<div class="container">
-
-<br>
-
-<h2>WELCOME TO HACKSCRAPER SF</h2>
-<!-- <br>COLLECT THEM ALL! -->
-
-<br>
+</head>
+<body id="login">
 
 <div class="container login">
 
   <form action='/login' method='POST'>
-    <div class="form-group row">
-      <label for="inputEmail" class="col-md-2 col-form-label">email</label>
-      <div class="col-md-3">
-        <input type="email" class="form-control" id="inputEmail" placeholder="email" name="username">
-      </div>
-    </div>
-    <div class="form-group row">
-      <label for="inputPassword" class="col-md-2 col-form-label">password</label>
-      <div class="col-md-3">
-        <input type="password" class="form-control" id="inputPassword" placeholder="password" name="password">
-      </div>
-    </div>
+      <label for="input-username">If you have previously visited hackscrapers<br>and know your Flickr username.</label>
+      <input type="text" class='form-control' id="input-username" placeholder="Flickr username" name="username">
 
-    <div class="form-group row">
-      <div class="offset-md-2 col-md-10">
-        <button type="submit" class="btn btn-info" value="login">go!</button>
-      </div>
-    </div>
+<hr>
+
+      <button type="submit" class="btn btn-info" value="login">log in</button>
+
   </form>
 
-<br>
-<hr>
-<br>
-
-<p id="register">NEW USER?<button type="submit" class="btn btn-link" value="register">SIGN UP HERE!</button></p>
-
 </div>
 
-
-
-<div class="container register">
-
-  <form action='/register' method='POST'>
-    <div class="form-group row">
-      <label for="inputEmail" class="col-md-2 col-form-label">email</label>
-      <div class="col-md-3">
-        <input type="email" class="form-control" id="inputEmail" placeholder="email" name="username">
-      </div>
-    </div>
-    <div class="form-group row">
-      <label for="inputPassword" class="col-md-2 col-form-label">password</label>
-      <div class="col-md-3">
-        <input type="password" class="form-control" id="inputPassword" placeholder="password" name="password">
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="offset-md-2 col-md-10">
-        <button type="submit" class="btn btn-info" value="register">start!</button>
-      </div>
-    </div>
-  </form>
-
-<br>
-<hr>
-<br>
-
-<p id="login">ALREADY A USER?<button type="submit" class="btn btn-link" value="login">LOGIN HERE!</button></p>
-
-</div>
-
-</div>
-
-    <script src='../static/js/register.js'></script>
-
-{% endblock %}
+</body>

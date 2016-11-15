@@ -18,8 +18,6 @@ flickr.create_index([("tags", 'text'), ("description.content", 'text'), ("title"
 from sqlalchemy.sql import func
 from random import randint, sample
 
-import bcrypt
-
 import oauth_flickr
 
 
@@ -33,117 +31,119 @@ app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY", "abcdef")
 # app.jinja_env.undefined = StrictUndefined
 
 
-@app.route("/oauth")
-def oauth():
-
-    request_token = oauth_flickr.fetch_request_token()
-    oauth_token = request_token['oauth_token']
-    session['current_oauth_token'] = oauth_token
-    print oauth_token
-
-    oauth_url = oauth_flickr.follow_link()
-    print oauth_url
-
-    return redirect(oauth_url)
-
-
-@app.route("/callback")
-def callback():
-
-    print "hi"
-
-    # print session['current_oauth_token']
-    dd = oauth_flickr.fetch_access_token()
-    print dd
-
-    # return request
-
-
 @app.route("/error")
 def error():
     raise Exception("Error!")
 
 
+@app.route("/oauth")
+def oauth():
+
+    if 'authorization' in session:
+        return redirect('/login')
+
+    request_token = oauth_flickr.fetch_request_token()
+
+    # Store the access token in a session cookie.
+    session['request_token'] = request_token
+
+    oauth_url = oauth_flickr.follow_link()
+
+    # State is used to prevent CSRF, keep this for later.
+    # session['oauth_state'] = state
+
+    return redirect(oauth_url)
+
+
+@app.route("/callback", methods=['GET'])
+def callback():
+
+    # Store the access token in a session cookie.
+    session['authorization'] = request.args.to_dict()
+
+    return redirect("/fetch_access_token")
+
+
+@app.route("/fetch_access_token")
+def fetch_access_token():
+
+    oauth_token = session['authorization']['oauth_token']
+    oauth_verifier = session['authorization']['oauth_verifier']
+    access_token = oauth_flickr.fetch_access_token(oauth_token, oauth_verifier)
+    session['user_token'] = access_token
+
+    # Add user to database via Flickr identity.
+    user_id = session['user_token']['user_nsid']
+    username = session['user_token']['username']
+    oauth_token = session['user_token']['oauth_token']
+    try:
+        add_user(user_id, username, oauth_token)
+        flash("Logged in as Flickr user %s" % (username))
+        return redirect('/')
+    except:
+        flash("Logged in as Flickr user %s" % (username))
+        return redirect('/')
+    else:
+        return redirect('/login')
+
+
 @app.route('/')
 def index():
     """Web app begins with splash page."""
-    return render_template("splash.html")
+
+    if 'user_token' not in session:
+        return render_template("splash.html")
+
+    username = session['user_token']['username']
+    user_id = session['user_token']['user_nsid']
+    bldgs = Building.query.all()
+    return render_template("homepage.html", username=username, user_id=user_id, bldgs=bldgs)
+
+
+@app.route('/guest')
+def guest_user():
+    """If user opts for guest use."""
+
+    bldgs = Building.query.all()
+    return render_template("homepage.html", username='guest', bldgs=bldgs)
 
 
 @app.route('/login')
 def user_login():
-    """User login form."""
+    """Form asks for Flickr username."""
     return render_template("login.html")
 
 
 @app.route('/login', methods=['POST'])
 def handle_login():
-    """Action for login form; user login to be completed."""
+    """Action for login: checks for username in database and skips Flickr authorization.."""
 
     current_username = request.form['username']
-    current_password = request.form['password']
+    user = User.query.filter_by(username=current_username).one()
 
-    user = User.query.filter_by(username=current_username).first()
-    hashed = user.password
-
-    if user:  # Checks to see if user is registered.
-        # # Checks to see if user password is correct (not using bcrypt hashing).
-        # if current_password == user.password:
-
-        # Check that an unhashed password matches one that has previously been hashed.
-        if bcrypt.checkpw(current_password, hashed):
-            session['current_user'] = current_username
-            flash("Logged in as %s" % (current_username))
-            return redirect('/dashboard')
-        else:
-            flash("Wrong password. Try again!")
-            return redirect('/')
-    else:
-        flash("Please register.")
-        return redirect('/register')
-
-
-@app.route('/register')
-def user_register():
-    """User register form."""
-    return render_template("register.html")
-
-
-@app.route('/register', methods=['POST'])
-def handle_register():
-    """Action for register form; user entered into database."""
-
-    current_username = request.form['username']
-    current_password = request.form['password']
-
-    if User.query.filter_by(username=current_username).first():  # Checks to see if user is already registered.
-        flash("You're already registered. Please login.")
+    if user:  # Checks to see that query of user from db produced a result.
+        session['user_token'] = {}
+        session['user_token']['username'] = user.username
+        session['user_token']['user_nsid'] = user.user_id
+        session['user_token']['oauth_token'] = user.oauth_token
+        flash("Logged in as Flickr user %s" % (user.username))
         return redirect('/')
     else:
-        # Hash a password for the first time, with a randomly-generated salt.
-        hashed = bcrypt.hashpw(current_password, bcrypt.gensalt())
-        add_user(current_username, hashed)
-        session['current_user'] = current_username
-        flash("Welcome. You are now a registered user, %s! Please make yourself at home." % (current_username))
-        return redirect('/dashboard')
+        flash("Incorrect username. Try again!")
+        return redirect('/')
 
 
 @app.route('/logout', methods=['POST'])
 def process_logout():
     """Identifies user session to be deleted. Deletes user session. Redirects."""
 
-    current_user = session['current_user']
-    del session['current_user']
-    flash("Thanks for playing, %s. You are now logged out." % current_user)
+    if 'user_token' not in session:
+        return redirect('/')
+
+    username = session['user_token']['username']
+    flash("Successful log out, Flickr user %s." % (username))
+    session.pop('user_token')
     return redirect('/')
-
-
-@app.route('/buildings')
-def buildings_list():
-    """Return list of buildings."""
-
-    bldgs = Building.query.all()
-    return render_template("buildings_list.html", bldgs=bldgs)
 
 
 @app.route('/bldg/<int:bldg_id>')
@@ -161,13 +161,6 @@ def show_bldg_details(bldg_id):
 
     # raise Exception
     return render_template("building_details.html", bldg=bldg, photos=photos)
-
-
-@app.route('/map')
-def display_map():
-    """Page where user can see map and map data."""
-    bldgs = Building.query.all()
-    return render_template("mapbox.html", bldgs=bldgs)
 
 
 ### JSON ROUTES ###
@@ -232,7 +225,7 @@ def bldg_flickr(bldg_id):
     else:
         photo_metadata = {"not_found": True,
                           "message": 'This building does not have any tagged Flickr photos.',
-                          "suggestion": 'No photo found. Maybe you should go snap it!'
+                          "suggestion": 'No photo found. Can you snap it!'
                           }
 
     return jsonify(photo_metadata)
@@ -247,14 +240,13 @@ def create_bldgs_geojson():
 
     features = []
     for bldg in bldgs:
-
-        coordinates_list = [bldg.lng, bldg.lat]
         bldg_feature = {"type": "Feature",
                         "geometry": {
                             "type": "Point",
-                            "coordinates": coordinates_list,
+                            "coordinates": [bldg.lng, bldg.lat],
                             },
                         "properties": {
+                            "icon": "marker",
                             "bldg_id": bldg.bldg_id,
                             "place_id": bldg.place_id,
                             "rank": bldg.rank,
@@ -271,13 +263,40 @@ def create_bldgs_geojson():
                             "use": bldg.use,
                             }
                         }
-
         features.append(bldg_feature)
 
-    bldg_geojson = {"type": "FeatureCollection",
-                    "features": features}
+    bldg_geojson = {}
+    bldg_geojson['type'] = 'FeatureCollection'
+    bldg_geojson['features'] = features
 
     return jsonify(bldg_geojson)
+
+
+# JSON ROUTE FOR COLLECTING A CARD
+@app.route('/save_card.json', methods=['POST'])
+def save_card():
+    """Saves card to user profile in the cards database."""
+
+    if 'user_token' not in session:
+        return redirect('/')
+
+    current_username = session['user_token']['username']
+    user = User.query.filter_by(username=current_username).one()
+    user_id = user.user_id
+
+    bldg_id = request.args.get('bldg')
+    card_img = request.args.get('url')
+
+    comments = request.form.get('comments')
+
+    not_unique = Card.query.filter_by(user_id=user_id).filter_by(bldg_id=bldg_id).first()
+
+    if not not_unique:
+        add_card(user_id, bldg_id, card_img, comments)
+        return redirect('/dashboard')
+
+    flash("You already have that card %d!" % not_unique.card_id)
+    return redirect('/')
 
 
 # JSON ROUTE FOR BAR CHART
@@ -379,11 +398,12 @@ def find_photos(bldg_id):
 """All functions adding to database."""
 
 
-def add_user(username, password):
+def add_user(user_id, username, oauth_token):
     """Called when a new user registers."""
 
-    user = User(username=username,
-                password=password)
+    user = User(user_id=user_id,
+                username=username,
+                oauth_token=oauth_token)
 
     db.session.add(user)
     db.session.commit()
