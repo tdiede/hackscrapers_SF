@@ -134,6 +134,8 @@ map.on('load', function () {
 
             var bldgID = marker.properties.bldg_id;
             colorTableRow(bldgID);
+
+            map.flyTo({center: marker.geometry.coordinates, zoom: zoom+2.5, speed: 0.4, curve: 1});
         });
 
         // add marker to map
@@ -279,6 +281,7 @@ $(document).ready(function() {
         $('#bldg-material').html($(this).data('material'));
         $('#bldg-use').html($(this).data('use'));
 
+        map.flyTo({center: [ $(this).data('lng'), $(this).data('lat') ], zoom: zoom+2.5, speed: 0.4, curve: 1});
     });
 
 });

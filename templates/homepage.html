@@ -150,6 +150,8 @@ $('.fa').on('click', toggleIcon);
                 <tbody>
                     {% for bldg in bldgs %}
                     <tr class='bldg-row' data-bldg='{{bldg.bldg_id}}'
+                                         data-lng='{{bldg.lng}}'
+                                         data-lat='{{bldg.lat}}'
                                          data-rank='{{bldg.rank}}' 
                                          data-name='{{bldg.building_name}}'
                                          data-feet='{{bldg.height_ft}}'
