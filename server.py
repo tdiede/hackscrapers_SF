@@ -6,8 +6,8 @@ from flask import (Flask, render_template, redirect, request, session, flash, js
 
 import json
 
-from model import connect_to_db, db
-from model import Building, User, Card
+from model import db, connect_to_db
+from model import (Building, User, Card)
 
 from mongodb import db as mongo
 flickr = mongo['flickr']
@@ -21,14 +21,16 @@ from random import randint, sample
 import oauth_flickr
 
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY", "abcdef")
+def create_app():
+    app = Flask(__name__)
+    app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY", "abcdef")
+    db.init_app(app)
+    with app.test_request_context():
+        db.create_all()
+    return app
 
 
-# Normally, if you use an undefined variable in Jinja2, it fails silently.
-# This is horrible. Fix this so that, instead, it raises an error.
-# from jinja2 import StrictUndefined
-# app.jinja_env.undefined = StrictUndefined
+app = create_app();
 
 
 @app.route("/error")
@@ -421,12 +423,13 @@ def add_card(user_id, bldg_id, card_img, comments):
     db.session.commit()
 
 
-####################################################################
-
 if __name__ == "__main__":
 
     from flask_debugtoolbar import DebugToolbarExtension
     DebugToolbarExtension(app)
+
+    from jinja2 import StrictUndefined
+    app.jinja_env.undefined = StrictUndefined
 
     # import doctest
     # result = doctest.testmod()

@@ -1,12 +1,7 @@
-# Use Python os.environ to get environmental variables.
-# Note: you must run `source secrets.sh` before running
-# this file to set required environmental variables.
+from googleplaces import GooglePlaces  # external library
 
 import os
-
 GOOGLE_PLACES_API_KEY = os.environ['GOOGLE_PLACES_API_KEY']
-
-from googleplaces import GooglePlaces  # external library
 
 
 def get_google_places(building_name):

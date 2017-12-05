@@ -2,16 +2,10 @@
 
 from flask_sqlalchemy import SQLAlchemy
 
-# This is the connection to the PostgreSQL database; we're getting this through
-# the Flask-SQLAlchemy helper library. On this, we can find the `session`
-# object, where we do most of our interactions (like committing, etc.)
-
 db = SQLAlchemy()
 
 
-##############################################################################
 # Model definitions
-
 class Building(db.Model):
     """Buildings in SF."""
 
@@ -19,7 +13,6 @@ class Building(db.Model):
 
     def __repr__(self):
         """Show info about the building."""
-
         return "<Building rank={} building_name={}>".format(self.rank, self.building_name)
 
     bldg_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
@@ -37,7 +30,6 @@ class Building(db.Model):
     material = db.Column(db.String(64), nullable=True)
     use = db.Column(db.String(64), nullable=True)
 
-    # Define relationship to city.
     city = db.relationship("City",
                            backref=db.backref("buildings",
                                               order_by=bldg_id))
@@ -50,7 +42,6 @@ class City(db.Model):
 
     def __repr__(self):
         """Show info about the city."""
-
         return "<City rank=%d city=%s bldg_count=%d>" % (self.rank, self.city, self.bldg_count)
 
     city_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
@@ -67,7 +58,6 @@ class Tenant(db.Model):
 
     def __repr__(self):
         """Show a list of all tenants found by Google Places API."""
-
         return "<Tenant tenant_id=%d tenant=%s>" % (self.tenant_id, self.tenant)
 
     tenant_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
@@ -75,13 +65,11 @@ class Tenant(db.Model):
     place_id = db.Column(db.String(64))
     bldg_id = db.Column(db.Integer, db.ForeignKey('buildings.bldg_id'), nullable=False)
 
-    # Define relationship to bldg.
     bldg = db.relationship("Building",
                            backref=db.backref("tenants",
                                               order_by=tenant_id))
 
 
-# User
 class User(db.Model):
     """Users of web app in database."""
 
@@ -89,7 +77,6 @@ class User(db.Model):
 
     def __repr__(self):
         """Show info about user."""
-
         return "<User username=%s>" % (self.username)
 
     user_id = db.Column(db.String(16), primary_key=True)
@@ -97,7 +84,6 @@ class User(db.Model):
     oauth_token = db.Column(db.String(64))
 
 
-# Card
 class Card(db.Model):
     """Cards of bldgs created by users of web app in database."""
 
@@ -105,7 +91,6 @@ class Card(db.Model):
 
     def __repr__(self):
         """Show info about cards."""
-
         return "<Card card_id=%d user_id=%d bldg_id=%d>" % (self.card_id, self.user_id, self.bldg_id)
 
     card_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
@@ -114,75 +99,10 @@ class Card(db.Model):
     card_img = db.Column(db.String(256))
     comments = db.Column(db.String(256))
 
-    # Define relationship to user.
     user = db.relationship("User",
                            backref=db.backref("cards",
                                               order_by=card_id))
 
-
-###############################################################################
-# Definition example_data() for testing
-
-def example_data():
-    """Sample data for testing."""
-  # In case this is run more than once, empty out existing data from each table.
-    User.query.delete()
-    Card.query.delete()
-    Building.query.delete()
-    Tenant.query.delete()
-    City.query.delete()
-
-    user = User(user_id=1,
-                username='me',
-                oauth_token='72157674926314732-3ae41f6b4442818a',
-                card_id=1)
-
-    card = Card(card_id=1,
-                user_id=1,
-                bldg_id=1)
-
-    bldg = Building(bldg_id=1,
-                    place_id='ChIJWdUJpGOAhYARfBVi2TE8daI',
-                    rank=1,
-                    status='Under Construction',
-                    building_name='Salesforce Tower',
-                    city_id=41,
-                    lat=37.7904907,
-                    lng=-122.397125,
-                    height_m=326.1,
-                    height_ft=1070,
-                    floors=61,
-                    completed_yr=2018,
-                    material='composite',
-                    use='office')
-
-    tenant = Tenant(tenant_id=1,
-                    tenant='50 Fremont Center',
-                    place_id='ChIJWdUJpGOAhYARfBVi2TE8daI',
-                    bldg_id=1)
-
-    city = City(city_id=41,
-                rank=40,
-                city='San Francisco',
-                country='United States',
-                bldg_count=109)
-
-    # db.session.add([user, card, bldg, tenant, city])
-
-    db.session.add(user)
-    db.session.add(card)
-
-    db.session.add(bldg)
-    # db.session.flush()
-    db.session.add(tenant)
-    # db.session.flush()
-    db.session.add(city)
-
-    db.session.commit()
-
-
-##############################################################################
-# Helper functions
 
 def connect_to_db(app, db_uri=None):
     """Connect the database to our Flask app."""
@@ -194,9 +114,7 @@ def connect_to_db(app, db_uri=None):
 
 
 if __name__ == "__main__":
-    # As a convenience, if we run this module interactively, it will leave
-    # you in a state of being able to work with the database directly.
 
     from server import app
     connect_to_db(app)
-    print "Connected to PostgreSQL DB."
+    print("Connected to PostgreSQL DB.")
